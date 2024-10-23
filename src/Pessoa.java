@@ -1,33 +1,33 @@
 public class Pessoa {
 
 	private String nomePessoa; 
-	private String emailPessoa; 
+	private String loginPessoa; 
 	private String senhaPessoa;
 	
-	public Pessoa(String nome, String email, String senha) { 
+	public Pessoa(String nome, String login, String senha) { 
 	
 		setNomePessoa(nome); 
-		setEmailPessoa(email); 
+		setLoginPessoa(login); 
 		setSenhaPessoa(senha); 		
 		
 	}
 	
 	public void setNomePessoa (String nomePessoa) {
-			this.nomePessoa = nomePessoa; 
+		this.nomePessoa = nomePessoa; 
 	}
 	public String getNomePessoa() {
 		return nomePessoa; 
 	}
 	
-	public void setEmailPessoa (String emailPessoa) {
-			this.emailPessoa = emailPessoa; 
+	public void setLoginPessoa (String loginPessoa) {
+		this.emailPessoa = emailPessoa; 
 	}
-	public String getEmailPessoa() {
-		return emailPessoa;
+	public String getLoginPessoa() {
+		return loginPessoa;
 	}
 	
 	public void setSenhaPessoa (String senhaPessoa) {
-			this.senhaPessoa = senhaPessoa;
+		this.senhaPessoa = senhaPessoa;
 	}
 	public String getSenhaPessoa() {
 		return senhaPessoa;
