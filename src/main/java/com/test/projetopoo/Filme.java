@@ -1,23 +1,26 @@
 package main.java.com.test.projetopoo;
 
 public class Filme {
+
     private String nomeFilme;
-    private String descricaoFilme;
+    private String sinopseFilme;
     private int classificacaoFilme;
     private String generoFilme;
     private double precoFilme;
     private int duracaoFilme;
-    private static int nroFilmes;
+    private static int nroFilmes = 0;
 
-    public Filme (String nomeFilme, String descricaoFilme, int classificacaoFilme, String generoFilme, double precoFilme, int duracaoFilme) {
+    public Filme (String nomeFilme, String sinopseFilme, int classificacaoFilme, String generoFilme, double precoFilme, int duracaoFilme) {
+        
         setNomeFilme(nomeFilme);
-        setDescricaoFilme(descricaoFilme);
+        setSinopseFilme(sinopseFilme);
         setClassificacaoFilme(classificacaoFilme);
         setGeneroFilme(generoFilme);
         setPrecoFilme(precoFilme);
         setDuracaoFilme(duracaoFilme);
 
         nroFilmes++;
+
     }
 
     public void setNomeFilme(String nomeFilme) {
@@ -28,12 +31,12 @@ public class Filme {
         return this.nomeFilme;
     }
 
-    public void setDescricaoFilme(String descricaoFilme) {
-        this.descricaoFilme = descricaoFilme;
+    public void setSinopseFilme(String sinopseFilme) {
+        this.sinopseFilme = sinopseFilme;
     }
 
-    public String getDescricaoFilme() {
-        return this.descricaoFilme;
+    public String getSinopseFilme() {
+        return this.sinopseFilme;
     }
 
     public void setClassificacaoFilme(int classificacaoFilme) {
@@ -70,6 +73,11 @@ public class Filme {
 
     public int getDuracaoFilme() {
         return this.duracaoFilme;
+    }
+
+    // verificar se isso eh necessario
+    public void decrementaFilmes() {
+        nroFilmes--;
     }
     
 }

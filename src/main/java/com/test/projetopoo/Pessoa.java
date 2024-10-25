@@ -22,7 +22,7 @@ public class Pessoa {
 	}
 	
 	public void setLoginPessoa (String loginPessoa) {
-		this.emailPessoa = emailPessoa; 
+		this.loginPessoa = loginPessoa; 
 	}
 	public String getLoginPessoa() {
 		return loginPessoa;
