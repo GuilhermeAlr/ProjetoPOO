@@ -36,9 +36,14 @@ public class Usuario extends Pessoa{
 	}
 	
 	//Ingresso
-	public void setIngressosComprados (Ingresso ingresso) {
-		ingressosComprados.add(ingresso); 
+	public void adicionarIngressosComprados (Ingresso ingresso) {
+			ingressosComprados.add(ingresso); 
 	}
+	
+	 public ArrayList <Ingresso>  getIngressosComprados() {
+	        return this.ingressosComprados;
+	 }
+	
 	
 	public double getPrecoIngresso(Sessao sessao){
 		if(getIdadePessoa() < 18) 
@@ -52,7 +57,7 @@ public class Usuario extends Pessoa{
 			{
 				sessao.reservarPoltrona(nroAssento); //Metodo em sessao para ocupar poltrona selecionada
 				Ingresso ingresso = new Ingresso(sessao, nroAssento, getPrecoIngresso(sessao)); 
-				setIngressosComprados(ingresso);
+				adicionarIngressosComprados(ingresso);
 				
 				return true;
 			}
