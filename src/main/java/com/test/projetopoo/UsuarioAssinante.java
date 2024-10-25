@@ -1,4 +1,4 @@
-package Trabalho_POO;
+package main.java.com.test.projetopoo;
 
 public class UsuarioAssinante extends Usuario {
 

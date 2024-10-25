@@ -1,3 +1,5 @@
+package main.java.com.test.projetopoo;
+
 public class Filme {
     private String nomeFilme;
     private String descricaoFilme;
