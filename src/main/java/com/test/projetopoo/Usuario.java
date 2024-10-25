@@ -4,7 +4,6 @@ import java.util.ArrayList;
 public class Usuario extends Pessoa{ 
 	
 	private int idadePessoa;  
-	private Boolean assinaturaPessoa;
 	private static int nroUsuarios = 0;
 	ArrayList <Ingresso> ingressosComprados; 
 	
@@ -19,20 +18,14 @@ public class Usuario extends Pessoa{
 	
 	//Get-Set idade
 	public void setIdadePessoa (int idadePessoa) { 
-			this.idadePessoa = idadePessoa;
+		this.idadePessoa = idadePessoa;
 	}
 	public int getIdadePessoa() {
 		return idadePessoa; 
 	}
 
 	//+Troca de Usuario -> UsuarioAssinante 
-	public Boolean comprarAssinatura (Boolean assinaturaPessoa) { 
-		if(assinaturaPessoa){
-			this.assinaturaPessoa = assinaturaPessoa;
-			return true;
-		}
-		else
-			return false; 
+	public Boolean comprarAssinatura(Boolean assinaturaPessoa) { 
 	}
 	
 	public Boolean getAssinaturaPessoa(Usuario usuario) {
