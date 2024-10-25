@@ -36,10 +36,6 @@ public class Usuario extends Pessoa{
 	}
 	
 	//Ingresso
-	public void adicionarIngressosComprados (Ingresso ingresso) {
-			ingressosComprados.add(ingresso); 
-	}
-	
 	 public ArrayList <Ingresso>  getIngressosComprados() {
 	        return this.ingressosComprados;
 	 }
@@ -57,7 +53,7 @@ public class Usuario extends Pessoa{
 			{
 				sessao.reservarPoltrona(nroAssento); //Metodo em sessao para ocupar poltrona selecionada
 				Ingresso ingresso = new Ingresso(sessao, nroAssento, getPrecoIngresso(sessao)); 
-				adicionarIngressosComprados(ingresso);
+				ingressosComprados.add(ingresso); 
 				
 				return true;
 			}
