@@ -26,4 +26,17 @@ public class Gerente extends Pessoa{
         return this.arrayUsuarios;
     }
  
+    public boolean adicionaFilme(String nomeFilme, String sinopseFilme, int classificacaoFilme, String generoFilme, int duracaoFilme) {
+        
+        for (Filme f : cinema.getListaFilmes()) {
+            if (f.getNomeFilme().equals(nomeFilme)) {
+                return false;
+            }
+        }
+        
+        cinema.getListaFilmes().add(new Filme(nomeFilme, sinopseFilme, classificacaoFilme, generoFilme, duracaoFilme));
+        return true;
+        
+    }
+
 }
