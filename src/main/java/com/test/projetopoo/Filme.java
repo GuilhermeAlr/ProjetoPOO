@@ -6,17 +6,15 @@ public class Filme {
     private String sinopseFilme;
     private int classificacaoFilme;
     private String generoFilme;
-    private double precoFilme;
     private int duracaoFilme;
     private static int nroFilmes = 0;
 
-    public Filme (String nomeFilme, String sinopseFilme, int classificacaoFilme, String generoFilme, double precoFilme, int duracaoFilme) {
+    public Filme (String nomeFilme, String sinopseFilme, int classificacaoFilme, String generoFilme, int duracaoFilme) {
         
         setNomeFilme(nomeFilme);
         setSinopseFilme(sinopseFilme);
         setClassificacaoFilme(classificacaoFilme);
         setGeneroFilme(generoFilme);
-        setPrecoFilme(precoFilme);
         setDuracaoFilme(duracaoFilme);
 
         nroFilmes++;
@@ -57,14 +55,6 @@ public class Filme {
 
     public String getGeneroFilme() {
         return this.generoFilme;
-    }
-
-    public void setPrecoFilme(double precoFilme) {
-        this.precoFilme = precoFilme;
-    }
-
-    public double getPrecoFilme() {
-        return this.precoFilme;
     }
 
     public void setDuracaoFilme(int duracaoFilme) {
