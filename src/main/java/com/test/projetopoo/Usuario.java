@@ -1,4 +1,5 @@
 package main.java.com.test.projetopoo;
+package Trabalho_POO;
 import java.util.ArrayList; 
 
 public class Usuario extends Pessoa{ 
@@ -24,8 +25,21 @@ public class Usuario extends Pessoa{
 		return idadePessoa; 
 	}
 
-	//+Troca de Usuario -> UsuarioAssinante 
-	public Boolean comprarAssinatura(Boolean assinaturaPessoa) { 
+	//Assinatura do usuário 
+	public Usuario comprarAssinatura(Boolean assinaturaPessoa, Usuario usuario) { 
+		if(assinaturaPessoa && !(this instanceof UsuarioAssinante)) {
+		
+			ArrayList <Ingresso> ingressosCompradosAuxiliar = this.ingressosComprados;
+			usuario =  new UsuarioAssinante(this.getNomePessoa(), this.getLoginPessoa(), this.getSenhaPessoa(), this.getIdadePessoa()); 
+			
+			this.ingressosComprados = new ArrayList<>();
+			usuario.setIngressosComprados(ingressosCompradosAuxiliar);
+			
+			return usuario;
+		}
+		
+		return this; 
+	
 	}
 	
 	public Boolean getAssinaturaPessoa(Usuario usuario) {
@@ -36,6 +50,10 @@ public class Usuario extends Pessoa{
 	}
 	
 	//Ingresso
+	 public void setIngressosComprados(ArrayList <Ingresso> ingressosComprados) {
+	        this.ingressosComprados = ingressosComprados;
+    	}
+
 	 public ArrayList <Ingresso>  getIngressosComprados() {
 	        return this.ingressosComprados;
 	 }
@@ -49,14 +67,13 @@ public class Usuario extends Pessoa{
 	}
 	
 	public Boolean comprarIngresso(Sessao sessao, int nroAssento) {
-		if(!sessao.getNroAssento(nroAssento) && getIdadePessoa() > sessao.getFilmeSessao().getClassificacaoFilme())
-			{
+		if(!sessao.getNroAssento(nroAssento) && getIdadePessoa() > sessao.getFilmeSessao().getClassificacaoFilme()){
 				sessao.reservarPoltrona(nroAssento); //Metodo em sessao para ocupar poltrona selecionada
 				Ingresso ingresso = new Ingresso(sessao, nroAssento, getPrecoIngresso(sessao)); 
 				ingressosComprados.add(ingresso); 
 				
 				return true;
-			}
+		}
 			
 		else
 			return false; 
