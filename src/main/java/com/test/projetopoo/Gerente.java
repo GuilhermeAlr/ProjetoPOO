@@ -39,4 +39,34 @@ public class Gerente extends Pessoa{
         
     }
 
+	//Métodos para adicionar, editar e excluir promoções para uma sessão 
+    public void criarPromocao(Sessao sessao, double descontoPromocao) {
+    		
+    		sessao.setPrecoSessaoOriginal(sessao.getPrecoSessao());
+    		sessao.setPrecoSessao(sessao.getPrecoSessao()*descontoPromocao);
+    		sessao.setPromocao(true); 
+    }
+    
+    public Boolean excluirPromocao(Sessao sessao) {
+    	if(sessao.getPromocao()) {
+    		sessao.setPrecoSessao(sessao.getPrecoSessaoOriginal());
+    		sessao.setPromocao(false); 
+    		return true;
+    	}
+    	else
+    		return false; 
+    }
+    
+    public Boolean editarPromocao(Sessao sessao, double descontoPromocao) {
+    	if(sessao.getPromocao()) {
+    		
+    		sessao.setPrecoSessao(sessao.getPrecoSessaoOriginal());
+    		sessao.setPrecoSessao(sessao.getPrecoSessao()*descontoPromocao);
+        	
+        	return true; 
+    	}	
+    	else
+    		return false; 
+    }
+
 }
