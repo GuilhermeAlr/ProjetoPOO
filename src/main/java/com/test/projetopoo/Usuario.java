@@ -1,5 +1,4 @@
 package main.java.com.test.projetopoo;
-package Trabalho_POO;
 import java.util.ArrayList; 
 
 public class Usuario extends Pessoa{ 

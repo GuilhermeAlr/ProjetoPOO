@@ -7,7 +7,6 @@ public class Filme {
     private int classificacaoFilme;
     private String generoFilme;
     private int duracaoFilme;
-    private static int nroFilmes = 0;
 
     public Filme (String nomeFilme, String sinopseFilme, int classificacaoFilme, String generoFilme, int duracaoFilme) {
         
@@ -16,8 +15,6 @@ public class Filme {
         setClassificacaoFilme(classificacaoFilme);
         setGeneroFilme(generoFilme);
         setDuracaoFilme(duracaoFilme);
-
-        nroFilmes++;
 
     }
 
@@ -65,9 +62,4 @@ public class Filme {
         return this.duracaoFilme;
     }
 
-    // verificar se isso eh necessario
-    public void decrementaFilmes() {
-        nroFilmes--;
-    }
-    
 }
