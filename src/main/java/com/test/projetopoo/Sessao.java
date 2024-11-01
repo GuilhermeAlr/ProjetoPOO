@@ -6,35 +6,44 @@ public class Sessao{
     private int codigoSessao;
     private LocalDate diaSessao; 
     private LocalTime horarioSessao;
-    private boolean[] listaAssentos;
+    private Boolean[] listaAssentos;
     private double precoSessao;
     private boolean comPromocao;
     private double porcentagemPromocional;
-    private Sala sala;
-    private Filme filme;
-    private int nroAssento;
+    private Sala salaSessao;
+    private Filme filmeSessao;
     
     //Construtor da classe Sessao
-    public Sessao(int codigoSessao, LocalDate diaSessao, LocalTime horarioSessao, boolean[] listaAssentos, double precoSessao, boolean comPromocao, double porcentagemPromocional, Sala sala, Filme filme, int nroAssento){
+    public Sessao(int codigoSessao, LocalDate diaSessao, LocalTime horarioSessao, Boolean[] listaAssentos, double precoSessao, boolean comPromocao, double porcentagemPromocional, Sala salaSessao, Filme filmeSessao){
         setCodigoSessao(codigoSessao);
         setDiaSessao(diaSessao);
         setHorarioSessao(horarioSessao);
-        setListaAssentos(listaAssentos);
+        listaAssentos = new Boolean[salaSessao.getNroAssentos()];
         setPrecoSessao(precoSessao);
-        setComPromocao(comPromocao);
+        setComPromocao(comPromocao); 
         setPorcentagemPromocional(porcentagemPromocional);
-        setSalaSessao(sala);
-        setFilmeSessao(filme);
-        setNroAssento(nroAssento);
+        setSalaSessao(salaSessao);
+        setFilmeSessao(filmeSessao);
     }
-    
+
+    //Metodo reservar o lugar
+    public void reservarAssento(int assentoReservado){
+        if (getDisponibilidadeAssento(assentoReservado)) {
+            this.listaAssentos[assentoReservado] = true;
+        }
+    }
+
+    public boolean getDisponibilidadeAssento(int nroAssento) {
+        return this.listaAssentos[nroAssento];
+    }
+
     //Get e Set: codigoSessao
     public void setCodigoSessao(int codigoSessao){
         this.codigoSessao = codigoSessao;
     }
 
     public int getCodigoSessao(){
-        return codigoSessao;
+        return this.codigoSessao;
     }
     
     //Get e Set: diaSessao
@@ -43,7 +52,7 @@ public class Sessao{
     }
 
     public LocalDate getDiaSessao(){
-        return diaSessao;
+        return this.diaSessao;
     }
     
     //Get e Set: horarioSessao
@@ -52,16 +61,16 @@ public class Sessao{
     }
 
     public LocalTime getHorarioSessao(){
-        return horarioSessao;
+        return this.horarioSessao;
     }
     
     //Get e Set: arrayAssentos
-    public void setListaAssentos(boolean[] arrayAssentos){
-        this.listaAssentos = arrayAssentos;
+    public void setListaAssentos(Boolean[] listaAssentos){
+        this.listaAssentos = listaAssentos;
     }
 
-    public boolean[] getListaAssentos(){
-        return listaAssentos;
+    public Boolean[] getListaAssentos(){
+        return this.listaAssentos;
     }
     
     //Get e Set: precoSessao
@@ -86,36 +95,24 @@ public class Sessao{
         this.porcentagemPromocional = porcentagemPromocional;
     }
     public double getPorcentagemPromocional(){
-        return  porcentagemPromocional;
+        return  this.porcentagemPromocional;
     }
     
     //Get e Set: Sala
-    public void setSalaSessao(Sala sala) {
-        this.sala = sala;
+    public void setSalaSessao(Sala salaSessao) {
+        this.salaSessao = salaSessao;
     }
 
     public Sala getSalaSessao() {
-        return this.sala;
+        return this.salaSessao;
     }
     
     //Get e Set: Filme
-    public void setFilmeSessao(Filme filme) {
-        this.filme = filme;
+    public void setFilmeSessao(Filme filmeSessao) {
+        this.filmeSessao = filmeSessao;
     }
     public Filme getFilmeSessao() {
-        return this.filme;
+        return this.filmeSessao;
     }
-    
-    //Get e Set: nroAssento
-    public void setNroAssento(int nroAssento){
-        this.nroAssento = nroAssento;
-    }
-    public int getNroAssento(){
-        return nroAssento;
-    }
-    
-    //Metodo reservar o lugar
-    public void reservarLugar(boolean[] listaAssentos, int lugarReservado){
-        this.listaAssentos[lugarReservado] = true;
-    }
+
 }

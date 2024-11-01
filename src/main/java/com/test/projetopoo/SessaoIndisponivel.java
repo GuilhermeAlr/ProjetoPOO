@@ -5,8 +5,8 @@ import java.time.LocalTime;
 public class SessaoIndisponivel extends Sessao{
     private String motivoExclusaoSessao;
     
-    public SessaoIndisponivel(int codigoSessao, LocalDate diaSessao, LocalTime horarioSessao, boolean[] listaAssentos, double precoSessao, boolean comPromocao, double porcentagemPromocional, Sala sala, Filme filme, int nroAssento, String motivoExclusaoSessao){
-        super(codigoSessao, diaSessao, horarioSessao, listaAssentos, precoSessao, comPromocao, porcentagemPromocional, sala, filme, nroAssento);
+    public SessaoIndisponivel(int codigoSessao, LocalDate diaSessao, LocalTime horarioSessao, Boolean[] arrayAssentos, double precoSessao, boolean comPromocao, double porcentagemPromocional, Sala salaSessao, Filme filmeSessao, String motivoExclusaoSessao){
+        super(codigoSessao, diaSessao, horarioSessao, arrayAssentos, precoSessao, comPromocao, porcentagemPromocional, salaSessao, filmeSessao);
         setMotivoExclusaoSessao(motivoExclusaoSessao);
     }
     

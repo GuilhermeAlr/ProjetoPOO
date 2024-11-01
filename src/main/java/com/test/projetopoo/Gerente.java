@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 public class Gerente extends Pessoa{
     private Cinema cinema;
-    private ArrayList<Usuario> arrayUsuarios = new ArrayList<>();
+    private ArrayList<Usuario> listaUsuarios = new ArrayList<>();
 
-    public Gerente(String nome, String login, String senha, Cinema cinema, ArrayList<Usuario> arrayUsuarios) {
-        super(nome, login, senha);
-        setCinema(cinema);;
-        setArrayUsuarios(arrayUsuarios);;
+    public Gerente(String nomeGerente, String loginGerente, String senhaGerente, Cinema cinema, ArrayList<Usuario> listaUsuarios) {
+        super(nomeGerente, loginGerente, senhaGerente);
+        setCinema(cinema);
+        setListaUsuarios(listaUsuarios);
     }
 
     public void setCinema(Cinema cinema) {
@@ -20,24 +20,24 @@ public class Gerente extends Pessoa{
         return this.cinema;
     }
 
-    public void setArrayUsuarios(ArrayList<Usuario> arrayUsuarios) {
-        this.arrayUsuarios = arrayUsuarios;
+    public void setListaUsuarios(ArrayList<Usuario> listaUsuarios) {
+        this.listaUsuarios = listaUsuarios;
     }
 
-    public ArrayList<Usuario> getArrayUsuarios() {
-        return this.arrayUsuarios;
+    public ArrayList<Usuario> getListaUsuarios() {
+        return this.listaUsuarios;
     }
     
-    // metodos para adicionar, editar e indisponibilizar filme
-    public boolean adicionaFilme(String nomeFilme, String sinopseFilme, int classificacaoFilme, String generoFilme, int duracaoFilme) {
+    // metodos para adicionar, editar e remover filme
+    public boolean adicionaFilme(Filme filme) {
         
         for (Filme f : cinema.getListaFilmes()) {
-            if (f.getNomeFilme().equals(nomeFilme)) {
+            if (f.getNomeFilme().equalsIgnoreCase(filme.getNomeFilme())) {
                 return false;
             }
         }
         
-        cinema.getListaFilmes().add(new Filme(nomeFilme, sinopseFilme, classificacaoFilme, generoFilme, duracaoFilme));
+        cinema.getListaFilmes().add(filme);
         return true;
         
     }
@@ -52,7 +52,7 @@ public class Gerente extends Pessoa{
                 else if (!sinopseNova.equals("")) {
                     f.setSinopseFilme(sinopseNova);
                 }
-                else if (classificacaoNova != -1) { // int n aceita null e estamos usando um valor 0, ent usaremos de -1
+                else if (classificacaoNova != -1) { 
                     f.setClassificacaoFilme(classificacaoNova);
                 }
                 else if (!generoNovo.equals("")) {
@@ -88,33 +88,38 @@ public class Gerente extends Pessoa{
         
     }
 
-	//Métodos para adicionar, editar e excluir promoções para uma sessão 
-    public void criarPromocao(Sessao sessao, double descontoPromocao) {
-    	sessao.setPrecoSessaoOriginal(sessao.getPrecoSessao());
-    	sessao.setPrecoSessao(sessao.getPrecoSessao()*descontoPromocao);
-    	sessao.setPromocao(true); 
-    }
-    
-    public Boolean excluirPromocao(Sessao sessao) {
-    	if(sessao.getPromocao()) {
-    		sessao.setPrecoSessao(sessao.getPrecoSessaoOriginal());
-    		sessao.setPromocao(false); 
-    		return true;
-    	}
-    	else {
-            return false; 
+	// métodos para adicionar, editar e excluir promoções para uma sessão 
+    public boolean criarPromocao(Sessao sessao, double porcentagemPromocional) {
+        if (!(sessao.getComPromocao())) {
+            sessao.setComPromocao(true);
+            sessao.setPorcentagemPromocional(porcentagemPromocional);
+            return true;
+        } 
+        else {
+            return false;
         }
+        
     }
-    
-    public Boolean editarPromocao(Sessao sessao, double descontoPromocao) {
-    	if(sessao.getPromocao()) {
-    		sessao.setPrecoSessao(sessao.getPrecoSessaoOriginal());
-    		sessao.setPrecoSessao(sessao.getPrecoSessao()*descontoPromocao);
+
+    public boolean editarPromocao(Sessao sessao, double porcentagemPromocional) {
+    	if(sessao.getComPromocao()) {
+    		sessao.setPorcentagemPromocional(porcentagemPromocional);
         	return true; 
     	}	
     	else {
             return false; 
         }
     }
+
+    public boolean excluirPromocao(Sessao sessao) {
+    	if(sessao.getComPromocao()) {
+            sessao.setComPromocao(false); 
+    		sessao.setPorcentagemPromocional(1);
+    		return true;
+    	}
+    	else {
+            return false; 
+        }
+    }    
 
 }

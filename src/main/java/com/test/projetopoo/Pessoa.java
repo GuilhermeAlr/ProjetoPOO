@@ -17,7 +17,7 @@ public class Pessoa {
 	}
 
 	public String getNomePessoa() {
-		return nomePessoa; 
+		return this.nomePessoa; 
 	}
 	
 	public void setLoginPessoa (String loginPessoa) {
@@ -25,7 +25,7 @@ public class Pessoa {
 	}
 
 	public String getLoginPessoa() {
-		return loginPessoa;
+		return this.loginPessoa;
 	}
 	
 	public void setSenhaPessoa (String senhaPessoa) {
@@ -33,7 +33,7 @@ public class Pessoa {
 	}
 	
 	public String getSenhaPessoa() {
-		return senhaPessoa;
+		return this.senhaPessoa;
 	}
 		
 }

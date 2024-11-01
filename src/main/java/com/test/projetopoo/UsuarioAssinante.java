@@ -1,9 +1,8 @@
 package main.java.com.test.projetopoo;
 
 public class UsuarioAssinante extends Usuario {
-
-	public UsuarioAssinante(String nome, String login, String senha, int idade) { 
-		super(nome,login,senha,idade);
+	public UsuarioAssinante(String nomeUsuario, String loginUsuario, String senhaUsuario, int idadeUsuario) { 
+		super(nomeUsuario, loginUsuario, senhaUsuario, idadeUsuario);
 	}
 	
 	@Override
