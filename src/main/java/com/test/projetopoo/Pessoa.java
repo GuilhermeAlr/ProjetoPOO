@@ -6,15 +6,16 @@ public class Pessoa {
 	private String loginPessoa; 
 	private String senhaPessoa;
 	
-	public Pessoa(String nome, String login, String senha) { 
-		setNomePessoa(nome); 
-		setLoginPessoa(login); 
-		setSenhaPessoa(senha); 		
+	public Pessoa(String nomePessoa, String loginPessoa, String senhaPessoa) { 
+		setNomePessoa(nomePessoa); 
+		setLoginPessoa(loginPessoa); 
+		setSenhaPessoa(senhaPessoa); 		
 	}
 	
 	public void setNomePessoa (String nomePessoa) {
 		this.nomePessoa = nomePessoa; 
 	}
+
 	public String getNomePessoa() {
 		return nomePessoa; 
 	}
@@ -22,6 +23,7 @@ public class Pessoa {
 	public void setLoginPessoa (String loginPessoa) {
 		this.loginPessoa = loginPessoa; 
 	}
+
 	public String getLoginPessoa() {
 		return loginPessoa;
 	}
@@ -29,6 +31,7 @@ public class Pessoa {
 	public void setSenhaPessoa (String senhaPessoa) {
 		this.senhaPessoa = senhaPessoa;
 	}
+	
 	public String getSenhaPessoa() {
 		return senhaPessoa;
 	}

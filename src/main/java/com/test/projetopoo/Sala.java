@@ -3,7 +3,7 @@ package main.java.com.test.projetopoo;
 public class Sala {
     private int nroSala;
     private int nroAssentos;
-    private boolean tipoTela; //2D = false ou 3D = true 
+    private boolean tipoTela; // 2D = false ou 3D = true 
     
     public Sala(int nroSala, int nroAssentos, boolean tipoTela){
         setNroSala(nroSala);
@@ -17,7 +17,7 @@ public class Sala {
     }
 
     public int getNroSala(){
-        return nroSala;
+        return this.nroSala;
     }
     
     //Get e Set: nroAssentos
@@ -26,7 +26,7 @@ public class Sala {
     }
     
     public int getNroAssentos(){
-        return nroAssentos;
+        return this.nroAssentos;
     }
    
     //Get e Set: tipoTela
@@ -35,14 +35,14 @@ public class Sala {
     }
 
     public boolean getTipoTela(){
-        return tipoTela;
+        return this.tipoTela;
     }
     
     //só para testar
-    public void exibirInformacoes() {
+    /* public void exibirInformacoes() {
         System.out.println("Numero da Sala: " + nroSala);
         System.out.println(tipoTela ? "Tipo da Tela: 2D" : "Tipo da Tela: 3D");
         System.out.println("Quantidade de Lugares: " + nroAssentos);
-    }
+    } */
     
 }

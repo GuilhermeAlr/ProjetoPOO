@@ -12,7 +12,7 @@ public class FilmeIndisponivel extends Filme {
         this.motivoExclusaoFilme = motivoExclusaoFilme;
     }
     
-    public String getMotivoExclusaoFilme(String motivoExclusaoFilme) {
+    public String getMotivoExclusaoFilme() {
         return this.motivoExclusaoFilme;
     }
 }
