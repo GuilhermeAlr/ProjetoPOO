@@ -29,7 +29,7 @@ public class Gerente extends Pessoa{
     }
     
     // metodos para adicionar, editar e remover filme
-    public boolean adicionaFilme(Filme filme) {
+    public boolean adicionarFilme(Filme filme) {
         
         for (Filme f : cinema.getListaFilmes()) {
             if (f.getNomeFilme().equalsIgnoreCase(filme.getNomeFilme())) {
@@ -89,7 +89,7 @@ public class Gerente extends Pessoa{
     }
 
 	// métodos para adicionar, editar e excluir promoções para uma sessão 
-    public boolean criarPromocao(Sessao sessao, double porcentagemPromocional) {
+    public boolean adicionarPromocao(Sessao sessao, double porcentagemPromocional) {
         if (!(sessao.getComPromocao())) {
             sessao.setComPromocao(true);
             sessao.setPorcentagemPromocional(porcentagemPromocional);
@@ -101,9 +101,9 @@ public class Gerente extends Pessoa{
         
     }
 
-    public boolean editarPromocao(Sessao sessao, double porcentagemPromocional) {
+    public boolean editarPromocao(Sessao sessao, double porcentagemPromocionalNova) {
     	if(sessao.getComPromocao()) {
-    		sessao.setPorcentagemPromocional(porcentagemPromocional);
+    		sessao.setPorcentagemPromocional(porcentagemPromocionalNova);
         	return true; 
     	}	
     	else {

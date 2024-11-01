@@ -1,17 +1,12 @@
 package main.java.com.test.projetopoo;
-import java.util.Scanner;
 import java.util.*;
 
 public class Main {
 
     public static void main(String[] args) {
         Cinema cinema = new Cinema("GIG CINEMAS");
-        Usuario[] usuarios = new Usuario[100]; // valor pre-definido
-        Gerente gerente = new Gerente("Nome do Admin", "admin", "123", cinema, usuarios);
-        
-        for (int i = 0; i < 100; i++) {
-            usuarios[i] = new Usuario();
-        }
+        ArrayList<Usuario> listaUsuarios = new ArrayList<>(); // valor pre-definido
+        Gerente gerente = new Gerente("Nome do Admin", "admin", "123", cinema, listaUsuarios);
         
         Scanner sc = new Scanner(System.in);
         boolean estaRodando = true;
@@ -24,10 +19,10 @@ public class Main {
                 
                 switch(opcao) {
                     case 1:
-                        imprimeMenuCadastro(usuarios, sc);
+                        imprimeMenuCadastro(listaUsuarios, sc);
                         break;
                     case 2:
-                        estaLogado = imprimeMenuLogin(usuarios, gerente, sc);
+                        estaLogado = imprimeMenuLogin(listaUsuarios, gerente, sc);
                         break;
                     case 3:
                         System.exit(0);
@@ -86,7 +81,7 @@ public class Main {
         return opcao;
     }
     
-    public static void imprimeMenuCadastro(Usuario[] usuarios, Scanner sc) {
+    public static void imprimeMenuCadastro(ArrayList<Usuario> listaUsuarios, Scanner sc) {
         String nomeUsuario;
         String loginUsuario;
         String senhaUsuario;
@@ -102,7 +97,7 @@ public class Main {
         System.out.printf("Digite sua idade: ");
         idadeUsuario = Integer.parseInt(sc.nextLine());
         
-        for (Usuario usuarioTemporario : usuarios) {
+        for (Usuario usuarioTemporario : listaUsuarios) {
             if (loginUsuario.matches(usuarioTemporario.getLoginPessoa())) {
                 System.out.println("Erro no Cadastro. Esse usuario ja esta cadastrado");
                 System.out.println();
@@ -115,11 +110,10 @@ public class Main {
         System.out.println("Senha: " + senhaUsuario);
         System.out.println();
         Usuario usuario = new Usuario(nomeUsuario, loginUsuario, senhaUsuario, idadeUsuario);
-        usuarios[Usuario.nroUsuarios] = usuario;
-     
+        listaUsuarios.add(usuario);
     }    
     
-    public static int imprimeMenuLogin(Usuario[] usuarios, Gerente gerente, Scanner sc) {
+    public static int imprimeMenuLogin(ArrayList<Usuario> listaUsuarios, Gerente gerente, Scanner sc) {
         String loginTemporario;
         String senhaTemporaria;
         
@@ -136,7 +130,7 @@ public class Main {
             return 0;
         }
         else {
-            for (Usuario usuarioTemporario : usuarios) {
+            for (Usuario usuarioTemporario : listaUsuarios) {
                 if (loginTemporario.matches(usuarioTemporario.getLoginPessoa()) && senhaTemporaria.matches(usuarioTemporario.getSenhaPessoa())) {
                     System.out.println("Sucesso no Login! Bem-vindo!");
                     System.out.println();
@@ -173,26 +167,37 @@ public class Main {
         int classificacaoFilme;
         String generoFilme;
         int duracaoFilme;
-        
-        System.out.println("CADASTRO DE FILME");
-        System.out.print("Digite o nome do filme: ");
+        String confirmacao;
+                
+        System.out.println("CADASTRAR FILME NO CATALOGO");
+        System.out.println("Entre com as informacoes do filme desejado: ");
+        System.out.print("- Nome: ");
         nomeFilme = sc.nextLine();
-        System.out.print("Digite a sinopse do filme: ");
+        System.out.print("- Sinopse: ");
         sinopseFilme = sc.nextLine();
-        System.out.print("Digite a classificacao indicativa do filme: ");
+        System.out.print("- Classificacao Indicativa: ");
         classificacaoFilme = Integer.parseInt(sc.nextLine());
-        System.out.print("Digite o genero do filme: ");
+        System.out.print("- Genero: ");
         generoFilme = sc.nextLine();
-        System.out.print("Digite a duracao do filme em minutos: ");
+        System.out.print("- Duracao (em minutos): ");
         duracaoFilme = Integer.parseInt(sc.nextLine());
-
-        if(gerente.adicionaFilme(nomeFilme, sinopseFilme, classificacaoFilme, generoFilme, duracaoFilme)) {
-            System.out.println("Filme adicionado com sucesso");
-            System.out.println();
-        }
-        else {
-            System.out.println("Erro no cadastro do filme");
-            System.out.println();
+        System.out.println();
+        
+        Filme filmeTemporario = new Filme(nomeFilme, sinopseFilme, classificacaoFilme, generoFilme, duracaoFilme);
+        
+        System.out.println(filmeTemporario.toString());
+        System.out.print("Confirmar adicao do filme ao catalogo (Sim ou Nao): ");
+        confirmacao = sc.nextLine();
+        
+        if (confirmacao.equalsIgnoreCase("Sim")) {
+            if(gerente.adicionarFilme(filmeTemporario)) {
+                System.out.println("Filme adicionado com sucesso");
+                System.out.println();
+            }
+            else {
+                System.out.println("Filme ja existe no catalogo");
+                System.out.println();
+            }
         }
         
     }
