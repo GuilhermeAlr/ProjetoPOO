@@ -11,7 +11,6 @@ public class Cinema {
 
     public Cinema(String nomeCinema) {
         setNomeCinema(nomeCinema);
-
         listaFilmes = new ArrayList<>();
         listaSalas = new ArrayList<>();
         listaSessoes = new ArrayList<>();
@@ -36,4 +35,5 @@ public class Cinema {
     public ArrayList<Sessao> getListaSessoes() {
         return this.listaSessoes;
     }
+
 }

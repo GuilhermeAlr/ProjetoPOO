@@ -7,11 +7,9 @@ public class Pessoa {
 	private String senhaPessoa;
 	
 	public Pessoa(String nome, String login, String senha) { 
-	
 		setNomePessoa(nome); 
 		setLoginPessoa(login); 
 		setSenhaPessoa(senha); 		
-		
 	}
 	
 	public void setNomePessoa (String nomePessoa) {

@@ -9,13 +9,11 @@ public class Filme {
     private int duracaoFilme;
 
     public Filme (String nomeFilme, String sinopseFilme, int classificacaoFilme, String generoFilme, int duracaoFilme) {
-        
         setNomeFilme(nomeFilme);
         setSinopseFilme(sinopseFilme);
         setClassificacaoFilme(classificacaoFilme);
         setGeneroFilme(generoFilme);
         setDuracaoFilme(duracaoFilme);
-
     }
 
     public void setNomeFilme(String nomeFilme) {
