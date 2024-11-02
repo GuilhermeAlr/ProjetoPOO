@@ -83,7 +83,7 @@ public class Sessao{
     }
     
     //Get e Set: comPromocao
-    public void setComPromocao(boolean comPromocao){
+    public void setComPromocao(Boolean comPromocao){
         this.comPromocao = comPromocao;
     }
     public boolean getComPromocao(){
