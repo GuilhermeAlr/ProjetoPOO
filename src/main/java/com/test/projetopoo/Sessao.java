@@ -28,7 +28,7 @@ public class Sessao{
 
     //Metodo reservar o lugar
     public void reservarAssento(int assentoReservado){
-        if (getDisponibilidadeAssento(assentoReservado)) {
+        if (!getDisponibilidadeAssento(assentoReservado)) {
             this.listaAssentos[assentoReservado] = true;
         }
     }
