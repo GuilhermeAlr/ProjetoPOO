@@ -8,13 +8,13 @@ public class Sessao{
     private LocalTime horarioSessao;
     private Boolean[] listaAssentos;
     private double precoSessao;
-    private boolean comPromocao;
+    private Boolean comPromocao;
     private double porcentagemPromocional;
     private Sala salaSessao;
     private Filme filmeSessao;
     
     //Construtor da classe Sessao
-    public Sessao(int codigoSessao, LocalDate diaSessao, LocalTime horarioSessao, Boolean[] listaAssentos, double precoSessao, boolean comPromocao, double porcentagemPromocional, Sala salaSessao, Filme filmeSessao){
+    public Sessao(int codigoSessao, LocalDate diaSessao, LocalTime horarioSessao, Boolean[] listaAssentos, double precoSessao, Boolean comPromocao, double porcentagemPromocional, Sala salaSessao, Filme filmeSessao){
         setCodigoSessao(codigoSessao);
         setDiaSessao(diaSessao);
         setHorarioSessao(horarioSessao);
@@ -33,7 +33,7 @@ public class Sessao{
         }
     }
 
-    public boolean getDisponibilidadeAssento(int nroAssento) {
+    public Boolean getDisponibilidadeAssento(int nroAssento) {
         return this.listaAssentos[nroAssento];
     }
 
