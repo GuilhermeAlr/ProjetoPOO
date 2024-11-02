@@ -63,10 +63,10 @@ public class Filme {
     @Override
     public String toString() {
         return "Filme: " + getNomeFilme() + 
-               "\n- Sinopse: " + getSinopseFilme() + 
-               "\n- Classificacao Indicativa: " + getClassificacaoFilme() +
-               "\n- Genero: " + getGeneroFilme() + 
-               "\n- Duracao: " + getDuracaoFilme();
+               " | Sinopse: " + getSinopseFilme() + 
+               " | Classificacao: " + getClassificacaoFilme() +
+               " | Genero: " + getGeneroFilme() + 
+               " | Duracao: " + getDuracaoFilme() + "\n";
     }
 
 }

@@ -31,60 +31,62 @@ public class Gerente extends Pessoa{
     // metodos para adicionar, editar e remover filme
     public boolean adicionarFilme(Filme filme) {
         
-        for (Filme f : cinema.getListaFilmes()) {
-            if (f.getNomeFilme().equalsIgnoreCase(filme.getNomeFilme())) {
-                return false;
-            }
+        if (buscarFilme(filme.getNomeFilme()) == null) { // se nao encontra o filme
+            cinema.getListaFilmes().add(filme);
+            return true;
         }
-        
-        cinema.getListaFilmes().add(filme);
-        return true;
+        else {
+            return false;
+        }
         
     }
 
-    public boolean editarFilme(String nomeFilme, String nomeNovo, String sinopseNova, int classificacaoNova, String generoNovo, int duracaoNova) {
+    public void editarFilme(Filme filme, String nomeNovo, String sinopseNova, int classificacaoNova, String generoNovo, int duracaoNova) {
         
-        for (Filme f : cinema.getListaFilmes()) {
-            if (f.getNomeFilme().equalsIgnoreCase(nomeFilme)) {
-                if (!nomeNovo.equals("")) {
-                    f.setNomeFilme(nomeNovo);
-                }
-                else if (!sinopseNova.equals("")) {
-                    f.setSinopseFilme(sinopseNova);
-                }
-                else if (classificacaoNova != -1) { 
-                    f.setClassificacaoFilme(classificacaoNova);
-                }
-                else if (!generoNovo.equals("")) {
-                    f.setGeneroFilme(generoNovo);
-                }
-                else if (duracaoNova != -1) {
-                    f.setDuracaoFilme(duracaoNova);
-                }
-                return true;
+        if (!(filme instanceof FilmeIndisponivel)) {
+            if (!nomeNovo.equals("")) {
+            filme.setNomeFilme(nomeNovo);
+            }
+            else if (!sinopseNova.equals("")) {
+                filme.setSinopseFilme(sinopseNova);
+            }
+            else if (classificacaoNova != -1) { 
+                filme.setClassificacaoFilme(classificacaoNova);
+            }
+            else if (!generoNovo.equals("")) {
+                filme.setGeneroFilme(generoNovo);
+            }
+            else if (duracaoNova != -1) {
+                filme.setDuracaoFilme(duracaoNova);
             }
         }
         
-        System.out.println("Filme não encontrado");
-        return false;
     }
     
-    public boolean removerFilme(String nomeFilme, String motivoExclusaoFilme) {
+    public boolean removerFilme(Filme filme, String motivoExclusaoFilme) {
         
+        if (!(filme instanceof FilmeIndisponivel)) {
+            int index = cinema.getListaFilmes().indexOf(filme);
+            FilmeIndisponivel filmeIndisponivel = new FilmeIndisponivel(filme.getNomeFilme(), filme.getSinopseFilme(), filme.getClassificacaoFilme(), filme.getGeneroFilme(), filme.getDuracaoFilme(), motivoExclusaoFilme);
+            cinema.getListaFilmes().set(index, filmeIndisponivel);
+
+            return true;
+        }
+        
+        else {
+            return false;
+        }
+        
+    }
+
+    public Filme buscarFilme(String nomeFilme) {
         for (Filme f : cinema.getListaFilmes()) {
-            if (f.getNomeFilme().equalsIgnoreCase(nomeFilme) && !(f instanceof FilmeIndisponivel)) {
-                int index = cinema.getListaFilmes().indexOf(f);
-               
-                FilmeIndisponivel filmeIndisponivel = new FilmeIndisponivel(f.getNomeFilme(), f.getSinopseFilme(), f.getClassificacaoFilme(), f.getGeneroFilme(), f.getDuracaoFilme(), motivoExclusaoFilme);
-                cinema.getListaFilmes().set(index, filmeIndisponivel);
-                
-                System.out.println("Filme " + nomeFilme + " removido com sucesso");
-                return true;
+            if (f.getNomeFilme().equalsIgnoreCase(nomeFilme)) {
+                return f;
             }
         }
         
-        System.out.println("Filme não encontrado");
-        return false;
+        return null;
         
     }
 

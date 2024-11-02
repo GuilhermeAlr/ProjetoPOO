@@ -11,14 +11,14 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         boolean estaRodando = true;
         int estaLogado = -1;
-        int opcao;
+        int opcao, opcaoMenuGerente;
         
         while(estaRodando) {
-            if(estaLogado == -1) {
+            if(estaLogado == -1) { // menu nao logado
                 opcao = imprimeMenuNaoLogado(cinema, sc);
                 
                 switch(opcao) {
-                    case 1:
+                    case 1: 
                         imprimeMenuCadastro(listaUsuarios, sc);
                         break;
                     case 2:
@@ -34,31 +34,70 @@ public class Main {
             }
             
             else {
-                if (estaLogado == 0) {
+                if (estaLogado == 0) { // menu gerente
                     opcao = imprimeMenuGerente(sc);
                     
                     switch(opcao) {
-                        case 1:
-                            imprimeMenuGerenteCadastroFilme(gerente, sc);
+                        case 1: // aba de filmes 
+                            opcaoMenuGerente = imprimeMenuGerenteFilme(sc);
+
+                            switch(opcaoMenuGerente) {
+                                case 1:
+                                    imprimeMenuGerenteCadastroFilme(gerente, sc);
+                                    break;
+                                case 2:
+                                    imprimeMenuGerenteEdicaoFilme(gerente, sc);
+                                    break;
+                                case 3:
+                                    imprimeMenuGerenteRemocaoFilme(gerente, sc);
+                                    break;
+                                case 4:
+                                    imprimeListaFilmes(cinema);
+                                    break;
+                                case 5:
+                                    break;
+                                default:
+                                    System.out.println("Opcao invalida. Tente novamente");
+                                    break;
+                            }
                             break;
-                        case 2:
-                            imprimeMenuGerenteEdicaoFilme(gerente, sc);
+                        case 2: // aba de sala
                             break;
-                        case 3:
-                            imprimeMenuGerenteRemocaoFilme(gerente, sc);
+                        case 3: // aba de sessao
                             break;
-                        case 4:
-                            imprimeListaFilmes(cinema);
+                        case 4: // aba de relatorios
+                            break;
+                        case 5: // sair
+                            estaLogado = -1;
                             break;
                         default:
                             System.out.println("Opcao invalida. Tente novamente");
                             break;
-
                     } 
                     
                 }
-                else if (estaLogado == 1) {
+                else if (estaLogado == 1) { // menu usuario
+                    opcao = imprimeMenuUsuario(sc);
                     
+                    switch(opcao) {
+                        case 1: // aba para comprar ingressos
+                            break;
+                        case 2: // aba para comprar assinatura
+                            break;
+                        case 3: // aba para ver perfil
+                            break;
+                        case 4: // sair 
+                            estaLogado = -1;
+                            break;
+                        default:
+                            System.out.println("Opcao invalida. Tente novamente");
+                            break;
+                }
+                }
+                else if (estaLogado == 1) {
+                    }
+                else if (estaLogado == 1) {
+
                 }
             }
         }
@@ -148,12 +187,30 @@ public class Main {
     public static int imprimeMenuGerente(Scanner sc) {
         int opcao;
         
-        System.out.println("MENU GERENTE");
-        System.out.println("(1) Cadastro de Filme");
-        System.out.println("(2) Edicao de Filme");
-        System.out.println("(3) Remocao de Filme");
-        System.out.println("(4) Lista de Filmes");
+        System.out.println("MENU DO GERENTE");
+        System.out.println("(1) Filme");
+        System.out.println("(2) Sala");
+        System.out.println("(3) Sessao");
+        System.out.println("(4) Exibir Relatorios");
+        System.out.println("(5) Sair");
+
+        System.out.print("Digite uma opcao: ");
+        opcao = Integer.parseInt(sc.nextLine());
+        System.out.println();
         
+        return opcao;
+    }
+
+    public static int imprimeMenuGerenteFilme(Scanner sc) {
+        int opcao;
+        
+        System.out.println("FILME");
+        System.out.println("(1) Cadastrar Filme");
+        System.out.println("(2) Editar Filme");
+        System.out.println("(3) Remover Filme");
+        System.out.println("(4) Listar Filmes");
+        System.out.println("(5) Sair");
+
         System.out.print("Digite uma opcao: ");
         opcao = Integer.parseInt(sc.nextLine());
         System.out.println();
@@ -205,71 +262,110 @@ public class Main {
     public static void imprimeMenuGerenteEdicaoFilme(Gerente gerente, Scanner sc) {
         int opcao;
         String nomeFilme;
-        
-        System.out.println("EDICAO DE FILME");
+        String confirmacao;
+
+        System.out.println("EDITAR FILME DO CATALOGO");
+        imprimeListaFilmes(gerente.getCinema());
         System.out.printf("Digite o nome do filme a ser alterado: ");
         nomeFilme = sc.nextLine();
         System.out.println();
         
-        System.out.println("Parametros que podem ser alterados: ");
-        System.out.println("(1) Nome");
-        System.out.println("(2) Sinopse");
-        System.out.println("(3) Classificacao Indicativa");
-        System.out.println("(4) Genero");
-        System.out.println("(5) Duracao");
-        System.out.print("Escolha um parametro: ");
-        opcao = Integer.parseInt(sc.nextLine());
-        System.out.println();
-        
-        switch(opcao) {
-            case 1: 
-                System.out.print("Digite o nome novo: ");
-                String nomeNovo = sc.nextLine();
-                
-                if (gerente.editarFilme(nomeFilme, nomeNovo, "", -1, "", -1))
-                    System.out.println("Nome do filme alterado de " + nomeFilme + " para " + nomeNovo);
-                else 
-                    System.out.println("Erro na edicao do filme");
-                break;
-            case 2:
-                System.out.printf("Digite a sinopse nova: ");
-                String sinopseNova = sc.nextLine();
-                
-                if (gerente.editarFilme(nomeFilme, "", sinopseNova, -1, "", -1))
-                    System.out.println("Sucesso na edicao");
-                else 
-                    System.out.println("Erro na edicao do filme");
-                break;
-            case 3:
-                System.out.printf("Digite a classificacao indicativa nova: ");
-                int classificacaoNova = Integer.parseInt(sc.nextLine());
-                
-                if (gerente.editarFilme(nomeFilme, "", "", classificacaoNova, "", -1))
-                    System.out.println("Sucesso na edicao");
-                else 
-                    System.out.println("Erro na edicao do filme");
-                break;
-            case 4:
-                System.out.printf("Digite o genero nova: ");
-                String generoNovo = sc.nextLine();
-                
-                if (gerente.editarFilme(nomeFilme, "", "", -1, generoNovo, -1))
-                    System.out.println("Sucesso na edicao");
-                else 
-                    System.out.println("Erro na edicao do filme");
-                break;
-            case 5: 
-                System.out.printf("Digite a duracao nova: ");
-                int duracaoNova = Integer.parseInt(sc.nextLine());
-                
-                if (gerente.editarFilme(nomeFilme, "", "", -1, "", duracaoNova))
-                    System.out.println("Sucesso na edicao");
-                else 
-                    System.out.println("Erro na edicao do filme");
-                break;
-            default:
-                System.out.println("Opcao invalida");
-                break;
+        Filme filme = gerente.buscarFilme(nomeFilme);
+
+        if (filme != null) {
+            System.out.println("Parametros que podem ser alterados: ");
+            System.out.println("(1) Nome");
+            System.out.println("(2) Sinopse");
+            System.out.println("(3) Classificacao Indicativa");
+            System.out.println("(4) Genero");
+            System.out.println("(5) Duracao");
+            System.out.print("Escolha um parametro: ");
+            opcao = Integer.parseInt(sc.nextLine());
+            System.out.println();
+
+            switch(opcao) {
+                case 1: 
+                    System.out.print("Digite o nome novo: ");
+                    String nomeNovo = sc.nextLine();
+                    System.out.println();
+
+                    System.out.println("- Nome Antigo: " + filme.getNomeFilme());
+                    System.out.println("- Nome Novo: " + nomeNovo);
+
+                    System.out.print("Confirmar edicao (Sim ou Nao): ");
+                    confirmacao = sc.nextLine();
+
+                    if (confirmacao.equalsIgnoreCase("Sim")) {
+                        gerente.editarFilme(filme, nomeNovo, "", -1, "", -1);
+                    }
+                    break;
+                case 2:
+                    System.out.printf("Digite a sinopse nova: ");
+                    String sinopseNova = sc.nextLine();
+                    System.out.println();
+
+                    System.out.println("Sinopse Antiga: " + filme.getSinopseFilme());
+                    System.out.println("Sinopse Nova: " + sinopseNova);
+
+                    System.out.print("Confirmar edicao (Sim ou Nao): ");
+                    confirmacao = sc.nextLine();
+
+                    if (confirmacao.equalsIgnoreCase("Sim")) {
+                        gerente.editarFilme(filme, "", sinopseNova, -1, "", -1);
+                    }
+                    break;
+                case 3:
+                    System.out.printf("Digite a classificacao indicativa nova: ");
+                    int classificacaoNova = Integer.parseInt(sc.nextLine());
+                    System.out.println();
+
+                    System.out.println("- Classificacao Indicativa Antiga: " + filme.getClassificacaoFilme());
+                    System.out.println("- Classificacao Indicativa Nova: " + classificacaoNova);
+
+                    System.out.print("Confirmar edicao (Sim ou Nao): ");
+                    confirmacao = sc.nextLine();
+
+                    if (confirmacao.equalsIgnoreCase("Sim")) {
+                        gerente.editarFilme(filme, "", "", classificacaoNova, "", -1);
+                    }
+                    break;
+                case 4:
+                    System.out.printf("Digite o genero novo: ");
+                    String generoNovo = sc.nextLine();
+                    System.out.println();
+
+                    System.out.println("- Genero Antigo: " + filme.getGeneroFilme());
+                    System.out.println("- Genero Novo: " + generoNovo);
+
+                    System.out.print("Confirmar edicao (Sim ou Nao): ");
+                    confirmacao = sc.nextLine();
+
+                    if (confirmacao.equalsIgnoreCase("Sim")) {
+                        gerente.editarFilme(filme, "", "", -1, generoNovo, -1);
+                    }
+                    break;
+                case 5:
+                    System.out.printf("Digite a duracao nova: ");
+                    int duracaoNova = Integer.parseInt(sc.nextLine());
+                    System.out.println();
+
+                    System.out.println("- Duracao Antiga: " + filme.getDuracaoFilme());
+                    System.out.println("- Genero Novo: " + duracaoNova);
+                    
+                    System.out.print("Confirmar edicao (Sim ou Nao): ");
+                    confirmacao = sc.nextLine();
+
+                    if (confirmacao.equalsIgnoreCase("Sim")) {
+                        gerente.editarFilme(filme, "", "", -1, "", duracaoNova);
+                    }
+                    break;
+                default:
+                    System.out.println("Opcao invalida");
+                    break;
+            }
+        }
+        else {
+            System.out.println("Filme nao encontrado");
         }
         
         System.out.println();
@@ -279,33 +375,60 @@ public class Main {
     public static void imprimeMenuGerenteRemocaoFilme(Gerente gerente, Scanner sc) {
         String nomeFilme;
         String motivoExclusaoFilme;
-        
-        System.out.println("REMOCAO DE FILME");
+        String confirmacao;
+
+        System.out.println("REMOCAO DE FILME DO CATALOGO");
         System.out.printf("Digite o nome do filme a ser removido: ");
         nomeFilme = sc.nextLine();
-        System.out.printf("Digite o motivo de exclusao do filme: ");
-        motivoExclusaoFilme = sc.nextLine();
+
+        Filme filme = gerente.buscarFilme(nomeFilme);
         
-        if (gerente.removerFilme(nomeFilme, motivoExclusaoFilme)) {
-            System.out.println("Remocao com sucesso");
+        if (filme != null) {
+            System.out.printf("Digite o motivo de exclusao do filme: ");
+            motivoExclusaoFilme = sc.nextLine();
+
+            System.out.print("Confirmar remocao do filme (Sim ou Nao): ");
+            confirmacao = sc.nextLine();
+
+            if (confirmacao.equalsIgnoreCase("Sim")) {
+                if (gerente.removerFilme(filme, motivoExclusaoFilme)) {
+                    System.out.println("Filme removido com sucesso");
+                }
+                else {
+                    System.out.println("Filme ja foi removido");
+                }
+            }
         }
         else {
-            System.out.println("Erro na remocao");
+            System.out.println("Filme nao encontrado");
         }
         
         System.out.println();
     }
     
     public static void imprimeListaFilmes(Cinema cinema) {
-        
-        System.out.println("Lista de Filmes!");
-        
-        for (Filme filme : cinema.getListaFilmes()) {
-            if (!(filme instanceof FilmeIndisponivel)) {
-                System.out.println(filme.toString());
-                System.out.println();
+                
+        for (Filme f : cinema.getListaFilmes()) {
+            if (!(f instanceof FilmeIndisponivel)) {
+                System.out.println(f.toString());
             }
         }
     }
     
+    public static int imprimeMenuUsuario(Scanner sc) {
+        int opcao;
+        
+        System.out.println("MENU DO USUARIO");
+        System.out.println("(1) Comprar Ingresso");
+        System.out.println("(2) Comprar Assinatura");
+        System.out.println("(3) Ver perfil");
+        System.out.println("(4) Sair");
+
+        System.out.print("Digite uma opcao: ");
+        opcao = Integer.parseInt(sc.nextLine());
+        System.out.println();
+        
+        return opcao;
+    }
+
 }
