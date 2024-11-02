@@ -37,7 +37,8 @@ public class Usuario extends Pessoa {
 	public double getPrecoIngresso(Sessao sessao) {
 		if (this.getIdadeUsuario() < 18) {
 			return sessao.getPrecoSessao() * 0.5;
-		} else {
+		} 
+		else {
 			return sessao.getPrecoSessao();
 		}
 	}
@@ -48,30 +49,33 @@ public class Usuario extends Pessoa {
 			Ingresso ingresso = new Ingresso(sessao, nroAssento, getPrecoIngresso(sessao));
 			ingressosComprados.add(ingresso);
 			return true;
-		} else {
+		} 
+		else {
 			return false;
 		}
 	}
 
 	// Assinatura do usuário
-	public Usuario comprarAssinatura(boolean assinaturaUsuario, Usuario usuario) {
-		if (assinaturaUsuario && !(this instanceof UsuarioAssinante)) {
+	public Usuario comprarAssinatura() {
+		if (!(this instanceof UsuarioAssinante)) {
 			ArrayList<Ingresso> ingressosCompradosAuxiliar = this.ingressosComprados;
-			usuario = new UsuarioAssinante(this.getNomePessoa(), this.getLoginPessoa(), this.getSenhaPessoa(), this.getIdadeUsuario());
+			UsuarioAssinante novoUsuario = new UsuarioAssinante(this.getNomePessoa(), this.getLoginPessoa(), this.getSenhaPessoa(), this.getIdadeUsuario());
 
-			this.ingressosComprados = new ArrayList<>();
-			usuario.setIngressosComprados(ingressosCompradosAuxiliar);
+			novoUsuario.ingressosComprados = new ArrayList<>();
+			novoUsuario.setIngressosComprados(ingressosCompradosAuxiliar);
 
-			return usuario;
-		} else {
+			return novoUsuario;
+		} 
+		else {
 			return this;
 		}
 	}
 
-	public boolean getAssinaturaUsuario(Usuario usuario) {
-		if (usuario instanceof UsuarioAssinante) {
+	public boolean getAssinaturaUsuario() {
+		if (this instanceof UsuarioAssinante) {
 			return true;
-		} else {
+		} 
+		else {
 			return false;
 		}
 	}
