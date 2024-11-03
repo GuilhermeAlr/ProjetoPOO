@@ -1,4 +1,4 @@
-package projetopoo;
+package main.java.com.test.projetopoo;
 
 public class Sala {
     private int nroSala;
