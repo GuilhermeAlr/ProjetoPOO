@@ -464,14 +464,16 @@ public class Main {
 
             if (confirmacao.equalsIgnoreCase("Sim")) {
                 int index = gerente.getListaUsuarios().indexOf(usuario); 
-                gerente.getListaUsuarios().set(index, usuario.comprarAssinatura()); // TESTAR ISSO
+                Usuario usuarioNovo = usuario.comprarAssinatura();
+                gerente.getListaUsuarios().set(index, usuarioNovo); 
 
                 System.out.println("Assinatura comprada com sucesso!");
+                System.out.println();
+                return usuarioNovo;
             }
             
         }
 
-        System.out.println();
         return usuario;
     }
 

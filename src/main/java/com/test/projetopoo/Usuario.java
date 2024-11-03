@@ -60,8 +60,6 @@ public class Usuario extends Pessoa {
 		if (!(this instanceof UsuarioAssinante)) {
 			ArrayList<Ingresso> ingressosCompradosAuxiliar = this.ingressosComprados;
 			UsuarioAssinante novoUsuario = new UsuarioAssinante(this.getNomePessoa(), this.getLoginPessoa(), this.getSenhaPessoa(), this.getIdadeUsuario());
-
-			novoUsuario.ingressosComprados = new ArrayList<>();
 			novoUsuario.setIngressosComprados(ingressosCompradosAuxiliar);
 
 			return novoUsuario;
