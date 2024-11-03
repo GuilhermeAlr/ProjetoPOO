@@ -1,4 +1,4 @@
-package projetopoo;
+package main.java.com.test.projetopoo;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
