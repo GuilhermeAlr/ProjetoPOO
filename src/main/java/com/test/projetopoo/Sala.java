@@ -2,68 +2,50 @@ package projetopoo;
 
 public class Sala {
     private int nroSala;
-    private int quantAssentos;
-    private boolean tipoTela; //2D = false ou 3D = true 
-    private boolean[] listaAssentos;
+    private int nroAssentos;
+    private boolean tipoTela; // 2D = false ou 3D = true 
     
-    public Sala(int nroSala, int quantAssentos, boolean tipoTela){
+    public Sala(int nroSala, int nroAssentos, boolean tipoTela){
         setNroSala(nroSala);
-        setQuantAssentos(quantAssentos);
+        setNroAssentos(nroAssentos);
         setTipoTela(tipoTela);
-        setListaAssentos(quantAssentos);
     }
     
     //Get e Set: nroSala
     public void setNroSala(int nroSala){
         this.nroSala = nroSala;
     }
+
     public int getNroSala(){
-        return nroSala;
+        return this.nroSala;
     }
     
     //Get e Set: nroAssentos
-    public void setQuantAssentos(int quantAssentos){
-        this.quantAssentos = quantAssentos;
+    public void setNroAssentos(int nroAssentos){
+        this.nroAssentos = nroAssentos;
     }
-    public int getQuantAssentos(){
-        return quantAssentos;
+    
+    public int getNroAssentos(){
+        return this.nroAssentos;
     }
    
     //Get e Set: tipoTela
     public void setTipoTela(boolean tipoTela){
         this.tipoTela = tipoTela;
     }
+
     public boolean getTipoTela(){
-        return tipoTela;
+        return this.tipoTela;
     }
     
-    //Get e Set: listaAssentos
-    public void setListaAssentos(int quantAssentos){
-        this.listaAssentos = new boolean[quantAssentos];
-    }
-    public boolean[] getListaAssentos(){
-        return listaAssentos;
+    public String mostrarTipoTela(){
+         return tipoTela ? "3D" : "2D";
     }
     
-    //Metodo reservar o lugar
-    public void reservarLugar(boolean[] listaAssentos, int lugarReservado){
-        this.listaAssentos[lugarReservado] = true;
+    @Override
+    public String toString() {
+        return "Sala: " + getNroSala() + 
+               "\n- Numero de Assento: " + getNroAssentos() + 
+               "\n- Tipo de Tela: " + mostrarTipoTela();
     }
-    
-    //só para testar
-    public void exibirInformacoes() {
-        System.out.println("Numero da Sala: " + nroSala);
-        System.out.println(tipoTela ? "Tipo da Tela: 2D" : "Tipo da Tela: 3D");
-        System.out.println("Quantidade de Lugares: " + quantAssentos);
-        System.out.print("Status dos Lugares: ");
-        for(boolean lugar : listaAssentos) {
-            System.out.print(lugar ? "[Ocupado] " : "[Livre] ");
-        }
-        reservarLugar(listaAssentos, 5);
-        System.out.println();
-        for(boolean lugar : listaAssentos) {
-            System.out.print(lugar ? "[Ocupado] " : "[Livre] ");
-        }
-    }
-    
 }
