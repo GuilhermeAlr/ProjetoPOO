@@ -37,10 +37,10 @@ public class Ingresso {
     
     @Override
     public String toString() { // podemos mudar para adequar layout da main
-        return "Filme: " + sessao.getFilmeSessao().getNomeFilme() + 
-               " - Data: " + sessao.getDiaSessao() + " " + sessao.getHorarioSessao() + 
-               " - Sala: " + sessao.getSalaSessao().getNroSala() + 
-               " - Poltrona: " + getNroAssento() + 
-               " - Preço: " + getPrecoIngresso();
+        return "- Filme: " + sessao.getFilmeSessao().getNomeFilme() + 
+               " | Data: " + sessao.getDiaSessao() + " " + sessao.getHorarioSessao() + 
+               " | Sala: " + sessao.getSalaSessao().getNroSala() + 
+               " | Poltrona: " + getNroAssento() + 
+               " | Preço: " + getPrecoIngresso();
     }
 }

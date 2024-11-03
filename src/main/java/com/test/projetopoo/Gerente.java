@@ -6,7 +6,7 @@ public class Gerente extends Pessoa{
     private Cinema cinema;
     private ArrayList<Usuario> listaUsuarios = new ArrayList<>();
 
-    public Gerente(String nomeGerente, String loginGerente, String senhaGerente, Cinema cinema, ArrayList<Usuario> listaUsuarios) {
+    public Gerente(String nomeGerente, String loginGerente, String senhaGerente, Cinema cinema) {
         super(nomeGerente, loginGerente, senhaGerente);
         setCinema(cinema);
         setListaUsuarios(listaUsuarios);

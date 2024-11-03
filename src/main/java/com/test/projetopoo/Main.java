@@ -5,24 +5,24 @@ public class Main {
 
     public static void main(String[] args) {
         Cinema cinema = new Cinema("GIG CINEMAS");
-        ArrayList<Usuario> listaUsuarios = new ArrayList<>(); // valor pre-definido
-        Gerente gerente = new Gerente("Nome do Admin", "admin", "123", cinema, listaUsuarios);
+
+        Gerente gerente = new Gerente("Nome do Admin", "admin", "123", cinema);
         
         Scanner sc = new Scanner(System.in);
         boolean estaRodando = true;
-        int estaLogado = -1;
+        Pessoa pessoa = null;
         int opcao, opcaoMenuGerente;
         
         while(estaRodando) {
-            if(estaLogado == -1) { // menu nao logado
+            if(pessoa == null) { // menu nao logado
                 opcao = imprimeMenuNaoLogado(cinema, sc);
                 
                 switch(opcao) {
                     case 1: 
-                        imprimeMenuCadastro(listaUsuarios, sc);
+                        imprimeMenuCadastro(gerente.getListaUsuarios(), gerente, sc);
                         break;
                     case 2:
-                        estaLogado = imprimeMenuLogin(listaUsuarios, gerente, sc);
+                        pessoa = imprimeMenuLogin(gerente.getListaUsuarios(), gerente, sc);
                         break;
                     case 3:
                         System.exit(0);
@@ -34,7 +34,7 @@ public class Main {
             }
             
             else {
-                if (estaLogado == 0) { // menu gerente
+                if (pessoa instanceof Gerente) { // menu gerente
                     opcao = imprimeMenuGerente(sc);
                     
                     switch(opcao) {
@@ -53,6 +53,7 @@ public class Main {
                                     break;
                                 case 4:
                                     imprimeListaFilmes(cinema);
+                                    sc.nextLine();
                                     break;
                                 case 5:
                                     break;
@@ -65,10 +66,12 @@ public class Main {
                             break;
                         case 3: // aba de sessao
                             break;
-                        case 4: // aba de relatorios
+                        case 4: // aba de promocao
                             break;
-                        case 5: // sair
-                            estaLogado = -1;
+                        case 5: // aba de relatorios
+                            break;
+                        case 6: // sair
+                            pessoa = null;
                             break;
                         default:
                             System.out.println("Opcao invalida. Tente novamente");
@@ -76,28 +79,26 @@ public class Main {
                     } 
                     
                 }
-                else if (estaLogado == 1) { // menu usuario
+                else if (pessoa instanceof Usuario) { // menu usuario
                     opcao = imprimeMenuUsuario(sc);
                     
                     switch(opcao) {
                         case 1: // aba para comprar ingressos
                             break;
                         case 2: // aba para comprar assinatura
+                            pessoa = imprimeMenuUsuarioComprarAssinatura((Usuario)pessoa, gerente, sc);
                             break;
                         case 3: // aba para ver perfil
+                            imprimeMenuUsuarioPerfil((Usuario)pessoa); // VERIFICAR ISSO
+                            sc.nextLine();
                             break;
                         case 4: // sair 
-                            estaLogado = -1;
+                            pessoa = null;
                             break;
                         default:
                             System.out.println("Opcao invalida. Tente novamente");
                             break;
-                }
-                }
-                else if (estaLogado == 1) {
-                    }
-                else if (estaLogado == 1) {
-
+                    }    
                 }
             }
         }
@@ -116,11 +117,12 @@ public class Main {
         System.out.println("(3) Sair");
         System.out.printf("Entre uma opcao: ");
         opcao = Integer.parseInt(sc.nextLine());
-        
+        System.out.println();
+
         return opcao;
     }
     
-    public static void imprimeMenuCadastro(ArrayList<Usuario> listaUsuarios, Scanner sc) {
+    public static void imprimeMenuCadastro(ArrayList<Usuario> listaUsuarios, Gerente gerente, Scanner sc) {
         String nomeUsuario;
         String loginUsuario;
         String senhaUsuario;
@@ -135,24 +137,37 @@ public class Main {
         senhaUsuario = sc.nextLine();
         System.out.printf("Digite sua idade: ");
         idadeUsuario = Integer.parseInt(sc.nextLine());
-        
-        for (Usuario usuarioTemporario : listaUsuarios) {
-            if (loginUsuario.matches(usuarioTemporario.getLoginPessoa())) {
-                System.out.println("Erro no Cadastro. Esse usuario ja esta cadastrado");
-                System.out.println();
-                break;
-            }
+        System.out.println();
+
+        if (buscarUsuario(loginUsuario, listaUsuarios) == null) {
+            Usuario usuario = new Usuario(nomeUsuario, loginUsuario, senhaUsuario, idadeUsuario);
+            listaUsuarios.add(usuario);
+
+            System.out.println("Usuario cadastrado com sucesso!");
+            System.out.println("- Nome: " + nomeUsuario);
+            System.out.println("- Idade: " + idadeUsuario);
+            System.out.println("- Login: " + loginUsuario);
+            System.out.println("- Senha: " + senhaUsuario);
+        }
+        else {
+            System.out.println("Erro no cadastro. Usuario ja esta cadastrado");            
         }
         
-        System.out.println("Usuario cadastrado com sucesso!");
-        System.out.println("Login: " + loginUsuario);
-        System.out.println("Senha: " + senhaUsuario);
         System.out.println();
-        Usuario usuario = new Usuario(nomeUsuario, loginUsuario, senhaUsuario, idadeUsuario);
-        listaUsuarios.add(usuario);
+
     }    
+
+    public static Usuario buscarUsuario(String loginUsuario, ArrayList<Usuario> listaUsuarios) {
+        for (Usuario usuarioTemporario : listaUsuarios) {
+            if (loginUsuario.equals(usuarioTemporario.getLoginPessoa())) {
+                return usuarioTemporario;
+            }
+        }
+
+        return null;
+    }
     
-    public static int imprimeMenuLogin(ArrayList<Usuario> listaUsuarios, Gerente gerente, Scanner sc) {
+    public static Pessoa imprimeMenuLogin(ArrayList<Usuario> listaUsuarios, Gerente gerente, Scanner sc) {
         String loginTemporario;
         String senhaTemporaria;
         
@@ -161,26 +176,25 @@ public class Main {
         loginTemporario = sc.nextLine();
         System.out.printf("Digite uma senha: ");
         senhaTemporaria = sc.nextLine();
-                
-        if (loginTemporario.matches(gerente.getLoginPessoa()) && senhaTemporaria.matches(gerente.getSenhaPessoa())) {
-            System.out.println("Sucesso no Login!");
-            System.out.println();
-            
-            return 0;
+        System.out.println();
+
+        if (loginTemporario.equals(gerente.getLoginPessoa()) && senhaTemporaria.equals(gerente.getSenhaPessoa())) {
+            System.out.println("Sucesso no Login! Bem-vindo!");   
+            System.out.println();         
+            return gerente;
         }
-        else {
-            for (Usuario usuarioTemporario : listaUsuarios) {
-                if (loginTemporario.matches(usuarioTemporario.getLoginPessoa()) && senhaTemporaria.matches(usuarioTemporario.getSenhaPessoa())) {
-                    System.out.println("Sucesso no Login! Bem-vindo!");
-                    System.out.println();
-                    return 1;
-                }
+
+        for (Usuario usuarioTemporario : listaUsuarios) {
+            if (loginTemporario.equals(usuarioTemporario.getLoginPessoa()) && senhaTemporaria.equals(usuarioTemporario.getSenhaPessoa())) {
+                System.out.println("Sucesso no Login! Bem-vindo!");
+                System.out.println();
+                return usuarioTemporario;
             }
         }   
         
         System.out.println("Erro no login. Usuario ou senha incorretos");
         System.out.println();
-        return -1;
+        return null;
 
     }
     
@@ -191,8 +205,9 @@ public class Main {
         System.out.println("(1) Filme");
         System.out.println("(2) Sala");
         System.out.println("(3) Sessao");
-        System.out.println("(4) Exibir Relatorios");
-        System.out.println("(5) Sair");
+        System.out.println("(4) Promocao");
+        System.out.println("(5) Exibir Relatorios");
+        System.out.println("(6) Sair");
 
         System.out.print("Digite uma opcao: ");
         opcao = Integer.parseInt(sc.nextLine());
@@ -378,6 +393,7 @@ public class Main {
         String confirmacao;
 
         System.out.println("REMOCAO DE FILME DO CATALOGO");
+        imprimeListaFilmes(gerente.getCinema());
         System.out.printf("Digite o nome do filme a ser removido: ");
         nomeFilme = sc.nextLine();
 
@@ -429,6 +445,52 @@ public class Main {
         System.out.println();
         
         return opcao;
+    }
+
+    public static Usuario imprimeMenuUsuarioComprarAssinatura(Usuario usuario, Gerente gerente, Scanner sc) { // VERIFICAR ISSO
+        System.out.println("ASSINATURA");
+
+        if (usuario instanceof UsuarioAssinante) {
+            System.out.println("Voce ja possui uma assinatura");
+            sc.nextLine();
+        }
+        
+        else {
+            String confirmacao;
+
+            System.out.println("O Cinema GIG oferece 30% de desconto para assinantes!");
+            System.out.print("Deseja comprar uma assinatura (Sim ou Nao)? ");
+            confirmacao = sc.nextLine();
+
+            if (confirmacao.equalsIgnoreCase("Sim")) {
+                int index = gerente.getListaUsuarios().indexOf(usuario); 
+                gerente.getListaUsuarios().set(index, usuario.comprarAssinatura()); // TESTAR ISSO
+
+                System.out.println("Assinatura comprada com sucesso!");
+            }
+            
+        }
+
+        System.out.println();
+        return usuario;
+    }
+
+    public static void imprimeMenuUsuarioPerfil(Usuario usuario) {
+        System.out.println("PERFIL");
+        System.out.println("Nome: " + usuario.getNomePessoa());
+        System.out.println("Idade: " + usuario.getIdadeUsuario());
+        System.out.println("Usuario: " + usuario.getLoginPessoa());
+        System.out.println("Senha: " + usuario.getSenhaPessoa());
+        System.out.println("Assinatura: " + ((usuario instanceof UsuarioAssinante) ? "Sim" : "Nao"));
+        
+        System.out.println("Ingressos comprados: " + usuario.getIngressosComprados().size());
+
+        if (usuario.getIngressosComprados().size() > 0) {
+            for (Ingresso ingressoComprado : usuario.getIngressosComprados()) {
+                System.out.println(ingressoComprado.toString());
+            }
+        }
+
     }
 
 }
