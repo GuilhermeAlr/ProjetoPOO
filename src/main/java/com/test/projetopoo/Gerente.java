@@ -30,7 +30,6 @@ public class Gerente extends Pessoa{
     
     // metodos para adicionar, editar e remover filme
     public boolean adicionarFilme(Filme filme) {
-        
         if (buscarFilme(filme.getNomeFilme()) == null) { // se nao encontra o filme
             cinema.getListaFilmes().add(filme);
             return true;
@@ -41,11 +40,15 @@ public class Gerente extends Pessoa{
         
     }
 
-    public void editarFilme(Filme filme, String nomeNovo, String sinopseNova, int classificacaoNova, String generoNovo, int duracaoNova) {
-        
+    public boolean editarFilme(Filme filme, String nomeNovo, String sinopseNova, int classificacaoNova, String generoNovo, int duracaoNova) {
         if (!(filme instanceof FilmeIndisponivel)) {
             if (!nomeNovo.equals("")) {
-            filme.setNomeFilme(nomeNovo);
+                if (buscarFilme(nomeNovo) == null) { // checa se a pessoa esta modificando o nome de um filme para um que nao existe
+                    filme.setNomeFilme(nomeNovo); 
+                }
+                else {
+                    return false;
+                }
             }
             else if (!sinopseNova.equals("")) {
                 filme.setSinopseFilme(sinopseNova);
@@ -59,8 +62,10 @@ public class Gerente extends Pessoa{
             else if (duracaoNova != -1) {
                 filme.setDuracaoFilme(duracaoNova);
             }
+
         }
         
+        return true;
     }
     
     public boolean removerFilme(Filme filme, String motivoExclusaoFilme) {
@@ -83,6 +88,60 @@ public class Gerente extends Pessoa{
         for (Filme f : cinema.getListaFilmes()) {
             if (f.getNomeFilme().equalsIgnoreCase(nomeFilme)) {
                 return f;
+            }
+        }
+        
+        return null;
+        
+    }
+
+    // métodos para adicionar, editar e remover sala
+    public boolean adicionarSala(Sala sala) {
+        if (buscarSala(sala.getNroSala()) == null) {
+            cinema.getListaSalas().add(sala);
+            return true;
+        }
+        else {
+            return false;
+        }
+        
+    }
+    
+    public boolean editarSala(Sala s, int nroSalaNovo, int nroAssentoNovo, Boolean tipoTelaNovo){
+        if (nroSalaNovo != 0) {
+            if (buscarSala(nroSalaNovo) == null) { // checa se a pessoa esta modificando o numero de uma sala para um que nao existe
+                s.setNroSala(nroSalaNovo);
+            }
+            else {
+                return false;
+            }
+        }
+        else if (nroAssentoNovo != -1) {
+            s.setNroAssentos(nroAssentoNovo);
+        }
+        else if (tipoTelaNovo != null) { 
+            s.setTipoTela(tipoTelaNovo);
+        }
+        return true;    
+        
+    }
+    
+    public boolean removerSala(int nroSala) {
+        Sala s = buscarSala(nroSala);
+
+        if (s != null) {
+            cinema.getListaSalas().remove(s);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public Sala buscarSala(int nroSala) {
+        for (Sala s : cinema.getListaSalas()) {
+            if (s.getNroSala() == nroSala) {
+                return s;
             }
         }
         

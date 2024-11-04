@@ -509,11 +509,12 @@ public class Main {
         nroAssentos = Integer.parseInt(sc.nextLine());
         System.out.print("- Tipo da Tela (2D ou 3D): ");
         tipoTelaString = sc.nextLine();
+        System.out.println();
 
         if (tipoTelaString.equalsIgnoreCase("2D")) {
             tipoTela = false;
         }
-        if (tipoTelaString.equalsIgnoreCase("3D")) {
+        else if (tipoTelaString.equalsIgnoreCase("3D")) {
             tipoTela = true;
         }
         else {
@@ -576,7 +577,7 @@ public class Main {
                     confirmacao = sc.nextLine();
 
                     if (confirmacao.equalsIgnoreCase("Sim")) {
-                        // gerente.editarSala(nroSala, nroSalaNovo, -1, null);
+                        gerente.editarSala(sala,nroSalaNovo, -1, null);
                     }
                     break;
                 case 2:
@@ -591,7 +592,7 @@ public class Main {
                     confirmacao = sc.nextLine();
 
                     if (confirmacao.equalsIgnoreCase("Sim")) {
-                        // gerente.editarSala(nroSala, -1, nroAssentosNovo, null);
+                        gerente.editarSala(sala, 0, nroAssentosNovo, null);
                     }
                     break;
                 case 3:
@@ -603,7 +604,7 @@ public class Main {
                     if (tipoTelaString.equalsIgnoreCase("2D")) {
                         tipoTelaNovo = false;
                     }
-                    if (tipoTelaString.equalsIgnoreCase("3D")) {
+                    else if (tipoTelaString.equalsIgnoreCase("3D")) {
                         tipoTelaNovo = true;
                     }
                     else {
@@ -619,7 +620,7 @@ public class Main {
                     confirmacao = sc.nextLine();
 
                     if (confirmacao.equalsIgnoreCase("Sim")) {
-                        // gerente.editarSala(nroSala, -1, -1, tipoTelaNovo);
+                        gerente.editarSala(sala, 0, -1, tipoTelaNovo);
                     }
                     break;
                 default:
@@ -627,11 +628,13 @@ public class Main {
                     break;
             }    
         }
+
+        System.out.println();
+
     }
 
     public static void imprimeMenuGerenteRemocaoSala(Gerente gerente, Scanner sc) {
         int nroSala;
-        String motivoExclusaoSala;
         String confirmacao;
 
         System.out.println("REMOCAO DE SALA");
@@ -642,14 +645,11 @@ public class Main {
         Sala sala = gerente.buscarSala(nroSala);
         
         if (sala != null) { // VERIFICAR SE TEM SESSOES CADASTRADAS
-            System.out.printf("Digite o motivo de exclusao da sala: ");
-            motivoExclusaoSala = sc.nextLine();
-
             System.out.print("Confirmar remocao da sala (Sim ou Nao): ");
             confirmacao = sc.nextLine();
 
             if (confirmacao.equalsIgnoreCase("Sim")) {
-                if (gerente.removerSala(sala, motivoExclusaoSala)) {
+                if (gerente.removerSala(nroSala)) {
                     System.out.println("Sala removida com sucesso");
                 }
                 else {
@@ -666,9 +666,7 @@ public class Main {
     
     public static void imprimeListaSalas(Cinema cinema) {
         for (Sala s : cinema.getListaSalas()) {
-            if (!(s instanceof SalaIndisponivel)) {
-                System.out.println(s.toString());
-            }
+            System.out.println(s.toString());
         }
     }
 
