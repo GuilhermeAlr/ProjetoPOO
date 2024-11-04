@@ -726,7 +726,7 @@ public class Main {
     }
 
     public static void imprimeMenuUsuarioComprarIngresso() {
-        
+
     }
 
     public static Usuario imprimeMenuUsuarioComprarAssinatura(Usuario usuario, Gerente gerente, Scanner sc) { // VERIFICAR ISSO
@@ -746,12 +746,11 @@ public class Main {
 
             if (confirmacao.equalsIgnoreCase("Sim")) {
                 int index = gerente.getListaUsuarios().indexOf(usuario); 
-                Usuario usuarioNovo = usuario.comprarAssinatura();
-                gerente.getListaUsuarios().set(index, usuarioNovo); 
+                usuario = usuario.comprarAssinatura();
+                gerente.getListaUsuarios().set(index, usuario); 
 
                 System.out.println("Assinatura comprada com sucesso!");
                 System.out.println();
-                return usuarioNovo;
             }
             
         }
