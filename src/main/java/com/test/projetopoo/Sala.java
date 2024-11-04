@@ -38,11 +38,11 @@ public class Sala {
         return this.tipoTela;
     }
     
-    //só para testar
-    /* public void exibirInformacoes() {
-        System.out.println("Numero da Sala: " + nroSala);
-        System.out.println(tipoTela ? "Tipo da Tela: 2D" : "Tipo da Tela: 3D");
-        System.out.println("Quantidade de Lugares: " + nroAssentos);
-    } */
+    @Override
+    public String toString() {
+        return "Sala: " + getNroSala() + 
+               "\n- Numero de Assento: " + getNroAssentos() + 
+               "\n- Tipo de Tela: " + (this.tipoTela ? "3D" : "2D");
+    }
     
 }

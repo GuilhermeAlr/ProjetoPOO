@@ -1,4 +1,6 @@
 package main.java.com.test.projetopoo;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 
 public class Main {
@@ -63,8 +65,52 @@ public class Main {
                             }
                             break;
                         case 2: // aba de sala
+                            opcaoMenuGerente = imprimeMenuGerenteSala(sc);
+
+                            switch(opcaoMenuGerente) {
+                                case 1:
+                                    imprimeMenuGerenteCadastroSala(gerente, sc);
+                                    break;
+                                case 2:
+                                    imprimeMenuGerenteEdicaoSala(gerente, sc);
+                                    break;
+                                case 3:
+                                    imprimeMenuGerenteRemocaoSala(gerente, sc);
+                                    break;
+                                case 4:
+                                    imprimeListaSalas(cinema);
+                                    sc.nextLine();
+                                    break;
+                                case 5:
+                                    break;
+                                default:
+                                    System.out.println("Opcao invalida. Tente novamente");
+                                    break;
+                            }
                             break;
                         case 3: // aba de sessao
+                            opcaoMenuGerente = imprimeMenuGerenteSessao(sc);
+
+                            switch(opcaoMenuGerente) {
+                                case 1:
+                                    imprimeMenuGerenteCadastroSessao();
+                                    break;
+                                case 2:
+                                    imprimeMenuGerenteEdicaoSessao();
+                                    break;
+                                case 3:
+                                    imprimeMenuGerenteRemocaoSessao();
+                                    break;
+                                case 4:
+                                    imprimeListaSessoes(cinema);
+                                    sc.nextLine();
+                                    break;
+                                case 5:
+                                    break;
+                                default:
+                                    System.out.println("Opcao invalida. Tente novamente");
+                                    break;
+                            }
                             break;
                         case 4: // aba de promocao
                             break;
@@ -399,7 +445,7 @@ public class Main {
 
         Filme filme = gerente.buscarFilme(nomeFilme);
         
-        if (filme != null) {
+        if (filme != null) { // VERIFICAR SE TEM SESSOES CADASTRADAS
             System.out.printf("Digite o motivo de exclusao do filme: ");
             motivoExclusaoFilme = sc.nextLine();
 
@@ -430,7 +476,239 @@ public class Main {
             }
         }
     }
+
+    public static int imprimeMenuGerenteSala(Scanner sc) {
+        int opcao;
+        
+        System.out.println("SALA");
+        System.out.println("(1) Cadastrar Sala");
+        System.out.println("(2) Editar Sala");
+        System.out.println("(3) Remover Sala");
+        System.out.println("(4) Listar Salas");
+        System.out.println("(5) Sair");
+
+        System.out.print("Digite uma opcao: ");
+        opcao = Integer.parseInt(sc.nextLine());
+        System.out.println();
+        
+        return opcao;
+    }
+
+    public static void imprimeMenuGerenteCadastroSala(Gerente gerente, Scanner sc) {
+        int nroSala;
+        int nroAssentos;
+        String tipoTelaString;
+        boolean tipoTela;
+        String confirmacao;
+
+        System.out.println("CADASTRAR SALA");
+        System.out.println("Entre com as informacoes da sala:");
+        System.out.print("- Numero da Sala: ");
+        nroSala = Integer.parseInt(sc.nextLine());
+        System.out.print("- Numero de Assentos: ");
+        nroAssentos = Integer.parseInt(sc.nextLine());
+        System.out.print("- Tipo da Tela (2D ou 3D): ");
+        tipoTelaString = sc.nextLine();
+
+        if (tipoTelaString.equalsIgnoreCase("2D")) {
+            tipoTela = false;
+        }
+        if (tipoTelaString.equalsIgnoreCase("3D")) {
+            tipoTela = true;
+        }
+        else {
+            System.out.println("Tipo de tela invalido. Tente novamente");
+            sc.nextLine();
+            return;
+        }
+
+        Sala salaTemporaria = new Sala(nroSala, nroAssentos, tipoTela);
+
+        
+        System.out.println(salaTemporaria.toString());
+        System.out.print("Confirmar adicao da sala (Sim ou Nao): ");
+        confirmacao = sc.nextLine();
+        
+        if (confirmacao.equalsIgnoreCase("Sim")) {
+            if(gerente.adicionarSala(salaTemporaria)) {
+                System.out.println("Sala adicionada com sucesso");
+                System.out.println();
+            }
+            else {
+                System.out.println("Sala ja existe");
+                System.out.println();
+            }
+        }
+    }
+
+    public static void imprimeMenuGerenteEdicaoSala(Gerente gerente, Scanner sc) {
+        int opcao;
+        int nroSala;
+        String confirmacao;
+
+        System.out.println("EDITAR SALA");
+        imprimeListaSalas(gerente.getCinema());
+        System.out.printf("Digite o numero da sala a ser alterada: ");
+        nroSala = Integer.parseInt(sc.nextLine());
+        System.out.println();
+        
+        Sala sala = gerente.buscarSala(nroSala);
+
+        if (sala != null) { 
+            System.out.println("Parametros que podem ser alterados: ");
+            System.out.println("(1) Numero da Sala");
+            System.out.println("(2) Numero de Assentos");
+            System.out.println("(3) Tipo de Tela");
+            System.out.print("Escolha um parametro: ");
+            opcao = Integer.parseInt(sc.nextLine());
+            System.out.println();
+
+            switch(opcao) {
+                case 1:
+                    System.out.print("Digite o numero da sala novo: ");
+                    int nroSalaNovo = Integer.parseInt(sc.nextLine());
+                    System.out.println();
+
+                    System.out.println("- Numero da Sala Antigo: " + sala.getNroSala());
+                    System.out.println("- Numero da Sala Novo: " + nroSalaNovo);
+
+                    System.out.print("Confirmar edicao (Sim ou Nao): ");
+                    confirmacao = sc.nextLine();
+
+                    if (confirmacao.equalsIgnoreCase("Sim")) {
+                        // gerente.editarSala(nroSala, nroSalaNovo, -1, null);
+                    }
+                    break;
+                case 2:
+                    System.out.printf("Digite o numero de assentos novo: ");
+                    int nroAssentosNovo = Integer.parseInt(sc.nextLine());
+                    System.out.println();
+
+                    System.out.println("- Numero de Assentos Antigo: " + sala.getNroAssentos());
+                    System.out.println("- Numero de Assentos Novo: " + nroAssentosNovo);
+
+                    System.out.print("Confirmar edicao (Sim ou Nao): ");
+                    confirmacao = sc.nextLine();
+
+                    if (confirmacao.equalsIgnoreCase("Sim")) {
+                        // gerente.editarSala(nroSala, -1, nroAssentosNovo, null);
+                    }
+                    break;
+                case 3:
+                    System.out.printf("Digite o tipo de tela novo (2D ou 3D): ");
+                    String tipoTelaString = sc.nextLine();
+                    System.out.println();
+
+                    boolean tipoTelaNovo;
+                    if (tipoTelaString.equalsIgnoreCase("2D")) {
+                        tipoTelaNovo = false;
+                    }
+                    if (tipoTelaString.equalsIgnoreCase("3D")) {
+                        tipoTelaNovo = true;
+                    }
+                    else {
+                        System.out.println("Tipo de tela invalido. Tente novamente");
+                        sc.nextLine();
+                        return;
+                    }
+
+                    System.out.println("- Tipo de Tela Antigo: " + (sala.getTipoTela() ? "3D" : "2D"));
+                    System.out.println("- Numero de Assentos Novo: " + (tipoTelaNovo ? "3D" : "2D"));
+
+                    System.out.print("Confirmar edicao (Sim ou Nao): ");
+                    confirmacao = sc.nextLine();
+
+                    if (confirmacao.equalsIgnoreCase("Sim")) {
+                        // gerente.editarSala(nroSala, -1, -1, tipoTelaNovo);
+                    }
+                    break;
+                default:
+                    System.out.println("Opcao invalida");
+                    break;
+            }    
+        }
+    }
+
+    public static void imprimeMenuGerenteRemocaoSala(Gerente gerente, Scanner sc) {
+        int nroSala;
+        String motivoExclusaoSala;
+        String confirmacao;
+
+        System.out.println("REMOCAO DE SALA");
+        imprimeListaSalas(gerente.getCinema());
+        System.out.printf("Digite o numero da sala a ser removida: ");
+        nroSala = Integer.parseInt(sc.nextLine());
+
+        Sala sala = gerente.buscarSala(nroSala);
+        
+        if (sala != null) { // VERIFICAR SE TEM SESSOES CADASTRADAS
+            System.out.printf("Digite o motivo de exclusao da sala: ");
+            motivoExclusaoSala = sc.nextLine();
+
+            System.out.print("Confirmar remocao da sala (Sim ou Nao): ");
+            confirmacao = sc.nextLine();
+
+            if (confirmacao.equalsIgnoreCase("Sim")) {
+                if (gerente.removerSala(sala, motivoExclusaoSala)) {
+                    System.out.println("Sala removida com sucesso");
+                }
+                else {
+                    System.out.println("Sala ja foi removido");
+                }
+            }
+        }
+        else {
+            System.out.println("Sala nao encontrado");
+        }
+        
+        System.out.println();
+    }
     
+    public static void imprimeListaSalas(Cinema cinema) {
+        for (Sala s : cinema.getListaSalas()) {
+            if (!(s instanceof SalaIndisponivel)) {
+                System.out.println(s.toString());
+            }
+        }
+    }
+
+    public static int imprimeMenuGerenteSessao(Scanner sc) {
+        int opcao;
+        
+        System.out.println("SESSAO");
+        System.out.println("(1) Cadastrar Sessao");
+        System.out.println("(2) Editar Sessao");
+        System.out.println("(3) Remover Sessao");
+        System.out.println("(4) Listar Sessoes");
+        System.out.println("(5) Sair");
+
+        System.out.print("Digite uma opcao: ");
+        opcao = Integer.parseInt(sc.nextLine());
+        System.out.println();
+        
+        return opcao;
+    }
+
+    public static void imprimeMenuGerenteCadastroSessao() {
+        
+    }
+
+    public static void imprimeMenuGerenteEdicaoSessao() {
+
+    }
+
+    public static void imprimeMenuGerenteRemocaoSessao() {
+
+    }
+
+    public static void imprimeListaSessoes(Cinema cinema) {
+        for (Sessao s : cinema.getListaSessoes()) {
+            if (!(s instanceof SessaoIndisponivel)) {
+                System.out.println(s.toString());
+            }
+        }
+    }
+
     public static int imprimeMenuUsuario(Scanner sc) {
         int opcao;
         
@@ -445,6 +723,10 @@ public class Main {
         System.out.println();
         
         return opcao;
+    }
+
+    public static void imprimeMenuUsuarioComprarIngresso() {
+        
     }
 
     public static Usuario imprimeMenuUsuarioComprarAssinatura(Usuario usuario, Gerente gerente, Scanner sc) { // VERIFICAR ISSO
