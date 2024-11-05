@@ -114,6 +114,25 @@ public class Main {
                             }
                             break;
                         case 4: // aba de promocao
+                            opcaoMenuGerente = imprimeMenuGerentePromocao(sc);
+
+                            switch(opcaoMenuGerente) {
+                                case 1:
+                                    imprimeMenuGerenteCadastroPromocao(gerente, sc);
+                                    break;
+                                case 2:
+                                    imprimeMenuGerenteEdicaoPromocao(gerente, sc);
+                                    break;
+                                case 3:
+                                    imprimeMenuGerenteRemocaoPromocao(gerente, sc);
+                                    break;
+                                case 4: 
+                                    break;
+                                default: 
+                                    System.out.println("Opcao invalida. Tente novamente");
+                                    break;
+                            }
+
                             break;
                         case 5: // aba de relatorios
                             break;
@@ -952,6 +971,130 @@ public class Main {
                 System.out.println(s.toString());
             }
         }
+    }
+
+    public static int imprimeMenuGerentePromocao(Scanner sc) {
+        int opcao;
+        
+        System.out.println("PROMOCAO");
+        System.out.println("(1) Cadastrar Promocao");
+        System.out.println("(2) Editar Promocao");
+        System.out.println("(3) Remover Promocao");
+        System.out.println("(4) Sair");
+
+        System.out.print("Digite uma opcao: ");
+        opcao = Integer.parseInt(sc.nextLine());
+        System.out.println();
+        
+        return opcao;
+    }
+
+    public static void imprimeMenuGerenteCadastroPromocao(Gerente gerente, Scanner sc) {
+        int codigoSessao;
+        double porcentagemPromocional;
+        String confirmacao;
+
+        System.out.println("CADASTRAR PROMOCAO");
+        imprimeListaSessoes(gerente.getCinema());
+        System.out.print("Digite o codigo da sessao a qual a promocao ira ser adicionada : ");
+        codigoSessao = Integer.parseInt(sc.nextLine());
+
+        Sessao sessao = gerente.buscarSessao(codigoSessao);
+
+        if (sessao != null) {
+            System.out.print("Qual sera a porcentagem da promocao? ");
+            porcentagemPromocional = Double.parseDouble(sc.nextLine()); // 0 < promocao < 100
+
+            porcentagemPromocional = porcentagemPromocional/100.00;
+
+            System.out.print("Confirmar adicao da promocao (Sim ou Nao): ");
+            confirmacao = sc.nextLine();
+
+            if (confirmacao.equalsIgnoreCase("Sim")) {
+                if (gerente.adicionarPromocao(sessao, porcentagemPromocional)) {
+                    System.out.println("Promocao adicionada com sucesso");
+                }
+                else {
+                    System.out.println("Erro ao adicionar promocao. Promocao ja existe");
+                }
+            }
+        }
+        else {
+            System.out.println("Sessao nao encontrada");
+        }
+
+        System.out.println();
+    }
+
+    public static void imprimeMenuGerenteEdicaoPromocao(Gerente gerente, Scanner sc) {
+        int codigoSessao;
+        double porcentagemPromocionalNova;
+        String confirmacao;
+
+        System.out.println("EDITAR PROMOCAO");
+        imprimeListaSessoes(gerente.getCinema());
+        System.out.print("Digite o codigo da sessao a qual a promocao esta ligada : ");
+        codigoSessao = Integer.parseInt(sc.nextLine());
+
+        Sessao sessao = gerente.buscarSessao(codigoSessao);
+
+        if (sessao != null) {
+            System.out.print("Qual sera a porcentagem nova da promocao? ");
+            porcentagemPromocionalNova = Double.parseDouble(sc.nextLine()); // 0 < promocao < 100
+            porcentagemPromocionalNova = porcentagemPromocionalNova/100.00;
+            System.out.println();
+                    
+            System.out.println("- Promocao Antiga: " + sessao.getPorcentagemPromocional() * 100 + "%");
+            System.out.println("- Promocao Nova: " + porcentagemPromocionalNova * 100 + "%");
+
+            System.out.print("Confirmar edicao da promocao (Sim ou Nao): ");
+            confirmacao = sc.nextLine();
+
+            if (confirmacao.equalsIgnoreCase("Sim")) {
+                if (gerente.editarPromocao(sessao, porcentagemPromocionalNova)) {
+                    System.out.println("Promocao editada com sucesso");
+                }
+                else {
+                    System.out.println("Erro ao editar promocao. Sessao nao possui promocao");
+                }
+            }
+        }
+        else {
+            System.out.println("Sessao nao encontrada");
+        }
+
+        System.out.println();
+    }
+
+    public static void imprimeMenuGerenteRemocaoPromocao(Gerente gerente, Scanner sc) {
+        int codigoSessao;
+        String confirmacao;
+
+        System.out.println("REMOCAO DE PROMOCAO");
+        imprimeListaSessoes(gerente.getCinema());
+        System.out.printf("Digite o codigo da sessao para remover sua promocao: ");
+        codigoSessao = Integer.parseInt(sc.nextLine());
+
+        Sessao sessao = gerente.buscarSessao(codigoSessao);
+        
+        if (sessao != null) { // VERIFICAR SE TEM SESSOES CADASTRADAS
+            System.out.print("Confirmar remocao da promocao (Sim ou Nao): ");
+            confirmacao = sc.nextLine();
+
+            if (confirmacao.equalsIgnoreCase("Sim")) {
+                if (gerente.excluirPromocao(sessao)) {
+                    System.out.println("Promocao removida com sucesso");
+                }
+                else {
+                    System.out.println("Sessao nao possui promocao");
+                }
+            }
+        }
+        else {
+            System.out.println("Sessao nao encontrada");
+        }
+        
+        System.out.println();
     }
 
     public static int imprimeMenuUsuario(Scanner sc) {

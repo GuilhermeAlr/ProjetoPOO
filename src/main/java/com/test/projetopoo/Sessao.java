@@ -133,7 +133,7 @@ public class Sessao{
         String promocaoString = "";
 
         if (comPromocao == true) {
-            promocaoString = "Sim (%" + porcentagemPromocional + ")"; 
+            promocaoString = "Sim (%" + (porcentagemPromocional * 100) + ")"; 
         }
         else if (comPromocao == false) {
             promocaoString = "Nao";
