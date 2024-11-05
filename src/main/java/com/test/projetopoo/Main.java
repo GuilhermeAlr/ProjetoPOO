@@ -97,10 +97,10 @@ public class Main {
                                     imprimeMenuGerenteCadastroSessao(gerente, sc);
                                     break;
                                 case 2:
-                                    imprimeMenuGerenteEdicaoSessao();
+                                    imprimeMenuGerenteEdicaoSessao(gerente, sc);
                                     break;
                                 case 3:
-                                    imprimeMenuGerenteRemocaoSessao();
+                                    imprimeMenuGerenteRemocaoSessao(gerente, sc);
                                     break;
                                 case 4:
                                     imprimeListaSessoes(cinema);
@@ -766,8 +766,39 @@ public class Main {
         
     }
 
-    public static void imprimeMenuGerenteRemocaoSessao() {
+    public static void imprimeMenuGerenteRemocaoSessao(Gerente gerente, Scanner sc) {
+        int codigoSessao;
+        String motivoExclusaoSessao;
+        String confirmacao;
 
+        System.out.println("REMOCAO DE SESSAO");
+        imprimeListaSessoes(gerente.getCinema());
+        System.out.printf("Digite o codigo da sessao a ser removida: ");
+        codigoSessao = Integer.parseInt(sc.nextLine());
+
+        Sessao sessao = gerente.buscarSessao(codigoSessao);
+        
+        if (sessao != null) { // VERIFICAR SE TEM SESSOES CADASTRADAS
+            System.out.printf("Digite o motivo de exclusao do filme: ");
+            motivoExclusaoSessao = sc.nextLine();
+
+            System.out.print("Confirmar remocao da sessao (Sim ou Nao): ");
+            confirmacao = sc.nextLine();
+
+            if (confirmacao.equalsIgnoreCase("Sim")) {
+                if (gerente.removerSessao(sessao, motivoExclusaoSessao)) {
+                    System.out.println("Sala removida com sucesso");
+                }
+                else {
+                    System.out.println("Sala ja foi removido");
+                }
+            }
+        }
+        else {
+            System.out.println("Sala nao encontrado");
+        }
+        
+        System.out.println();
     }
 
     public static void imprimeListaSessoes(Cinema cinema) {

@@ -194,6 +194,17 @@ public class Gerente extends Pessoa{
         return true;    
     }
 
+    public boolean removerSessao(Sessao sessao, String motivoExclusaoSessao) {
+        if (!(sessao instanceof SessaoIndisponivel)) {
+            int index = cinema.getListaSessoes().indexOf(sessao);
+            SessaoIndisponivel sessaoIndisponivel = new SessaoIndisponivel(sessao.getCodigoSessao(),sessao.getDiaSessao(), sessao.getHorarioSessao(),sessao.getPrecoSessao(), sessao.getComPromocao(), sessao.getPorcentagemPromocional(), sessao.getSalaSessao(), sessao.getFilmeSessao(), motivoExclusaoSessao);
+            cinema.getListaSessoes().set(index, sessaoIndisponivel);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
     public Sessao buscarSessao(int codigoSessao) {
         for (Sessao s : cinema.getListaSessoes()) {
