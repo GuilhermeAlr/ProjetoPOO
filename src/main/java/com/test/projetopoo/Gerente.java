@@ -1,5 +1,7 @@
 package main.java.com.test.projetopoo;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Gerente extends Pessoa{
@@ -86,7 +88,7 @@ public class Gerente extends Pessoa{
 
     public Filme buscarFilme(String nomeFilme) {
         for (Filme f : cinema.getListaFilmes()) {
-            if (f.getNomeFilme().equalsIgnoreCase(nomeFilme)) {
+            if (f.getNomeFilme().equalsIgnoreCase(nomeFilme) && !(f instanceof FilmeIndisponivel)) {
                 return f;
             }
         }
@@ -107,30 +109,30 @@ public class Gerente extends Pessoa{
         
     }
     
-    public boolean editarSala(Sala s, int nroSalaNovo, int nroAssentoNovo, Boolean tipoTelaNovo){
+    public boolean editarSala(Sala sala, int nroSalaNovo, int nroAssentoNovo, Boolean tipoTelaNovo){
         if (nroSalaNovo != 0) {
             if (buscarSala(nroSalaNovo) == null) { // checa se a pessoa esta modificando o numero de uma sala para um que nao existe
-                s.setNroSala(nroSalaNovo);
+                sala.setNroSala(nroSalaNovo);
             }
             else {
                 return false;
             }
         }
         else if (nroAssentoNovo != -1) {
-            s.setNroAssentos(nroAssentoNovo);
+            sala.setNroAssentos(nroAssentoNovo);
         }
         else if (tipoTelaNovo != null) { 
-            s.setTipoTela(tipoTelaNovo);
+            sala.setTipoTela(tipoTelaNovo);
         }
         return true;    
         
     }
     
     public boolean removerSala(int nroSala) {
-        Sala s = buscarSala(nroSala);
+        Sala sala = buscarSala(nroSala);
 
-        if (s != null) {
-            cinema.getListaSalas().remove(s);
+        if (sala != null) {
+            cinema.getListaSalas().remove(sala);
             return true;
         }
         else {
@@ -147,6 +149,60 @@ public class Gerente extends Pessoa{
         
         return null;
         
+    }
+
+    // metodos para adicionar, editar e remover sala
+    public boolean adicionarSessao(Sessao sessao) {
+        if (buscarSessao(sessao.getCodigoSessao()) == null) {
+            cinema.getListaSessoes().add(sessao);
+            return true;
+        }
+        else {
+            return false;
+        }
+        
+    }
+
+    public boolean editarSessao(Sessao sessao, int codigoSesaoNovo, LocalDate diaSessaoNovo, LocalTime horarioSessaoNovo, double precoSessaoNovo, Boolean comPromocaoNovo, double porcentagemPromocionalNovo, Sala salaSessaoNovo, Filme filmeSessaoNovo) {
+        
+        if (codigoSesaoNovo != 0) {
+            if (buscarSessao(codigoSesaoNovo) == null) { // checa se a pessoa esta modificando o codigo de uma sessao para um que nao existe
+                sessao.setCodigoSessao(codigoSesaoNovo);
+            }
+            else {
+                return false;
+            }
+        }
+        else if (!diaSessaoNovo.isEqual(LocalDate.of(1500, 1, 1))) {
+            sessao.setDiaSessao(diaSessaoNovo);
+        }
+        else if (!horarioSessaoNovo.equals(LocalTime.of(23, 59))) { 
+            sessao.setHorarioSessao(horarioSessaoNovo);
+        }
+        else if (precoSessaoNovo != -1) { 
+            sessao.setPrecoSessao(precoSessaoNovo);
+        }
+        else if (porcentagemPromocionalNovo != -1) { 
+            sessao.setPorcentagemPromocional(porcentagemPromocionalNovo);
+        }
+        else if (salaSessaoNovo != sessao.getSalaSessao()) { 
+            sessao.setSalaSessao(salaSessaoNovo);
+        }
+        else if (filmeSessaoNovo != sessao.getFilmeSessao()) { 
+            sessao.setFilmeSessao(filmeSessaoNovo);
+        }
+        return true;    
+    }
+
+
+    public Sessao buscarSessao(int codigoSessao) {
+        for (Sessao s : cinema.getListaSessoes()) {
+            if (s.getCodigoSessao() == codigoSessao && !(s instanceof SessaoIndisponivel)) {
+                return s;
+            }
+        }
+
+        return null;
     }
 
 	// métodos para adicionar, editar e excluir promoções para uma sessão 

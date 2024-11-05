@@ -1,6 +1,7 @@
 package main.java.com.test.projetopoo;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Main {
@@ -93,7 +94,7 @@ public class Main {
 
                             switch(opcaoMenuGerente) {
                                 case 1:
-                                    imprimeMenuGerenteCadastroSessao();
+                                    imprimeMenuGerenteCadastroSessao(gerente, sc);
                                     break;
                                 case 2:
                                     imprimeMenuGerenteEdicaoSessao();
@@ -687,12 +688,82 @@ public class Main {
         return opcao;
     }
 
-    public static void imprimeMenuGerenteCadastroSessao() {
-        
+    public static void imprimeMenuGerenteCadastroSessao(Gerente gerente, Scanner sc) {
+        int codigoSessao;
+        String nomeFilme;
+        Filme filmeSessao; 
+        int nroSala;
+        Sala salaSessao;
+        String diaSessaoString; 
+        LocalDate diaSessao;
+        String horarioSessaoString;
+        LocalTime horarioSessao;
+        DateTimeFormatter formatter;
+        double precoSessao;
+        String confirmacao;
+
+        System.out.println("CADASTRAR SESSAO");
+        System.out.println("Entre com as informacoes da sessao: ");
+        System.out.print("- Codigo da Sessao: ");
+        codigoSessao = Integer.parseInt(sc.nextLine());
+        System.out.print("- Nome do Filme: ");
+        nomeFilme = sc.nextLine();
+
+        filmeSessao = gerente.buscarFilme(nomeFilme);
+
+        if (filmeSessao != null) {
+            System.out.print("- Numero da Sala: ");
+            nroSala = Integer.parseInt(sc.nextLine());
+
+            salaSessao = gerente.buscarSala(nroSala);
+            
+            if (salaSessao != null) {
+                System.out.print("- Dia da sessao (DD/MM/YYYY): ");
+                diaSessaoString = sc.nextLine();
+                formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                diaSessao = LocalDate.parse(diaSessaoString, formatter); // TESTAR EXCECAO
+
+                System.out.print("- Horario da sessao HH:mm: ");
+                horarioSessaoString = sc.nextLine();
+                formatter = DateTimeFormatter.ofPattern("HH:mm");
+                horarioSessao = LocalTime.parse(horarioSessaoString, formatter);
+
+                System.out.print("- Preco da sessao: ");
+                precoSessao = Double.parseDouble(sc.nextLine());
+                System.out.println();
+
+                Sessao sessaoTemporaria = new Sessao(codigoSessao, diaSessao, horarioSessao, precoSessao, false, 1, salaSessao, filmeSessao); // conferir promocao
+
+                System.out.println(sessaoTemporaria.toString());
+                System.out.print("Confirmar adicao da sessao (Sim ou Nao): ");
+                confirmacao = sc.nextLine();
+
+                if (confirmacao.equalsIgnoreCase("Sim")) {
+                    if (gerente.adicionarSessao(sessaoTemporaria)) {
+                        System.out.println("Sessao adicionada com sucesso");
+                    }
+                    else {
+                        System.out.println("Erro ao adicionar a sessao. Codigo da Sessao ja existe");
+                    }
+                }
+
+            }
+            else {
+                System.out.println("Sala nao encontrada");
+            }
+
+        }
+        else {
+            System.out.println("Filme nao encontrado");
+        }
+
+        System.out.println();
+
     }
 
-    public static void imprimeMenuGerenteEdicaoSessao() {
-
+    public static void imprimeMenuGerenteEdicaoSessao(Gerente gerente, Scanner sc) {
+    
+        
     }
 
     public static void imprimeMenuGerenteRemocaoSessao() {

@@ -14,11 +14,11 @@ public class Sessao{
     private Filme filmeSessao;
     
     //Construtor da classe Sessao
-    public Sessao(int codigoSessao, LocalDate diaSessao, LocalTime horarioSessao, Boolean[] listaAssentos, double precoSessao, Boolean comPromocao, double porcentagemPromocional, Sala salaSessao, Filme filmeSessao){
+    public Sessao(int codigoSessao, LocalDate diaSessao, LocalTime horarioSessao, double precoSessao, Boolean comPromocao, double porcentagemPromocional, Sala salaSessao, Filme filmeSessao){
         setCodigoSessao(codigoSessao);
         setDiaSessao(diaSessao);
         setHorarioSessao(horarioSessao);
-        listaAssentos = new Boolean[salaSessao.getNroAssentos()];
+        setListaAssentos(salaSessao.getNroAssentos());
         setPrecoSessao(precoSessao);
         setComPromocao(comPromocao); 
         setPorcentagemPromocional(porcentagemPromocional);
@@ -33,6 +33,18 @@ public class Sessao{
 
     public Boolean getDisponibilidadeAssento(int nroAssento) {
         return this.listaAssentos[nroAssento];
+    }
+
+    public int getAssentosDisponiveis() {
+        int nroAssentosDisponiveis = 0;
+
+        for (int i = 0; i < listaAssentos.length; i++) {
+            if (getDisponibilidadeAssento(i) == false) {
+                nroAssentosDisponiveis++;
+            } 
+        }
+
+        return nroAssentosDisponiveis;
     }
 
     //Get e Set: codigoSessao
@@ -63,8 +75,11 @@ public class Sessao{
     }
     
     //Get e Set: arrayAssentos
-    public void setListaAssentos(Boolean[] listaAssentos){
-        this.listaAssentos = listaAssentos;
+    public void setListaAssentos(int nroAssentos){
+        listaAssentos = new Boolean[nroAssentos];
+        for (int i = 0; i < listaAssentos.length; i++) { // colocando assentos como indisponiveis
+            listaAssentos[i] = false;
+        }
     }
 
     public Boolean[] getListaAssentos(){
@@ -113,4 +128,24 @@ public class Sessao{
         return this.filmeSessao;
     }
 
+    @Override
+    public String toString() {
+        String promocaoString = "";
+
+        if (comPromocao == true) {
+            promocaoString = "Sim (%" + porcentagemPromocional + ")"; 
+        }
+        else if (comPromocao == false) {
+            promocaoString = "Nao";
+        }
+        return "Sessao: " + getCodigoSessao() + 
+               "\n- Filme: " + filmeSessao.getNomeFilme() + 
+               "\n- Sala: " + salaSessao.getNroSala() +
+               "\n- Dia: " + diaSessao +
+               "\n- Horario: " + horarioSessao +
+               "\n- Preco: " + precoSessao +
+               "\n- Assentos Disponiveis: " + getAssentosDisponiveis() + "/" + listaAssentos.length +
+               "\n- Possui Promocao: " + promocaoString;
+
+    }
 }
