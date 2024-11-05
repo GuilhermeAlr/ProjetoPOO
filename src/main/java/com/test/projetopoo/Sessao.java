@@ -145,8 +145,7 @@ public class Sessao{
                "\n- Horario: " + horarioSessao +
                "\n- Preco: " + precoSessao +
                "\n- Assentos Disponiveis: " + getAssentosDisponiveis() + "/" + listaAssentos.length +
-               "\n- Possui Promocao: " + promocaoString+
-               "\n- Disponibilidade: Disponivel";
+               "\n- Possui Promocao: " + promocaoString;
 
     }
 }
