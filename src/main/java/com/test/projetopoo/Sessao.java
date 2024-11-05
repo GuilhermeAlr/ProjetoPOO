@@ -146,8 +146,7 @@ public class Sessao{
                "\n- Preco: " + getPrecoSessao() +
                "\n- Assentos Disponiveis: " + getAssentosDisponiveis() + "/" + getListaAssentos().length +
                "\n- Possui Promocao: " + promocaoString +
-               "\n- Disponibilidade: Indisponivel" +
-               "\n- Motiva da exclusao: " + getMotivoExclusaoSessao();
+               "\n- Disponibilidade: Disponivel";
 
     }
 }
