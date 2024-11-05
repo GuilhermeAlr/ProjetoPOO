@@ -132,20 +132,22 @@ public class Sessao{
     public String toString() {
         String promocaoString = "";
 
-        if (comPromocao == true) {
-            promocaoString = "Sim (%" + porcentagemPromocional + ")"; 
+        if (getComPromocao() == true) {
+            promocaoString = "Sim (%" + getPorcentagemPromocional() + ")"; 
         }
-        else if (comPromocao == false) {
+        else if (getComPromocao() == false) {
             promocaoString = "Nao";
         }
         return "Sessao: " + getCodigoSessao() + 
-               "\n- Filme: " + filmeSessao.getNomeFilme() + 
-               "\n- Sala: " + salaSessao.getNroSala() +
-               "\n- Dia: " + diaSessao +
-               "\n- Horario: " + horarioSessao +
-               "\n- Preco: " + precoSessao +
-               "\n- Assentos Disponiveis: " + getAssentosDisponiveis() + "/" + listaAssentos.length +
-               "\n- Possui Promocao: " + promocaoString;
+               "\n- Filme: " + getFilmeSessao().getNomeFilme() + 
+               "\n- Sala: " + getSalaSessao().getNroSala() +
+               "\n- Dia: " + getDiaSessao() +
+               "\n- Horario: " + getHorarioSessao() +
+               "\n- Preco: " + getPrecoSessao() +
+               "\n- Assentos Disponiveis: " + getAssentosDisponiveis() + "/" + getListaAssentos().length +
+               "\n- Possui Promocao: " + promocaoString +
+               "\n- Disponibilidade: Indisponivel" +
+               "\n- Motiva da exclusao: " + getMotivoExclusaoSessao();
 
     }
 }
