@@ -163,11 +163,11 @@ public class Gerente extends Pessoa{
         
     }
 
-    public boolean editarSessao(Sessao sessao, int codigoSesaoNovo, LocalDate diaSessaoNovo, LocalTime horarioSessaoNovo, double precoSessaoNovo, Boolean comPromocaoNovo, double porcentagemPromocionalNovo, Sala salaSessaoNovo, Filme filmeSessaoNovo) {
+    public boolean editarSessao(Sessao sessao, int codigoSessaoNovo, LocalDate diaSessaoNovo, LocalTime horarioSessaoNovo, double precoSessaoNovo, Sala salaSessaoNovo, Filme filmeSessaoNovo) {
         
-        if (codigoSesaoNovo != 0) {
-            if (buscarSessao(codigoSesaoNovo) == null) { // checa se a pessoa esta modificando o codigo de uma sessao para um que nao existe
-                sessao.setCodigoSessao(codigoSesaoNovo);
+        if (codigoSessaoNovo != 0) {
+            if (buscarSessao(codigoSessaoNovo) == null) { // checa se a pessoa esta modificando o codigo de uma sessao para um que nao existe
+                sessao.setCodigoSessao(codigoSessaoNovo);
             }
             else {
                 return false;
@@ -182,13 +182,10 @@ public class Gerente extends Pessoa{
         else if (precoSessaoNovo != -1) { 
             sessao.setPrecoSessao(precoSessaoNovo);
         }
-        else if (porcentagemPromocionalNovo != -1) { 
-            sessao.setPorcentagemPromocional(porcentagemPromocionalNovo);
-        }
-        else if (salaSessaoNovo != sessao.getSalaSessao()) { 
+        else if (salaSessaoNovo != null) { 
             sessao.setSalaSessao(salaSessaoNovo);
         }
-        else if (filmeSessaoNovo != sessao.getFilmeSessao()) { 
+        else if (filmeSessaoNovo != null) { 
             sessao.setFilmeSessao(filmeSessaoNovo);
         }
         return true;    

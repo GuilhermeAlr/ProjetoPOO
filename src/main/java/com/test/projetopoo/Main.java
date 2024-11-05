@@ -723,7 +723,7 @@ public class Main {
                 formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 diaSessao = LocalDate.parse(diaSessaoString, formatter); // TESTAR EXCECAO
 
-                System.out.print("- Horario da sessao HH:mm: ");
+                System.out.print("- Horario da sessao (HH:mm): ");
                 horarioSessaoString = sc.nextLine();
                 formatter = DateTimeFormatter.ofPattern("HH:mm");
                 horarioSessao = LocalTime.parse(horarioSessaoString, formatter);
@@ -762,7 +762,152 @@ public class Main {
     }
 
     public static void imprimeMenuGerenteEdicaoSessao(Gerente gerente, Scanner sc) {
-    
+        int opcao;
+        int codigoSessao;
+        DateTimeFormatter formatter;
+        String confirmacao;
+
+        System.out.println("EDITAR SESSAO");
+        imprimeListaSessoes(gerente.getCinema());
+        System.out.printf("Digite o codigo da sessao a ser alterada: ");
+        codigoSessao = Integer.parseInt(sc.nextLine());
+        System.out.println();
+        
+        Sessao sessao = gerente.buscarSessao(codigoSessao);
+
+        if (sessao != null) {
+            System.out.println("Parametros que podem ser alterados: ");
+            System.out.println("(1) Codigo da Sessao");
+            System.out.println("(2) Filme da Sessao");
+            System.out.println("(3) Sala da Sessao");
+            System.out.println("(4) Dia");
+            System.out.println("(5) Horario");
+            System.out.println("(6) Preco da Sessao");
+            System.out.print("Escolha um parametro: ");
+            opcao = Integer.parseInt(sc.nextLine());
+            System.out.println();
+
+            switch(opcao) {
+                case 1: 
+                    System.out.print("Digite o codigo novo: ");
+                    int codigoSessaoNovo = Integer.parseInt(sc.nextLine());
+                    System.out.println();
+
+                    System.out.println("- Codigo da Sessao Antigo: " + sessao.getCodigoSessao());
+                    System.out.println("- Codigo da Sessao Novo: " + codigoSessaoNovo);
+
+                    System.out.print("Confirmar edicao (Sim ou Nao): ");
+                    confirmacao = sc.nextLine();
+
+                    if (confirmacao.equalsIgnoreCase("Sim")) {
+                        gerente.editarSessao(sessao, codigoSessaoNovo, LocalDate.of(1500, 1, 1), LocalTime.of(23, 59), -1, null, null);
+                    }
+                    break;
+                case 2:
+                    imprimeListaFilmes(gerente.getCinema());
+                    System.out.print("Digite o nome do filme novo: ");
+                    String nomeFilmeNovo = sc.nextLine();
+                    System.out.println();
+
+                    Filme filmeSessao = gerente.buscarFilme(nomeFilmeNovo);
+
+                    if (filmeSessao != null) {
+                        System.out.println("- Filme Antigo: " + sessao.getFilmeSessao().getNomeFilme());
+                        System.out.println("- Filme Novo: " + nomeFilmeNovo);
+
+                        System.out.print("Confirmar edicao (Sim ou Nao): ");
+                        confirmacao = sc.nextLine();
+                        
+                        if (confirmacao.equalsIgnoreCase("Sim")) {
+                            gerente.editarSessao(sessao, 0, LocalDate.of(1500, 1, 1), LocalTime.of(23, 59), -1, null, filmeSessao);
+                        }
+                    }
+                    else {
+                        System.out.println("Filme nao encontrado");
+                    }
+                    break;
+                case 3:
+                    imprimeListaSalas(gerente.getCinema());
+                    System.out.print("Digite o numero novo da sala: ");
+                    int nroSalaNovo = Integer.parseInt(sc.nextLine());
+                    System.out.println();
+
+                    Sala salaSessao = gerente.buscarSala(nroSalaNovo);
+
+                    if (salaSessao != null) {
+                        System.out.println("- Sala Antiga: " + sessao.getSalaSessao().getNroSala());
+                        System.out.println("- Sala Nova: " + nroSalaNovo);
+
+                        System.out.print("Confirmar edicao (Sim ou Nao): ");
+                        confirmacao = sc.nextLine();
+                        
+                        if (confirmacao.equalsIgnoreCase("Sim")) {
+                            gerente.editarSessao(sessao, 0, LocalDate.of(1500, 1, 1), LocalTime.of(23, 59), -1, salaSessao, null);
+                        }
+                    }
+                    else {
+                        System.out.println("Sala nao encontrada");
+                    }
+                    break;
+                case 4:
+                    System.out.print("Digite o dia novo (DD/MM/YYYY): ");
+                    String diaSessaoString = sc.nextLine();
+                    formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                    LocalDate diaSessao = LocalDate.parse(diaSessaoString, formatter); // TESTAR EXCECAO
+                    System.out.println();
+                    
+                    System.out.println("- Dia Antigo: " + sessao.getDiaSessao());
+                    System.out.println("- Dia Novo: " + diaSessao);
+
+                    System.out.print("Confirmar edicao (Sim ou Nao): ");
+                    confirmacao = sc.nextLine();
+                        
+                    if (confirmacao.equalsIgnoreCase("Sim")) {
+                        gerente.editarSessao(sessao, 0, diaSessao, LocalTime.of(23, 59), -1, null, null);
+                    }
+                    break;
+                case 5:
+                    System.out.print("Digite o horario novo (MM:mm): ");
+                    String horarioSessaoString = sc.nextLine();
+                    formatter = DateTimeFormatter.ofPattern("MM:mm");
+                    LocalTime horarioSessao = LocalTime.parse(horarioSessaoString, formatter); // TESTAR EXCECAO
+                    System.out.println();
+                    
+                    System.out.println("- Horario Antigo: " + sessao.getHorarioSessao());
+                    System.out.println("- Horario Novo: " + horarioSessao);
+
+                    System.out.print("Confirmar edicao (Sim ou Nao): ");
+                    confirmacao = sc.nextLine();
+                        
+                    if (confirmacao.equalsIgnoreCase("Sim")) {
+                        gerente.editarSessao(sessao, 0, LocalDate.of(1500, 1, 1), horarioSessao, -1, null, null);
+                    }
+                    break;
+                case 6:
+                    System.out.print("Digite o preco novo: ");
+                    double precoSessaoNovo = Double.parseDouble(sc.nextLine());
+                    System.out.println();
+
+                    System.out.println("- Preco Antigo: " + sessao.getPrecoSessao());
+                    System.out.println("- Sala Nova: " + precoSessaoNovo);
+
+                    System.out.print("Confirmar edicao (Sim ou Nao): ");
+                    confirmacao = sc.nextLine();
+                        
+                    if (confirmacao.equalsIgnoreCase("Sim")) {
+                        gerente.editarSessao(sessao, 0, LocalDate.of(1500, 1, 1), LocalTime.of(23, 59), precoSessaoNovo, null, null);
+                    }
+                    break;
+                default:
+                    System.out.println("Opcao invalida");
+                    break;
+            }
+        }
+        else {
+            System.out.println("Sessao nao encontrada");
+        }
+
+        System.out.println();
         
     }
 
