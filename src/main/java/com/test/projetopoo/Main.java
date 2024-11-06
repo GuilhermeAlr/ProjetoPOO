@@ -987,7 +987,7 @@ public class Main {
         
         if (sessao != null) { // VERIFICAR SE TEM PESSOAS QUE COMPRARAM INGRESSO
 
-            System.out.printf("Digite o motivo de exclusao do filme: ");
+            System.out.printf("Digite o motivo de exclusao da sessao: ");
             motivoExclusaoSessao = sc.nextLine();
 
             System.out.print("Confirmar remocao da sessao (Sim ou Nao): ");
