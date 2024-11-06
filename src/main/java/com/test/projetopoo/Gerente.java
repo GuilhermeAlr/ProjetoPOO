@@ -246,43 +246,119 @@ public class Gerente extends Pessoa{
             return false; 
         }
     }    
+
     //Métodos de relatório 
     public void gerarRelatorioFilmes(ArrayList <Filme> FilmesCadastrados) {
-    	for(Filme filme: FilmesCadastrados) {
-    		if(!(filme instanceof FilmeIndisponivel)) {
-    			System.out.println(filme + " | Disponibilidade: Em cartaz");
-    		}
+    	
+    	int nroFilmesEmCartaz = 0;
+    	int nroFilmesIndisponiveis = 0; 
+    	
+    	if(FilmesCadastrados.size() > 0) {
+	    	for(Filme filme : FilmesCadastrados) {
+	    		if(!(filme instanceof FilmeIndisponivel)) {
+	    			nroFilmesEmCartaz++; 
+	    		}
+	    		else {
+	    			nroFilmesIndisponiveis++; 
+	    		}
+	    	}
     	}
-    	for(Filme filme: FilmesCadastrados) {
-    		if(filme instanceof FilmeIndisponivel) {
-    			System.out.println
-    			(filme + " | Disponibilidade: Em cartaz" + " | Motivo de exclusao: " + FilmeIndisponivel.getMotivoExclusaoFilme());
-    		}
+    	
+    	System.out.println("\nFilmes disponiveis: ");
+    	
+    	if (nroFilmesEmCartaz > 0) {
+        	for(Filme filme : FilmesCadastrados) {
+        		if(!(filme instanceof FilmeIndisponivel)) {
+        		System.out.println("\n" + filme);
+        		}
+        	}
+        	System.out.println("\n- Existe " + nroFilmesEmCartaz + " filme(s) em cartaz.");
+        }
+    	else {
+    		System.out.println("- Nao existem filmes disponiveis.");
+    	}
+
+    	System.out.println("\nFilmes indisponiveis: ");
+    	
+    	if (nroFilmesIndisponiveis > 0) {
+    		for(Filme filme : FilmesCadastrados) {
+        		if(filme instanceof FilmeIndisponivel) {
+        		System.out.print("\n" + filme + "\n- Motivo de exclusao: " + FilmeIndisponivel.getMotivoExclusaoFilme()); 
+        		}
+        	}
+    		System.out.println("\n\n- Existe " + nroFilmesIndisponiveis + " filme(s) indisponiveis.");
+        }
+    	else {
+    		System.out.println("\n- Nao existem filmes indisponiveis.");
     	}
     }
-
+    
 
     public void gerarRelatorioSessoes(ArrayList <Sessao> SessoesCadastradas) {
-    	for(Sessao sessao : SessoesCadastradas) {
-    		if(!(sessao instanceof SessaoIndisponivel)) {
-    		System.out.print(sessao + "\n-Disponiblidade: Disponivel");
-    		}
+    	
+    	int nroSessoesCadastradas = 0;
+    	int nroSessoesIndisponiveis = 0; 
+    	
+    	if(SessoesCadastradas.size() > 0) {
+	    	for(Sessao sessao : SessoesCadastradas) {
+	    		if(!(sessao instanceof SessaoIndisponivel)) {
+	    			nroSessoesCadastradas++; 
+	    		}
+	    		else {
+	    			nroSessoesIndisponiveis++; 
+	    		}
+	    	}
     	}
-    	for(Sessao sessao : SessoesCadastradas) {
-    		if(sessao instanceof SessaoIndisponivel) {
-    		System.out.println(sessao + "\n- Disponiblidade: Indisponivel" + "\n-Motivo de exclusao: " + SessaoIndisponivel.getMotivoExclusaoSessao()); 
-    		}
+    	
+    	System.out.println("Sessoes disponiveis: ");
+    	
+    	if (nroSessoesCadastradas > 0) {
+        	for(Sessao sessao : SessoesCadastradas) {
+        		if(!(sessao instanceof SessaoIndisponivel)) {
+        		System.out.print("\n" + sessao);
+        		}
+        	}
+        	System.out.println("\n\n- Existe " + nroSessoesCadastradas + " sessoes disponiveis.");
+        	
+        }
+    	else {
+    		System.out.println("- Nao existem sessoes disponiveis.");
+    	}
+    	
+    	System.out.println("\nSessoes indisponiveis: ");
+    	
+    	if (nroSessoesIndisponiveis > 0) {
+    		for(Sessao sessao : SessoesCadastradas) {
+        		if(sessao instanceof SessaoIndisponivel) {
+        		System.out.print("\n" + sessao + "\n- Motivo de exclusao: " + SessaoIndisponivel.getMotivoExclusaoSessao()); 
+        		}
+        	}
+    		System.out.println("\n\n- Existe " + nroSessoesIndisponiveis + " sessoes indisponiveis.");
+        }
+    	else {
+    		System.out.println("\n- Nao existem sessoes indisponiveis.");
     	}
     }
     
     public void gerarRelatorioSalas(ArrayList <Sala> SalasCadastradas) {
-    	for(Sala salas : SalasCadastradas) {
-    		System.out.print(salas);
-	}
+    	
+    	int nroSalasCadastradas = 0; 
+
+    	if (SalasCadastradas.size() > 0) {
+    		for(Sala salas : SalasCadastradas) {
+	    		System.out.print("\n" + salas);
+	    		nroSalasCadastradas++;
+	    	}
+    		System.out.println("\n- Existe " + nroSalasCadastradas + " sala(s) cadastrada(s)."); 
+    	}    
+    	else {
+    		System.out.println("\n- Nao existem salas disponiveis.");
+    	}	
     }
     
     public void gerarRelatorioUsuarios(ArrayList <Usuario> UsuariosCadastrados) {
-		int nroUsuariosAssinantes = 0; 
+		
+    	int nroUsuariosAssinantes = 0; 
 		int nroUsuarios = 0; 
 			
 		for(Usuario user : UsuariosCadastrados) {
@@ -294,8 +370,9 @@ public class Gerente extends Pessoa{
 				nroUsuarios++; 
 			}
 		}
-		System.out.print("Usuarios cadastrados: " + nroUsuarios +
-	        	"\nUsuarios assinantes: " + nroUsuariosAssinantes);
+		
+		System.out.print("Numero de usuarios cadastrados: " + nroUsuarios +
+	        	"\nNumero de usuarios assinantes: " + nroUsuariosAssinantes);
    }
 
 }
