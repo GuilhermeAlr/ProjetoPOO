@@ -275,7 +275,7 @@ public class Gerente extends Pessoa{
         	System.out.println("\n- Existe " + nroFilmesEmCartaz + " filme(s) em cartaz.");
         }
     	else {
-    		System.out.println("- Nao existem filmes disponiveis.");
+    		System.out.println("\n- Nao existem filmes disponiveis.");
     	}
 
     	System.out.println("\nFilmes indisponiveis: ");
@@ -322,7 +322,7 @@ public class Gerente extends Pessoa{
         	
         }
     	else {
-    		System.out.println("- Nao existem sessoes disponiveis.");
+    		System.out.println("\n- Nao existem sessoes disponiveis.");
     	}
     	
     	System.out.println("\nSessoes indisponiveis: ");
@@ -346,7 +346,7 @@ public class Gerente extends Pessoa{
 
     	if (SalasCadastradas.size() > 0) {
     		for(Sala salas : SalasCadastradas) {
-	    		System.out.print("\n" + salas);
+	    		System.out.print(salas);
 	    		nroSalasCadastradas++;
 	    	}
     		System.out.println("\n- Existe " + nroSalasCadastradas + " sala(s) cadastrada(s)."); 
@@ -374,5 +374,4 @@ public class Gerente extends Pessoa{
 		System.out.print("Numero de usuarios cadastrados: " + nroUsuarios +
 	        	"\nNumero de usuarios assinantes: " + nroUsuariosAssinantes);
    }
-
 }
