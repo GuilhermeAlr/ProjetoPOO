@@ -247,7 +247,6 @@ public class Gerente extends Pessoa{
         }
     }    
     //Métodos de relatório 
-    //métodos de relatório 
     public void gerarRelatorioFilmes(ArrayList <Filme> FilmesCadastrados) {
     	for(Filme filme: FilmesCadastrados) {
     		if(!(filme instanceof FilmeIndisponivel)) {
