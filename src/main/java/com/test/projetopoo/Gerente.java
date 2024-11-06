@@ -339,20 +339,19 @@ public class Gerente extends Pessoa{
     		System.out.println("\n- Nao existem sessoes indisponiveis.");
     	}
     }
-    
-    public void gerarRelatorioSalas(ArrayList <Sala> SalasCadastradas) {
-    	
+
+   public void gerarRelatorioSalas(ArrayList <Sala> SalasCadastradas) {    	
     	int nroSalasCadastradas = 0; 
 
     	if (SalasCadastradas.size() > 0) {
     		for(Sala salas : SalasCadastradas) {
-	    		System.out.print(salas);
+	    		System.out.println(salas + "\n");
 	    		nroSalasCadastradas++;
 	    	}
-    		System.out.println("\n- Existe " + nroSalasCadastradas + " sala(s) cadastrada(s)."); 
+    		System.out.println("- Existe " + nroSalasCadastradas + " sala(s) cadastrada(s)."); 
     	}    
     	else {
-    		System.out.println("\n- Nao existem salas disponiveis.");
+    		System.out.println("- Nao existem salas disponiveis.");
     	}	
     }
     
