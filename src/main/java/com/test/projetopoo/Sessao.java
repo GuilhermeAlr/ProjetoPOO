@@ -155,23 +155,22 @@ public class Sessao{
         String promocaoString = "";
 
         if (comPromocao == true) {
-            precoString = "- Preco Original: " + getPrecoSessao() + 
-                        "\n- Preco da Meia-Entrada: " + getPrecoSessao()/2.0 + 
-                        "\n- Preco Promocional: " + (getPrecoSessao() * (1 - porcentagemPromocional)) + 
-                        "\n- Preco para Assinantes: " + getPrecoSessao() * 0.7;
-            promocaoString = "- Possui Promocao: Sim (%" + (porcentagemPromocional * 100) + ")"; 
+            promocaoString = "- Possui Promocao: Sim (desconto de %" + (porcentagemPromocional * 100) + ")"; 
+            precoString = "- Preco: R$" + getPrecoSessao() + 
+                        " | Meia-Entrada: R$" + getPrecoSessao() * 0.5 + 
+                        " | Preco Promocional: R$" + (getPrecoSessao() * (1 - porcentagemPromocional)) + 
+                        " | Preco para Assinantes: R$" + getPrecoSessao() * 0.7;
         }
         else if (comPromocao == false) {
-            precoString = "- Preco Original: " + getPrecoSessao() + 
-                        "\n- Preco da Meia-Entrada: " + getPrecoSessao()/2.0 + 
-                        "\n- Preco para Assinantes: " + getPrecoSessao() * 0.7;
             promocaoString = "- Possui Promocao: Nao";
+            precoString = "- Preco: R$" + getPrecoSessao() + 
+                        " | Meia-Entrada: R$" + getPrecoSessao() *0.5 + 
+                        " | Preco para Assinantes: R$" + getPrecoSessao() * 0.7;
         }
         return "Sessao: " + getCodigoSessao() + 
-               "\n- Filme: " + filmeSessao.getNomeFilme() + 
-               "\n- Sala: " + salaSessao.getNroSala() +
-               "\n- Dia: " + diaSessao +
-               "\n- Horario: " + horarioSessao +
+               " | Filme: " + filmeSessao.getNomeFilme() + 
+               " | Sala " + salaSessao.getNroSala() +
+               " | Data: " + diaSessao + " " + horarioSessao +
                "\n" + promocaoString +
                "\n" + precoString +
                "\n- Assentos Disponiveis: " + getAssentosDisponiveis() + "/" + (listaAssentos.length - 1);

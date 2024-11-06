@@ -41,6 +41,6 @@ public class Ingresso {
                " | Data: " + sessao.getDiaSessao() + " " + sessao.getHorarioSessao() + 
                " | Sala: " + sessao.getSalaSessao().getNroSala() + 
                " | Poltrona: " + getNroAssento() + 
-               " | Preço: " + getPrecoIngresso();
+               " | Preço: R$" + getPrecoIngresso();
     }
 }

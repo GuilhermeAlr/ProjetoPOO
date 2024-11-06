@@ -270,7 +270,7 @@ public class Gerente extends Pessoa{
 		int nroUsuarios = 0; 
 			
 		for(Usuario user : UsuariosCadastrados) {
-			if(user.getAssinaturaUsuario()) {
+			if(user instanceof UsuarioAssinante) {
 				nroUsuariosAssinantes++;
 				nroUsuarios++;
 			}

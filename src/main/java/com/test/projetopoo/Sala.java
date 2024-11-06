@@ -40,9 +40,9 @@ public class Sala {
     
     @Override
     public String toString() {
-        return "Sala: " + getNroSala() + 
-               "\n- Numero de Assento: " + getNroAssentos() + 
-               "\n- Tipo de Tela: " + (this.tipoTela ? "3D" : "2D");
+        return "Sala " + getNroSala() + 
+               " | Numero de Assentos: " + getNroAssentos() + 
+               " | Tipo de Tela: " + (this.tipoTela ? "3D" : "2D");
     }
     
 }
