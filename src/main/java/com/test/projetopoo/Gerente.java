@@ -265,10 +265,17 @@ public class Gerente extends Pessoa{
 
     public void gerarRelatorioSessoes(ArrayList <Sessao> SessoesCadastradas) {
     	for(Sessao sessao : SessoesCadastradas) {
-    		System.out.print(sessao);
-	}
+    		if(!(sessao instanceof SessaoIndisponivel)) {
+    		System.out.print(sessao + "\n-Disponiblidade: Disponivel");
+    		}
+    	}
+    	for(Sessao sessao : SessoesCadastradas) {
+    		if(sessao instanceof SessaoIndisponivel) {
+    		System.out.println(sessao + "\n- Disponiblidade: Indisponivel" + "\n-Motivo de exclusao: " + SessaoIndisponivel.getMotivoExclusaoSessao()); 
+    		}
+    	}
     }
-
+    
     public void gerarRelatorioSalas(ArrayList <Sala> SalasCadastradas) {
     	for(Sala salas : SalasCadastradas) {
     		System.out.print(salas);
