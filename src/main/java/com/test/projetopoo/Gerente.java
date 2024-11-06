@@ -246,5 +246,40 @@ public class Gerente extends Pessoa{
             return false; 
         }
     }    
+    //Métodos de relatório 
+    public void gerarRelatorioFilmes(ArrayList <Filme> FilmesCadastrados) {
+    	for(Filme movie : FilmesCadastrados) {
+    		System.out.print(movie);
+    	}
+    }
+
+    public void gerarRelatorioSessoes(ArrayList <Sessao> SessoesCadastradas) {
+    	for(Sessao sessao : SessoesCadastradas) {
+    		System.out.print(sessao);
+	}
+    }
+
+    public void gerarRelatorioSalas(ArrayList <Sala> SalasCadastradas) {
+    	for(Sala salas : SalasCadastradas) {
+    		System.out.print(salas);
+	}
+    }
+    
+    public void gerarRelatorioUsuarios(ArrayList <Usuario> UsuariosCadastrados) {
+		int nroUsuariosAssinantes = 0; 
+		int nroUsuarios = 0; 
+			
+		for(Usuario user : UsuariosCadastrados) {
+			if(user.getAssinaturaUsuario()) {
+				nroUsuariosAssinantes++;
+				nroUsuarios++;
+			}
+			else {
+				nroUsuarios++; 
+			}
+		}
+		System.out.print("Usuarios cadastrados: " + nroUsuarios +
+	        	"\nUsuarios assinantes: " + nroUsuariosAssinantes);
+   }
 
 }
