@@ -466,9 +466,17 @@ public class Main {
 
         Filme filme = gerente.buscarFilme(nomeFilme);
         
-        if (filme != null) { // VERIFICAR SE TEM SESSOES CADASTRADAS
+        if (filme != null) { 
             System.out.printf("Digite o motivo de exclusao do filme: ");
             motivoExclusaoFilme = sc.nextLine();
+
+            for (Sessao s : gerente.getCinema().getListaSessoes()) { // verifica se ha sessoes cadastradas com aquele filme
+                if (s.getFilmeSessao() == filme) {
+                    System.out.println("Sessao possui filme cadastrado. Tente novamente");
+                    System.out.println();
+                    return;
+                }
+            }
 
             System.out.print("Confirmar remocao do filme (Sim ou Nao): ");
             confirmacao = sc.nextLine();
@@ -665,7 +673,16 @@ public class Main {
 
         Sala sala = gerente.buscarSala(nroSala);
         
-        if (sala != null) { // VERIFICAR SE TEM SESSOES CADASTRADAS
+        if (sala != null) {
+
+            for (Sessao s : gerente.getCinema().getListaSessoes()) { // verifica se ha alguma sessao cadastrada para a sala
+                if (s.getSalaSessao() == sala) {
+                    System.out.println("Sala possui sessao cadastrada");
+                    System.out.println();
+                    return;
+                }
+            }
+
             System.out.print("Confirmar remocao da sala (Sim ou Nao): ");
             confirmacao = sc.nextLine();
 
@@ -943,7 +960,8 @@ public class Main {
 
         Sessao sessao = gerente.buscarSessao(codigoSessao);
         
-        if (sessao != null) { // VERIFICAR SE TEM SESSOES CADASTRADAS
+        if (sessao != null) { // VERIFICAR SE TEM PESSOAS QUE COMPRARAM INGRESSO
+
             System.out.printf("Digite o motivo de exclusao do filme: ");
             motivoExclusaoSessao = sc.nextLine();
 
