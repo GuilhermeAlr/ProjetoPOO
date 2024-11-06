@@ -247,11 +247,21 @@ public class Gerente extends Pessoa{
         }
     }    
     //Métodos de relatório 
+    //métodos de relatório 
     public void gerarRelatorioFilmes(ArrayList <Filme> FilmesCadastrados) {
-    	for(Filme movie : FilmesCadastrados) {
-    		System.out.print(movie);
+    	for(Filme filme: FilmesCadastrados) {
+    		if(!(filme instanceof FilmeIndisponivel)) {
+    			System.out.println(filme + " | Disponibilidade: Em cartaz");
+    		}
+    	}
+    	for(Filme filme: FilmesCadastrados) {
+    		if(filme instanceof FilmeIndisponivel) {
+    			System.out.println
+    			(filme + " | Disponibilidade: Em cartaz" + " | Motivo de exclusao: " + FilmeIndisponivel.getMotivoExclusaoFilme());
+    		}
     	}
     }
+
 
     public void gerarRelatorioSessoes(ArrayList <Sessao> SessoesCadastradas) {
     	for(Sessao sessao : SessoesCadastradas) {
