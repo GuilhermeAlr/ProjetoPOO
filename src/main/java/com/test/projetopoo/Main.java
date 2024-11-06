@@ -150,7 +150,7 @@ public class Main {
                     
                     switch(opcao) {
                         case 1: // aba para comprar ingressos
-                            imprimeMenuUsuarioComprarIngresso(gerente, (Usuario)pessoa, sc);
+                            imprimeMenuUsuarioComprarIngresso((Usuario)pessoa, gerente, sc);
                             break;
                         case 2: // aba para comprar assinatura
                             pessoa = imprimeMenuUsuarioComprarAssinatura((Usuario)pessoa, gerente, sc);
@@ -1114,7 +1114,7 @@ public class Main {
         return opcao;
     }
 
-    public static void imprimeMenuUsuarioComprarIngresso(Gerente gerente, Usuario usuario, Scanner sc) {
+    public static void imprimeMenuUsuarioComprarIngresso(Usuario usuario, Gerente gerente, Scanner sc) {
         String nomeFilme;
         int codigoSessao;
         int nroAssento;
@@ -1124,36 +1124,47 @@ public class Main {
         imprimeListaFilmes(gerente.getCinema());
         System.out.print("Digite o nome do filme escolhido: ");
         nomeFilme = sc.nextLine();
-
+        System.out.println();
+        
         Filme filme = gerente.buscarFilme(nomeFilme);
 
-        if (filme != null) {
-            for (Sessao sessao : gerente.getCinema().getListaSessoes()) {
+        if (filme != null) { // se o filme existe no catalogo
+            for (Sessao sessao : gerente.getCinema().getListaSessoes()) { // imprime sessoes do filme escolhido
                 if (sessao.getFilmeSessao() == filme) {
                     System.out.println(sessao.toString());
                 }
             }
+
             System.out.printf("Digite o codigo da sessao escolhida: ");
             codigoSessao = Integer.parseInt(sc.nextLine());
 
             Sessao sessao = gerente.buscarSessao(codigoSessao);
-            System.out.println(sessao.imprimeListaAssentos());
+
+            if (sessao != null) { // se a sessao existe
+                sessao.imprimeListaAssentos();
             
-            do {
-                System.out.printf("Digite o numero do assento disponivel: ");
-                nroAssento = Integer.parseInt(sc.nextLine());
-            } while (sessao.getDisponibilidadeAssento(nroAssento));            
+                do {
+                    System.out.printf("Digite o numero do assento disponivel: ");
+                    nroAssento = Integer.parseInt(sc.nextLine());
+                } while (sessao.getDisponibilidadeAssento(nroAssento));            
 
-            System.out.print("Confirmar compra de ingresso (Sim ou Nao)? ");
-            confirmacao = sc.nextLine();
+                Ingresso ingresso = new Ingresso(sessao, nroAssento, usuario.getPrecoIngresso(sessao));
+                System.out.println(ingresso.toString());
 
-            if (confirmacao.equalsIgnoreCase("Sim")) {
-                if (usuario.comprarIngresso(sessao, nroAssento)) {
-                    System.out.println("Ingresso comprado com sucesso!");
+                System.out.print("Confirmar compra de ingresso (Sim ou Nao): ");
+                confirmacao = sc.nextLine();
+
+                if (confirmacao.equalsIgnoreCase("Sim")) {
+                    if (usuario.comprarIngresso(sessao, nroAssento)) {
+                        System.out.println("Ingresso comprado com sucesso!");
+                    }
+                    else {
+                        System.out.println("Erro ao comprar ingresso");
+                    }
                 }
-                else {
-                    System.out.println("Erro ao comprar ingresso");
-                }
+            }
+            else {
+                System.out.println("Sessao nao encontrada");
             }
         }
         else {

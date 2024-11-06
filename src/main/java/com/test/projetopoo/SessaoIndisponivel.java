@@ -16,6 +16,7 @@ public class SessaoIndisponivel extends Sessao{
     public String getMotivoExclusaoSessao(){
         return this.motivoExclusaoSessao;
     }
+    
     @Override
     public String toString() {
         String promocaoString = "";

@@ -13,12 +13,12 @@ public class Sessao{
     private Sala salaSessao;
     private Filme filmeSessao;
     
-    //Construtor da classe Sessao
+    // construtor da classe Sessao
     public Sessao(int codigoSessao, LocalDate diaSessao, LocalTime horarioSessao, double precoSessao, Boolean comPromocao, double porcentagemPromocional, Sala salaSessao, Filme filmeSessao){
         setCodigoSessao(codigoSessao);
         setDiaSessao(diaSessao);
         setHorarioSessao(horarioSessao);
-        setListaAssentos(salaSessao.getNroAssentos());
+        setListaAssentos(salaSessao.getNroAssentos() + 1); // a lista de assentos começa em 1 e vai ate nro de assentos da sala
         setPrecoSessao(precoSessao);
         setComPromocao(comPromocao); 
         setPorcentagemPromocional(porcentagemPromocional);
@@ -26,19 +26,40 @@ public class Sessao{
         setFilmeSessao(filmeSessao);
     }
 
-    //Metodo reservar o lugar
-    public void reservarAssento(int assentoReservado){
-            this.listaAssentos[assentoReservado] = true;
+    // metodo para reservar o lugar
+    public void reservarAssento(int nroAssento){
+            this.listaAssentos[nroAssento] = true;
     }
 
+    // metodo que retorna se o assento esta disponivel ou nao
     public Boolean getDisponibilidadeAssento(int nroAssento) {
         return this.listaAssentos[nroAssento];
     }
 
+    public void imprimeListaAssentos(){
+        String assento = "";
+        
+        for (int i = 1; i < getListaAssentos().length; i++) {
+            if (listaAssentos[i]) {
+                assento += "[X] ";
+            } else {
+                assento += "[" + i + "] "; 
+            }
+            
+            //quebra a linha a cada 10 assentos
+            if (i % 10 == 0) {
+                assento += "\n"; 
+            }
+        }
+
+        System.out.println(assento);
+    }
+
+    // metodo que retorna o nro de assentos disponiveis
     public int getAssentosDisponiveis() {
         int nroAssentosDisponiveis = 0;
 
-        for (int i = 0; i < listaAssentos.length; i++) {
+        for (int i = 1; i < listaAssentos.length; i++) {
             if (getDisponibilidadeAssento(i) == false) {
                 nroAssentosDisponiveis++;
             } 
@@ -47,27 +68,7 @@ public class Sessao{
         return nroAssentosDisponiveis;
     }
 
-    // exibir asssentos
-    public String imprimeListaAssentos(){
-        String assento = "";
-        
-        for (int i = 0; i < getListaAssentos().length; i++) {
-            if (listaAssentos[i]) {
-                assento += "[X] ";
-            } else {
-                assento += "[" + (i + 1) + "] "; 
-            }
-            
-            //quebra a linha a cada 10 assentos
-            if ((i + 1) % 10 == 0) {
-                assento += "\n"; 
-            }
-        }
-
-        return assento;
-    }
-
-    //Get e Set: codigoSessao
+    // get e set codigoSessao
     public void setCodigoSessao(int codigoSessao){
         this.codigoSessao = codigoSessao;
     }
@@ -76,7 +77,7 @@ public class Sessao{
         return this.codigoSessao;
     }
     
-    //Get e Set: diaSessao
+    // get e set diaSessao
     public void setDiaSessao(LocalDate diaSessao){
         this.diaSessao = diaSessao;
     }
@@ -85,7 +86,7 @@ public class Sessao{
         return this.diaSessao;
     }
     
-    //Get e Set: horarioSessao
+    // get e set horarioSessao
     public void setHorarioSessao(LocalTime horarioSessao){
         this.horarioSessao = horarioSessao;
     }
@@ -94,10 +95,10 @@ public class Sessao{
         return this.horarioSessao;
     }
     
-    //Get e Set: arrayAssentos
+    // get e set arrayAssentos
     public void setListaAssentos(int nroAssentos){
         listaAssentos = new Boolean[nroAssentos];
-        for (int i = 0; i < listaAssentos.length; i++) { // colocando assentos como indisponiveis
+        for (int i = 1; i < listaAssentos.length; i++) { // colocando assentos como indisponiveis
             listaAssentos[i] = false;
         }
     }
@@ -106,7 +107,7 @@ public class Sessao{
         return this.listaAssentos;
     }
     
-    //Get e Set: precoSessao
+    // get e set precoSessao
     public void setPrecoSessao(double precoSessao){
         this.precoSessao = precoSessao;
     }
@@ -115,7 +116,7 @@ public class Sessao{
         return this.precoSessao;
     }
     
-    //Get e Set: comPromocao
+    // get e set comPromocao
     public void setComPromocao(Boolean comPromocao){
         this.comPromocao = comPromocao;
     }
@@ -123,7 +124,7 @@ public class Sessao{
         return this.comPromocao;
     }
     
-    //Get e Set: porcentagemPromocional
+    // get e set porcentagemPromocional
     public void setPorcentagemPromocional(double porcentagemPromocional){
         this.porcentagemPromocional = porcentagemPromocional;
     }
@@ -131,7 +132,7 @@ public class Sessao{
         return  this.porcentagemPromocional;
     }
     
-    //Get e Set: Sala
+    // get e set salaSessao
     public void setSalaSessao(Sala salaSessao) {
         this.salaSessao = salaSessao;
     }
@@ -140,7 +141,7 @@ public class Sessao{
         return this.salaSessao;
     }
     
-    //Get e Set: Filme
+    // get e set filmeSessao
     public void setFilmeSessao(Filme filmeSessao) {
         this.filmeSessao = filmeSessao;
     }
@@ -150,22 +151,29 @@ public class Sessao{
 
     @Override
     public String toString() {
+        String precoString = "";
         String promocaoString = "";
 
         if (comPromocao == true) {
-            promocaoString = "Sim (%" + (porcentagemPromocional * 100) + ")"; 
+            precoString = "- Preco Original: " + getPrecoSessao() + 
+                        "\n- Preco da Meia-Entrada: " + getPrecoSessao()/2.0 + 
+                        "\n- Preco Promocional: " + (getPrecoSessao() * (1 - porcentagemPromocional)) + 
+                        "\n- Preco para Assinantes: " + getPrecoSessao() * 0.7;
+            promocaoString = "- Possui Promocao: Sim (%" + (porcentagemPromocional * 100) + ")"; 
         }
         else if (comPromocao == false) {
-            promocaoString = "Nao";
+            precoString = "- Preco Original: " + getPrecoSessao() + 
+                        "\n- Preco da Meia-Entrada: " + getPrecoSessao()/2.0 + 
+                        "\n- Preco para Assinantes: " + getPrecoSessao() * 0.7;
+            promocaoString = "- Possui Promocao: Nao";
         }
         return "Sessao: " + getCodigoSessao() + 
                "\n- Filme: " + filmeSessao.getNomeFilme() + 
                "\n- Sala: " + salaSessao.getNroSala() +
                "\n- Dia: " + diaSessao +
                "\n- Horario: " + horarioSessao +
-               "\n- Preco: " + precoSessao +
-               "\n- Assentos Disponiveis: " + getAssentosDisponiveis() + "/" + listaAssentos.length +
-               "\n- Possui Promocao: " + promocaoString;
-
+               "\n" + promocaoString +
+               "\n" + precoString +
+               "\n- Assentos Disponiveis: " + getAssentosDisponiveis() + "/" + (listaAssentos.length - 1);
     }
 }
