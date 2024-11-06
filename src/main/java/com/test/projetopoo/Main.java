@@ -135,6 +135,31 @@ public class Main {
 
                             break;
                         case 5: // aba de relatorios
+                            opcaoMenuGerente = imprimeMenuGerenteRelatorio(sc); 
+                        	
+                        	switch(opcaoMenuGerente) {
+                        		case 1:
+                        			imprimeMenuGerenteRelatorioFilmes(gerente, cinema);
+                        			sc.nextLine();
+                        			break;
+                        		case 2: 
+                        			imprimeMenuGerenteRelatorioSessoes(gerente, cinema); 
+                        			sc.nextLine();
+                        			break;
+                        		case 3: 
+                        			imprimeMenuGerenteRelatorioSalas(gerente, cinema); 
+                        			sc.nextLine();
+                        			break;
+                        		case 4: 
+                        			imprimeMenuGerenteRelatorioUsuario(gerente); 
+                        			sc.nextLine();
+                        			break;
+                                case 5:
+                                    break;
+                                default:
+                                    System.out.println("Opcao invalida. Tente novamente");
+                                    break;                       			
+                        	}        
                             break;
                         case 6: // sair
                             pessoa = null;
@@ -1116,7 +1141,47 @@ public class Main {
         System.out.println();
     }
 
-    public static int imprimeMenuUsuario(Scanner sc) {
+public static int imprimeMenuGerenteRelatorio(Scanner sc) {
+    	int opcao; 
+    	
+    	System.out.println("RELATORIO");
+        System.out.println("(1) Filmes");
+        System.out.println("(2) Sessoes");
+        System.out.println("(3) Sala");
+        System.out.println("(4) Usuarios");
+        System.out.println("(5) Sair");
+
+        System.out.print("Digite uma opcao: ");
+        opcao = Integer.parseInt(sc.nextLine()); 
+        System.out.println();
+        
+        return opcao; 
+    }
+    
+public static void imprimeMenuGerenteRelatorioFilmes(Gerente gerente, Cinema cinema) {
+    	System.out.println("FILMES CADASTRADOS: \n");
+        gerente.gerarRelatorioFilmes(cinema.getListaFilmes());
+        System.out.println();
+    }
+    
+public static void imprimeMenuGerenteRelatorioSessoes(Gerente gerente, Cinema cinema) {
+         System.out.println("SESSOES CADASTRADAS: \n");
+         gerente.gerarRelatorioSessoes(cinema.getListaSessoes());
+         System.out.println();
+    }
+    
+public static void imprimeMenuGerenteRelatorioSalas(Gerente gerente, Cinema cinema) {
+        System.out.println("SALAS CADASTRADAS: \n");
+        gerente.gerarRelatorioSalas(cinema.getListaSalas());
+        System.out.println();	
+    }
+    
+public static void imprimeMenuGerenteRelatorioUsuario(Gerente gerente) {	
+        System.out.println("USUARIOS CADASTRADOS: \n");
+        gerente.gerarRelatorioUsuarios(gerente.getListaUsuarios());
+        System.out.println();	
+    }
+public static int imprimeMenuUsuario(Scanner sc) {
         int opcao;
         
         System.out.println("MENU DO USUARIO");
