@@ -47,6 +47,26 @@ public class Sessao{
         return nroAssentosDisponiveis;
     }
 
+    // exibir asssentos
+    public String imprimeListaAssentos(){
+        String assento = "";
+        
+        for (int i = 0; i < getListaAssentos().length; i++) {
+            if (listaAssentos[i]) {
+                assento += "[X] ";
+            } else {
+                assento += "[" + (i + 1) + "] "; 
+            }
+            
+            //quebra a linha a cada 10 assentos
+            if ((i + 1) % 10 == 0) {
+                assento += "\n"; 
+            }
+        }
+
+        return assento;
+    }
+
     //Get e Set: codigoSessao
     public void setCodigoSessao(int codigoSessao){
         this.codigoSessao = codigoSessao;

@@ -150,6 +150,7 @@ public class Main {
                     
                     switch(opcao) {
                         case 1: // aba para comprar ingressos
+                            imprimeMenuUsuarioComprarIngresso(gerente, (Usuario)pessoa, sc);
                             break;
                         case 2: // aba para comprar assinatura
                             pessoa = imprimeMenuUsuarioComprarAssinatura((Usuario)pessoa, gerente, sc);
@@ -1113,7 +1114,53 @@ public class Main {
         return opcao;
     }
 
-    public static void imprimeMenuUsuarioComprarIngresso() {
+    public static void imprimeMenuUsuarioComprarIngresso(Gerente gerente, Usuario usuario, Scanner sc) {
+        String nomeFilme;
+        int codigoSessao;
+        int nroAssento;
+        String confirmacao;
+
+        System.out.println("CATALOGO DE FILMES");
+        imprimeListaFilmes(gerente.getCinema());
+        System.out.print("Digite o nome do filme escolhido: ");
+        nomeFilme = sc.nextLine();
+
+        Filme filme = gerente.buscarFilme(nomeFilme);
+
+        if (filme != null) {
+            for (Sessao sessao : gerente.getCinema().getListaSessoes()) {
+                if (sessao.getFilmeSessao() == filme) {
+                    System.out.println(sessao.toString());
+                }
+            }
+            System.out.printf("Digite o codigo da sessao escolhida: ");
+            codigoSessao = Integer.parseInt(sc.nextLine());
+
+            Sessao sessao = gerente.buscarSessao(codigoSessao);
+            System.out.println(sessao.imprimeListaAssentos());
+            
+            do {
+                System.out.printf("Digite o numero do assento disponivel: ");
+                nroAssento = Integer.parseInt(sc.nextLine());
+            } while (sessao.getDisponibilidadeAssento(nroAssento));            
+
+            System.out.print("Confirmar compra de ingresso (Sim ou Nao)? ");
+            confirmacao = sc.nextLine();
+
+            if (confirmacao.equalsIgnoreCase("Sim")) {
+                if (usuario.comprarIngresso(sessao, nroAssento)) {
+                    System.out.println("Ingresso comprado com sucesso!");
+                }
+                else {
+                    System.out.println("Erro ao comprar ingresso");
+                }
+            }
+        }
+        else {
+            System.out.println("Filme nao encontrado");
+        }
+        
+        System.out.println();
 
     }
 

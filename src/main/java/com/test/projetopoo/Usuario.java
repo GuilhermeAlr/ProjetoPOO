@@ -46,7 +46,7 @@ public class Usuario extends Pessoa {
 	public boolean comprarIngresso(Sessao sessao, int nroAssento) {
 		if (!sessao.getDisponibilidadeAssento(nroAssento) && this.getIdadeUsuario() >= sessao.getFilmeSessao().getClassificacaoFilme()) {
 			sessao.reservarAssento(nroAssento); // Metodo em sessao para ocupar poltrona selecionada
-			Ingresso ingresso = new Ingresso(sessao, nroAssento, getPrecoIngresso(sessao));
+			Ingresso ingresso = new Ingresso(sessao, nroAssento, this.getPrecoIngresso(sessao));
 			ingressosComprados.add(ingresso);
 			return true;
 		} 

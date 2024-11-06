@@ -10,7 +10,7 @@ public class Ingresso {
         setNroAssento(nroAssento);;
         setPrecoIngresso(precoIngresso);;
     }
-    
+
     public void setSessao(Sessao sessao) {
         this.sessao = sessao;
     }
