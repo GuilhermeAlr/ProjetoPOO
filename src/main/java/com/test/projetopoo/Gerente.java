@@ -355,12 +355,12 @@ public class Gerente extends Pessoa{
     	}	
     }
     
-    public void gerarRelatorioUsuarios(ArrayList <Usuario> UsuariosCadastrados) {
+    public void gerarRelatorioUsuarios() {
 		
     	int nroUsuariosAssinantes = 0; 
 		int nroUsuarios = 0; 
 			
-		for(Usuario user : UsuariosCadastrados) {
+		for(Usuario user : listaUsuarios) {
 			if(user instanceof UsuarioAssinante) {
 				nroUsuariosAssinantes++;
 				nroUsuarios++;
