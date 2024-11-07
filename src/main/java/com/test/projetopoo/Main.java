@@ -1178,7 +1178,7 @@ public static void imprimeMenuGerenteRelatorioSalas(Gerente gerente, Cinema cine
     
 public static void imprimeMenuGerenteRelatorioUsuario(Gerente gerente) {	
         System.out.println("USUARIOS CADASTRADOS: \n");
-        gerente.gerarRelatorioUsuarios(gerente.getListaUsuarios());
+        gerente.gerarRelatorioUsuarios();
         System.out.println();	
     }
 public static int imprimeMenuUsuario(Scanner sc) {
