@@ -1,5 +1,6 @@
 package main.java.com.test.projetopoo;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -751,7 +752,6 @@ public class Main {
     }
 
     public static void imprimeMenuGerenteCadastroSessao(Gerente gerente, Scanner sc) {
-        int codigoSessao;
         String nomeFilme;
         Filme filmeSessao; 
         int nroSala;
@@ -766,54 +766,61 @@ public class Main {
 
         System.out.println("CADASTRAR SESSAO");
         System.out.println("Entre com as informacoes da sessao: ");
-        System.out.print("- Codigo da Sessao: ");
-        codigoSessao = Integer.parseInt(sc.nextLine());
         System.out.print("- Nome do Filme: ");
         nomeFilme = sc.nextLine();
-
+        
+        // busca filme disponivel no catalogo
         filmeSessao = gerente.buscarFilme(nomeFilme);
 
+        // se encontra um filme, o cadastro da sessão é realizado
         if (filmeSessao != null) {
             System.out.print("- Numero da Sala: ");
             nroSala = Integer.parseInt(sc.nextLine());
 
+            // busca sala do cinema
             salaSessao = gerente.buscarSala(nroSala);
             
+            // se encontra uma sala, o cadastro de uma sessao é realizado
             if (salaSessao != null) {
                 System.out.print("- Dia da sessao (DD/MM/YYYY): ");
                 diaSessaoString = sc.nextLine();
                 formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                diaSessao = LocalDate.parse(diaSessaoString, formatter); // TESTAR EXCECAO
+                diaSessao = LocalDate.parse(diaSessaoString, formatter); 
 
                 System.out.print("- Horario da sessao (HH:mm): ");
                 horarioSessaoString = sc.nextLine();
                 formatter = DateTimeFormatter.ofPattern("HH:mm");
                 horarioSessao = LocalTime.parse(horarioSessaoString, formatter);
 
+                LocalDateTime diaHorarioSessao = diaSessao.atTime(horarioSessao);
+
                 System.out.print("- Preco da sessao: ");
                 precoSessao = Double.parseDouble(sc.nextLine());
                 System.out.println();
 
-                Sessao sessaoTemporaria = new Sessao(codigoSessao, diaSessao, horarioSessao, precoSessao, false, 1, salaSessao, filmeSessao); // conferir promocao
+                Sessao sessaoTemporaria = new Sessao(diaHorarioSessao, precoSessao, false, 1, salaSessao, filmeSessao); // conferir promocao
 
                 System.out.println(sessaoTemporaria.toString());
                 System.out.print("Confirmar adicao da sessao (Sim ou Nao): ");
                 confirmacao = sc.nextLine();
 
+                // confirma a criacao de uma sessao
                 if (confirmacao.equalsIgnoreCase("Sim")) {
                     if (gerente.adicionarSessao(sessaoTemporaria)) {
                         System.out.println("Sessao adicionada com sucesso");
                     }
                     else {
-                        System.out.println("Erro ao adicionar a sessao. Codigo da Sessao ja existe");
+                        System.out.println("Erro ao adicionar a sessao");
+                        Sessao.decrementaQuantidadeSessoes();
                     }
                 }
-
+                else {
+                    Sessao.decrementaQuantidadeSessoes();
+                }
             }
             else {
                 System.out.println("Sala nao encontrada");
             }
-
         }
         else {
             System.out.println("Filme nao encontrado");
@@ -835,37 +842,23 @@ public class Main {
         codigoSessao = Integer.parseInt(sc.nextLine());
         System.out.println();
         
+        // busca sessao disponivel no cinema
         Sessao sessao = gerente.buscarSessao(codigoSessao);
 
+        // se encontra sessao no catalogo, permite a mudança de parâmetros
         if (sessao != null) {
             System.out.println("Parametros que podem ser alterados: ");
-            System.out.println("(1) Codigo da Sessao");
-            System.out.println("(2) Filme da Sessao");
-            System.out.println("(3) Sala da Sessao");
-            System.out.println("(4) Dia");
-            System.out.println("(5) Horario");
-            System.out.println("(6) Preco da Sessao");
+            System.out.println("(1) Filme da Sessao");
+            System.out.println("(2) Sala da Sessao");
+            System.out.println("(3) Dia");
+            System.out.println("(4) Horario");
+            System.out.println("(5) Preco da Sessao");
             System.out.print("Escolha um parametro: ");
             opcao = Integer.parseInt(sc.nextLine());
             System.out.println();
 
             switch(opcao) {
-                case 1: 
-                    System.out.print("Digite o codigo novo: ");
-                    int codigoSessaoNovo = Integer.parseInt(sc.nextLine());
-                    System.out.println();
-
-                    System.out.println("- Codigo da Sessao Antigo: " + sessao.getCodigoSessao());
-                    System.out.println("- Codigo da Sessao Novo: " + codigoSessaoNovo);
-
-                    System.out.print("Confirmar edicao (Sim ou Nao): ");
-                    confirmacao = sc.nextLine();
-
-                    if (confirmacao.equalsIgnoreCase("Sim")) {
-                        gerente.editarSessao(sessao, codigoSessaoNovo, LocalDate.of(1500, 1, 1), LocalTime.of(23, 59), -1, null, null);
-                    }
-                    break;
-                case 2:
+                case 1: // mudança do filme da sessão
                     imprimeListaFilmes(gerente.getCinema());
                     System.out.print("Digite o nome do filme novo: ");
                     String nomeFilmeNovo = sc.nextLine();
@@ -881,14 +874,14 @@ public class Main {
                         confirmacao = sc.nextLine();
                         
                         if (confirmacao.equalsIgnoreCase("Sim")) {
-                            gerente.editarSessao(sessao, 0, LocalDate.of(1500, 1, 1), LocalTime.of(23, 59), -1, null, filmeSessao);
+                            gerente.editarSessao(sessao, null, null, -1, null, filmeSessao);
                         }
                     }
                     else {
                         System.out.println("Filme nao encontrado");
                     }
                     break;
-                case 3:
+                case 2: // mudança da sala da sessão
                     imprimeListaSalas(gerente.getCinema());
                     System.out.print("Digite o numero novo da sala: ");
                     int nroSalaNovo = Integer.parseInt(sc.nextLine());
@@ -904,14 +897,14 @@ public class Main {
                         confirmacao = sc.nextLine();
                         
                         if (confirmacao.equalsIgnoreCase("Sim")) {
-                            gerente.editarSessao(sessao, 0, LocalDate.of(1500, 1, 1), LocalTime.of(23, 59), -1, salaSessao, null);
+                            gerente.editarSessao(sessao, null, null, -1, salaSessao, null);
                         }
                     }
                     else {
                         System.out.println("Sala nao encontrada");
                     }
                     break;
-                case 4:
+                case 3: // mudança do dia da sessão
                     System.out.print("Digite o dia novo (DD/MM/YYYY): ");
                     String diaSessaoString = sc.nextLine();
                     formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -925,13 +918,13 @@ public class Main {
                     confirmacao = sc.nextLine();
                         
                     if (confirmacao.equalsIgnoreCase("Sim")) {
-                        gerente.editarSessao(sessao, 0, diaSessao, LocalTime.of(23, 59), -1, null, null);
+                        gerente.editarSessao(sessao, diaSessao, null, -1, null, null);
                     }
                     break;
-                case 5:
+                case 4: // mudança do horário da sessão
                     System.out.print("Digite o horario novo (MM:mm): ");
                     String horarioSessaoString = sc.nextLine();
-                    formatter = DateTimeFormatter.ofPattern("MM:mm");
+                    formatter = DateTimeFormatter.ofPattern("HH:mm");
                     LocalTime horarioSessao = LocalTime.parse(horarioSessaoString, formatter); // TESTAR EXCECAO
                     System.out.println();
                     
@@ -942,10 +935,10 @@ public class Main {
                     confirmacao = sc.nextLine();
                         
                     if (confirmacao.equalsIgnoreCase("Sim")) {
-                        gerente.editarSessao(sessao, 0, LocalDate.of(1500, 1, 1), horarioSessao, -1, null, null);
+                        gerente.editarSessao(sessao, null, horarioSessao, -1, null, null);
                     }
                     break;
-                case 6:
+                case 5: // mudança do preço da sessão
                     System.out.print("Digite o preco novo: ");
                     double precoSessaoNovo = Double.parseDouble(sc.nextLine());
                     System.out.println();
@@ -957,7 +950,7 @@ public class Main {
                     confirmacao = sc.nextLine();
                         
                     if (confirmacao.equalsIgnoreCase("Sim")) {
-                        gerente.editarSessao(sessao, 0, LocalDate.of(1500, 1, 1), LocalTime.of(23, 59), precoSessaoNovo, null, null);
+                        gerente.editarSessao(sessao, null, null, precoSessaoNovo, null, null);
                     }
                     break;
                 default:
@@ -983,9 +976,11 @@ public class Main {
         System.out.printf("Digite o codigo da sessao a ser removida: ");
         codigoSessao = Integer.parseInt(sc.nextLine());
 
+        // busca sessão disponivel no cinema
         Sessao sessao = gerente.buscarSessao(codigoSessao);
         
-        if (sessao != null) { // VERIFICAR SE TEM PESSOAS QUE COMPRARAM INGRESSO
+        // se encontra sessão no catálogo, permite a remoção
+        if (sessao != null) {
 
             System.out.printf("Digite o motivo de exclusao da sessao: ");
             motivoExclusaoSessao = sc.nextLine();
@@ -995,15 +990,15 @@ public class Main {
 
             if (confirmacao.equalsIgnoreCase("Sim")) {
                 if (gerente.removerSessao(sessao, motivoExclusaoSessao)) {
-                    System.out.println("Sala removida com sucesso");
+                    System.out.println("Sessao removida com sucesso");
                 }
                 else {
-                    System.out.println("Sala ja foi removido");
+                    System.out.println("Sessao ja foi removida");
                 }
             }
         }
         else {
-            System.out.println("Sala nao encontrado");
+            System.out.println("Sessao nao encontrada");
         }
         
         System.out.println();

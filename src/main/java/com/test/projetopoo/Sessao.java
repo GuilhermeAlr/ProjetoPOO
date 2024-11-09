@@ -1,11 +1,12 @@
 package main.java.com.test.projetopoo;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 public class Sessao{
+    private static int quantidadeSessoes = 0; // numero unico que gera codigo da sessao
     private int codigoSessao;
-    private LocalDate diaSessao; 
-    private LocalTime horarioSessao;
+    private LocalDateTime diaHorarioSessao;
     private Boolean[] listaAssentos;
     private double precoSessao;
     private Boolean comPromocao;
@@ -14,10 +15,11 @@ public class Sessao{
     private Filme filmeSessao;
     
     // construtor da classe Sessao
-    public Sessao(int codigoSessao, LocalDate diaSessao, LocalTime horarioSessao, double precoSessao, Boolean comPromocao, double porcentagemPromocional, Sala salaSessao, Filme filmeSessao){
-        setCodigoSessao(codigoSessao);
-        setDiaSessao(diaSessao);
-        setHorarioSessao(horarioSessao);
+    public Sessao(LocalDateTime diaHorarioSessao, double precoSessao, Boolean comPromocao, double porcentagemPromocional, Sala salaSessao, Filme filmeSessao){
+        quantidadeSessoes++;
+
+        setCodigoSessao(quantidadeSessoes);
+        setDiaHorarioSessao(diaHorarioSessao);
         setListaAssentos(salaSessao.getNroAssentos() + 1); // a lista de assentos começa em 1 e vai ate nro de assentos da sala
         setPrecoSessao(precoSessao);
         setComPromocao(comPromocao); 
@@ -69,30 +71,41 @@ public class Sessao{
     }
 
     // get e set codigoSessao
-    public void setCodigoSessao(int codigoSessao){
+    public void setCodigoSessao(int codigoSessao) {
         this.codigoSessao = codigoSessao;
     }
 
     public int getCodigoSessao(){
-        return this.codigoSessao;
+        return codigoSessao;
+    }
+
+    public static void decrementaQuantidadeSessoes() {
+        quantidadeSessoes--;
     }
     
-    // get e set diaSessao
+    // get e set diaHorarioSessao
+    public void setDiaHorarioSessao(LocalDateTime diaHorarioSessao) {
+        this.diaHorarioSessao = diaHorarioSessao;
+    }
+
+    public LocalDateTime getDiaHorarioSessao() {
+        return this.diaHorarioSessao;
+    }
+
     public void setDiaSessao(LocalDate diaSessao){
-        this.diaSessao = diaSessao;
+        this.diaHorarioSessao = getHorarioSessao().atDate(diaSessao);
     }
 
     public LocalDate getDiaSessao(){
-        return this.diaSessao;
+        return this.diaHorarioSessao.toLocalDate();
     }
     
-    // get e set horarioSessao
     public void setHorarioSessao(LocalTime horarioSessao){
-        this.horarioSessao = horarioSessao;
+        this.diaHorarioSessao = getDiaSessao().atTime(horarioSessao);
     }
 
     public LocalTime getHorarioSessao(){
-        return this.horarioSessao;
+        return this.diaHorarioSessao.toLocalTime();
     }
     
     // get e set arrayAssentos
@@ -170,7 +183,7 @@ public class Sessao{
         return "Sessao: " + getCodigoSessao() + 
                " | Filme: " + filmeSessao.getNomeFilme() + 
                " | Sala " + salaSessao.getNroSala() +
-               " | Data: " + diaSessao + " " + horarioSessao +
+               " | Data: " + getDiaSessao() + " " + getHorarioSessao() +
                "\n" + promocaoString +
                "\n" + precoString +
                "\n- Assentos Disponiveis: " + getAssentosDisponiveis() + "/" + (listaAssentos.length - 1);
