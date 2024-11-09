@@ -151,32 +151,18 @@ public class Gerente extends Pessoa{
         
     }
 
-    // metodos para adicionar, editar e remover sala
+    // método para adicionar sessao ao ArrayList
     public boolean adicionarSessao(Sessao sessao) {
-        if (buscarSessao(sessao.getCodigoSessao()) == null) {
-            cinema.getListaSessoes().add(sessao);
-            return true;
-        }
-        else {
-            return false;
-        }
-        
+        cinema.getListaSessoes().add(sessao);
+        return true; 
     }
 
-    public boolean editarSessao(Sessao sessao, int codigoSessaoNovo, LocalDate diaSessaoNovo, LocalTime horarioSessaoNovo, double precoSessaoNovo, Sala salaSessaoNovo, Filme filmeSessaoNovo) {
-        
-        if (codigoSessaoNovo != 0) {
-            if (buscarSessao(codigoSessaoNovo) == null) { // checa se a pessoa esta modificando o codigo de uma sessao para um que nao existe
-                sessao.setCodigoSessao(codigoSessaoNovo);
-            }
-            else {
-                return false;
-            }
-        }
-        else if (!diaSessaoNovo.isEqual(LocalDate.of(1500, 1, 1))) {
+    // método para editar parâmetros de sessão
+    public boolean editarSessao(Sessao sessao, LocalDate diaSessaoNovo, LocalTime horarioSessaoNovo, double precoSessaoNovo, Sala salaSessaoNovo, Filme filmeSessaoNovo) {
+        if (diaSessaoNovo != null) {
             sessao.setDiaSessao(diaSessaoNovo);
         }
-        else if (!horarioSessaoNovo.equals(LocalTime.of(23, 59))) { 
+        else if (horarioSessaoNovo != null) { 
             sessao.setHorarioSessao(horarioSessaoNovo);
         }
         else if (precoSessaoNovo != -1) { 
@@ -194,7 +180,7 @@ public class Gerente extends Pessoa{
     public boolean removerSessao(Sessao sessao, String motivoExclusaoSessao) {
         if (!(sessao instanceof SessaoIndisponivel)) {
             int index = cinema.getListaSessoes().indexOf(sessao);
-            SessaoIndisponivel sessaoIndisponivel = new SessaoIndisponivel(sessao.getCodigoSessao(),sessao.getDiaSessao(), sessao.getHorarioSessao(),sessao.getPrecoSessao(), sessao.getComPromocao(), sessao.getPorcentagemPromocional(), sessao.getSalaSessao(), sessao.getFilmeSessao(), motivoExclusaoSessao);
+            SessaoIndisponivel sessaoIndisponivel = new SessaoIndisponivel(sessao.getDiaHorarioSessao(),sessao.getPrecoSessao(), sessao.getComPromocao(), sessao.getPorcentagemPromocional(), sessao.getSalaSessao(), sessao.getFilmeSessao(), motivoExclusaoSessao);
             cinema.getListaSessoes().set(index, sessaoIndisponivel);
             return true;
         }
