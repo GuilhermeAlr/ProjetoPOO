@@ -60,4 +60,13 @@ public class Filme {
         return this.duracaoFilme;
     }
     
+    @Override
+    public String toString() {
+        return "Filme: " + getNomeFilme() + 
+                " | " + getClassificacaoFilme() + 
+                " | " + getGeneroFilme() + 
+                " | " + getDuracaoFilme() + "m" + "\n" +
+                "- Sinopse: " + getSinopseFilme();
+    }
+
 }
