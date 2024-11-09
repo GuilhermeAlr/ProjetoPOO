@@ -804,13 +804,14 @@ public class Main {
                 System.out.print("Confirmar adicao da sessao (Sim ou Nao): ");
                 confirmacao = sc.nextLine();
 
-                // confirma a criacao de uma sessao
+                // confirma a criacao de uma sessao, checando condições de horário e classificação indicativa
                 if (confirmacao.equalsIgnoreCase("Sim")) {
                     if (gerente.adicionarSessao(sessaoTemporaria)) {
                         System.out.println("Sessao adicionada com sucesso");
                     }
                     else {
-                        System.out.println("Erro ao adicionar a sessao");
+                        System.out.println("Erro ao adicionar a sessao.");
+                        System.out.println("Possiveis problemas: dia e horario coincidem com outra sessao ou sessao +18 antes das 20h.");
                         Sessao.decrementaQuantidadeSessoes();
                     }
                 }
@@ -918,7 +919,9 @@ public class Main {
                     confirmacao = sc.nextLine();
                         
                     if (confirmacao.equalsIgnoreCase("Sim")) {
-                        gerente.editarSessao(sessao, diaSessao, null, -1, null, null);
+                        if (!(gerente.editarSessao(sessao, diaSessao, null, -1, null, null))) {
+                            System.out.println("Erro ao editar sessao. Intervalo de horario coincide com o de outra sessao...");
+                        }
                     }
                     break;
                 case 4: // mudança do horário da sessão
@@ -935,7 +938,9 @@ public class Main {
                     confirmacao = sc.nextLine();
                         
                     if (confirmacao.equalsIgnoreCase("Sim")) {
-                        gerente.editarSessao(sessao, null, horarioSessao, -1, null, null);
+                        if (!(gerente.editarSessao(sessao, null, horarioSessao, -1, null, null))) {
+                            System.out.println("Erro ao editar sessao. Intervalo de horario coincide com o de outra sessao...");
+                        }
                     }
                     break;
                 case 5: // mudança do preço da sessão
