@@ -154,22 +154,25 @@ public class Gerente extends Pessoa{
 
     // método para adicionar sessao ao ArrayList
     public boolean adicionarSessao(Sessao sessao) {
-        LocalDateTime inicioSessao = sessao.getDiaHorarioSessao();
-        LocalDateTime finalSessao = inicioSessao.plusMinutes(sessao.getFilmeSessao().getDuracaoFilme());
+        LocalDateTime inicioSessaoNova = sessao.getDiaHorarioSessao();
+        LocalDateTime finalSessaoNova = inicioSessaoNova.plusMinutes(sessao.getFilmeSessao().getDuracaoFilme());
+
+        // verifica se filme +18 é depois das 20h
+        if (sessao.getFilmeSessao().getClassificacaoFilme() == 18 && sessao.getHorarioSessao().isBefore(LocalTime.of(20,00))) {
+            return false;
+        }
 
         // varre o array de sessoes e compara sessoes que tem a mesma sala e mesmo dia
         // depois verifica se possuem o mesmo intervalo de horario
         for (Sessao s : getCinema().getListaSessoes()) {
             if (sessao.getSalaSessao().equals(s.getSalaSessao()) && sessao.getDiaSessao().equals(s.getDiaSessao())) {
-                if (checarIntervaloHorario(inicioSessao, finalSessao, s.getDiaHorarioSessao(), s.getDiaHorarioSessao().plusMinutes(s.getFilmeSessao().getDuracaoFilme()))) {
+                LocalDateTime inicioSessao = s.getDiaHorarioSessao();
+                LocalDateTime finalSessao = inicioSessao.plusMinutes(s.getFilmeSessao().getDuracaoFilme());
+
+                if (checarIntervaloHorario(inicioSessaoNova, finalSessaoNova, inicioSessao, finalSessao)) {
                     return false;
                 }
             }
-        }
-
-        // verifica se filme +18 é depois das 20h
-        if (sessao.getFilmeSessao().getClassificacaoFilme() == 18 && sessao.getHorarioSessao().isBefore(LocalTime.of(20,00))) {
-            return false;
         }
 
         cinema.getListaSessoes().add(sessao);
@@ -241,20 +244,23 @@ public class Gerente extends Pessoa{
         return null;
     }
 
-    private boolean checarIntervaloHorario(LocalDateTime inicioSessao1, LocalDateTime finalSessao1, LocalDateTime inicioSessao2, LocalDateTime finalSessao2) {
-        if ((inicioSessao1.equals(inicioSessao2) || inicioSessao1.isAfter(inicioSessao2) && inicioSessao1.isBefore(finalSessao2))) {
+    private boolean checarIntervaloHorario(LocalDateTime inicioSessaoNova, LocalDateTime finalSessaoNova, LocalDateTime inicioSessao, LocalDateTime finalSessao) {
+        // checa se horarios de inicio são iguais
+        if (inicioSessaoNova.equals(inicioSessao)) { // correct!!
             return true;
         }
-        else if (finalSessao1.isAfter(inicioSessao1) && (finalSessao1.equals(finalSessao1) || finalSessao1.isBefore(finalSessao2))) {
+        // checa se horarios de inicio e final da sessao nova estao entre o intervalo da sessao
+        else if ((inicioSessaoNova.isAfter(inicioSessao) && inicioSessaoNova.isBefore(finalSessao)) || (finalSessaoNova.isAfter(inicioSessao) && finalSessaoNova.isBefore(finalSessao))) {
             return true;
         }
-        else if (inicioSessao1.isBefore(inicioSessao2) && finalSessao1.isAfter(finalSessao2)) {
+        // checa se horarios de inicio e final de sessao estao entre o intervalo da sessao nova
+        else if ((inicioSessao.isAfter(inicioSessaoNova) && inicioSessao.isBefore(finalSessaoNova)) || (finalSessao.isAfter(inicioSessaoNova)) && finalSessao.isBefore(finalSessaoNova)) {
             return true;
         }
-        else {
+        // o horario esta livre
+        else { 
             return false;
         }
-       
     }
 
 	// métodos para adicionar, editar e excluir promoções para uma sessão 
