@@ -1,7 +1,7 @@
 package main.java.com.test.projetopoo;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -200,7 +200,8 @@ public class Main {
     }
     
     public static int imprimeMenuNaoLogado(Cinema cinema, Scanner sc) {
-        int opcao; 
+        int opcao = 0;
+        boolean continuaLaco = true; 
         
         System.out.println(cinema.getNomeCinema());
         System.out.println("Bem Vindo!");
@@ -208,10 +209,19 @@ public class Main {
         System.out.println("(1) Cadastro");
         System.out.println("(2) Login");
         System.out.println("(3) Sair");
-        System.out.printf("Entre uma opcao: ");
-        opcao = Integer.parseInt(sc.nextLine());
-        System.out.println();
+        
+        do {
+            try {
+                System.out.printf("Entre uma opcao: ");
+                opcao = Integer.parseInt(sc.nextLine());
+                continuaLaco = false;
+                 
+            } catch(NumberFormatException e) {
+                System.out.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
+            }
+        } while(continuaLaco);
 
+        System.out.println();
         return opcao;
     }
     
@@ -247,7 +257,6 @@ public class Main {
         }
         
         System.out.println();
-
     }    
 
     public static Usuario buscarUsuario(String loginUsuario, ArrayList<Usuario> listaUsuarios) {
@@ -288,12 +297,12 @@ public class Main {
         System.out.println("Erro no login. Usuario ou senha incorretos");
         System.out.println();
         return null;
-
     }
     
     public static int imprimeMenuGerente(Scanner sc) {
-        int opcao;
-        
+        int opcao = 0;
+        boolean continuaLaco = true;
+
         System.out.println("MENU DO GERENTE");
         System.out.println("(1) Filme");
         System.out.println("(2) Sala");
@@ -302,15 +311,24 @@ public class Main {
         System.out.println("(5) Exibir Relatorios");
         System.out.println("(6) Sair");
 
-        System.out.print("Digite uma opcao: ");
-        opcao = Integer.parseInt(sc.nextLine());
+        do {
+            try {
+                System.out.printf("Entre uma opcao: ");
+                opcao = Integer.parseInt(sc.nextLine());
+                continuaLaco = false;
+                 
+            } catch(NumberFormatException e) {
+                System.out.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
+            }
+        } while(continuaLaco);
+
         System.out.println();
-        
         return opcao;
     }
 
     public static int imprimeMenuGerenteFilme(Scanner sc) {
-        int opcao;
+        int opcao = 0;
+        boolean continuaLaco = true;
         
         System.out.println("FILME");
         System.out.println("(1) Cadastrar Filme");
@@ -319,10 +337,18 @@ public class Main {
         System.out.println("(4) Listar Filmes");
         System.out.println("(5) Sair");
 
-        System.out.print("Digite uma opcao: ");
-        opcao = Integer.parseInt(sc.nextLine());
+        do {
+            try {
+                System.out.printf("Entre uma opcao: ");
+                opcao = Integer.parseInt(sc.nextLine());
+                continuaLaco = false;
+                 
+            } catch(NumberFormatException e) {
+                System.out.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
+            }
+        } while(continuaLaco);
+
         System.out.println();
-        
         return opcao;
     }
     
@@ -364,11 +390,11 @@ public class Main {
                 System.out.println();
             }
         }
-        
     }
     
     public static void imprimeMenuGerenteEdicaoFilme(Gerente gerente, Scanner sc) {
-        int opcao;
+        int opcao = 0;
+        boolean continuaLaco = true;
         String nomeFilme;
         String confirmacao;
 
@@ -388,8 +414,18 @@ public class Main {
             System.out.println("(4) Genero");
             System.out.println("(5) Duracao");
             System.out.print("Escolha um parametro: ");
-            opcao = Integer.parseInt(sc.nextLine());
-            System.out.println();
+            
+            do {
+                try {
+                    System.out.printf("Entre uma opcao: ");
+                    opcao = Integer.parseInt(sc.nextLine());
+                    continuaLaco = false;
+                     
+                } catch(NumberFormatException e) {
+                    System.out.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
+                }
+            } while(continuaLaco);
+            System.out.println();;
 
             switch(opcao) {
                 case 1: 
@@ -477,7 +513,6 @@ public class Main {
         }
         
         System.out.println();
-       
     }
     
     public static void imprimeMenuGerenteRemocaoFilme(Gerente gerente, Scanner sc) {
@@ -533,7 +568,8 @@ public class Main {
     }
 
     public static int imprimeMenuGerenteSala(Scanner sc) {
-        int opcao;
+        int opcao = 0;
+        boolean continuaLaco = true;
         
         System.out.println("SALA");
         System.out.println("(1) Cadastrar Sala");
@@ -542,10 +578,18 @@ public class Main {
         System.out.println("(4) Listar Salas");
         System.out.println("(5) Sair");
 
-        System.out.print("Digite uma opcao: ");
-        opcao = Integer.parseInt(sc.nextLine());
+        do {
+            try {
+                System.out.printf("Entre uma opcao: ");
+                opcao = Integer.parseInt(sc.nextLine());
+                continuaLaco = false;
+                 
+            } catch(NumberFormatException e) {
+                System.out.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
+            }
+        } while(continuaLaco);
+
         System.out.println();
-        
         return opcao;
     }
 
@@ -598,7 +642,8 @@ public class Main {
     }
 
     public static void imprimeMenuGerenteEdicaoSala(Gerente gerente, Scanner sc) {
-        int opcao;
+        int opcao = 0;
+        boolean continuaLaco = true;
         int nroSala;
         String confirmacao;
 
@@ -616,7 +661,17 @@ public class Main {
             System.out.println("(2) Numero de Assentos");
             System.out.println("(3) Tipo de Tela");
             System.out.print("Escolha um parametro: ");
-            opcao = Integer.parseInt(sc.nextLine());
+            
+            do {
+                try {
+                    System.out.printf("Entre uma opcao: ");
+                    opcao = Integer.parseInt(sc.nextLine());
+                    continuaLaco = false;
+                     
+                } catch(NumberFormatException e) {
+                    System.out.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
+                }
+            } while(continuaLaco);
             System.out.println();
 
             switch(opcao) {
@@ -735,7 +790,8 @@ public class Main {
     }
 
     public static int imprimeMenuGerenteSessao(Scanner sc) {
-        int opcao;
+        int opcao = 0;
+        boolean continuaLaco = true;
         
         System.out.println("SESSAO");
         System.out.println("(1) Cadastrar Sessao");
@@ -744,10 +800,18 @@ public class Main {
         System.out.println("(4) Listar Sessoes");
         System.out.println("(5) Sair");
 
-        System.out.print("Digite uma opcao: ");
-        opcao = Integer.parseInt(sc.nextLine());
-        System.out.println();
+        do {
+            try {
+                System.out.printf("Entre uma opcao: ");
+                opcao = Integer.parseInt(sc.nextLine());
+                continuaLaco = false;
+                 
+            } catch(NumberFormatException e) {
+                System.out.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
+            }
+        } while(continuaLaco);
         
+        System.out.println();
         return opcao;
     }
 
@@ -832,7 +896,8 @@ public class Main {
     }
 
     public static void imprimeMenuGerenteEdicaoSessao(Gerente gerente, Scanner sc) {
-        int opcao;
+        int opcao = 0;
+        boolean continuaLaco = true;
         int codigoSessao;
         DateTimeFormatter formatter;
         String confirmacao;
@@ -855,7 +920,17 @@ public class Main {
             System.out.println("(4) Horario");
             System.out.println("(5) Preco da Sessao");
             System.out.print("Escolha um parametro: ");
-            opcao = Integer.parseInt(sc.nextLine());
+            
+            do {
+                try {
+                    System.out.printf("Entre uma opcao: ");
+                    opcao = Integer.parseInt(sc.nextLine());
+                    continuaLaco = false;
+                     
+                } catch(NumberFormatException e) {
+                    System.out.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
+                }
+            } while(continuaLaco);
             System.out.println();
 
             switch(opcao) {
@@ -1018,18 +1093,27 @@ public class Main {
     }
 
     public static int imprimeMenuGerentePromocao(Scanner sc) {
-        int opcao;
+        int opcao = 0;
+        boolean continuaLaco = true;
         
         System.out.println("PROMOCAO");
         System.out.println("(1) Cadastrar Promocao");
         System.out.println("(2) Editar Promocao");
         System.out.println("(3) Remover Promocao");
         System.out.println("(4) Sair");
-
-        System.out.print("Digite uma opcao: ");
-        opcao = Integer.parseInt(sc.nextLine());
-        System.out.println();
         
+        do {
+            try {
+                System.out.printf("Entre uma opcao: ");
+                opcao = Integer.parseInt(sc.nextLine());
+                continuaLaco = false;
+                 
+            } catch(NumberFormatException e) {
+                System.out.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
+            }
+        } while(continuaLaco);
+
+        System.out.println();
         return opcao;
     }
 
@@ -1142,7 +1226,8 @@ public class Main {
     }
 
 public static int imprimeMenuGerenteRelatorio(Scanner sc) {
-    	int opcao; 
+    	int opcao = 0;
+        boolean continuaLaco = true; 
     	
     	System.out.println("RELATORIO");
         System.out.println("(1) Filmes");
@@ -1151,38 +1236,48 @@ public static int imprimeMenuGerenteRelatorio(Scanner sc) {
         System.out.println("(4) Usuarios");
         System.out.println("(5) Sair");
 
-        System.out.print("Digite uma opcao: ");
-        opcao = Integer.parseInt(sc.nextLine()); 
+        do {
+            try {
+                System.out.printf("Entre uma opcao: ");
+                opcao = Integer.parseInt(sc.nextLine());
+                continuaLaco = false;
+                 
+            } catch(NumberFormatException e) {
+                System.out.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
+            }
+        } while(continuaLaco);
+
         System.out.println();
-        
         return opcao; 
     }
     
-public static void imprimeMenuGerenteRelatorioFilmes(Gerente gerente, Cinema cinema) {
-    	System.out.println("FILMES CADASTRADOS: \n");
+    public static void imprimeMenuGerenteRelatorioFilmes(Gerente gerente, Cinema cinema) {
+        System.out.println("FILMES CADASTRADOS: \n");
         gerente.gerarRelatorioFilmes(cinema.getListaFilmes());
         System.out.println();
     }
     
-public static void imprimeMenuGerenteRelatorioSessoes(Gerente gerente, Cinema cinema) {
-         System.out.println("SESSOES CADASTRADAS: \n");
-         gerente.gerarRelatorioSessoes(cinema.getListaSessoes());
-         System.out.println();
+    public static void imprimeMenuGerenteRelatorioSessoes(Gerente gerente, Cinema cinema) {
+        System.out.println("SESSOES CADASTRADAS: \n");
+        gerente.gerarRelatorioSessoes(cinema.getListaSessoes());
+        System.out.println();
     }
     
-public static void imprimeMenuGerenteRelatorioSalas(Gerente gerente, Cinema cinema) {
+    public static void imprimeMenuGerenteRelatorioSalas(Gerente gerente, Cinema cinema) {
         System.out.println("SALAS CADASTRADAS: \n");
         gerente.gerarRelatorioSalas(cinema.getListaSalas());
         System.out.println();	
     }
     
-public static void imprimeMenuGerenteRelatorioUsuario(Gerente gerente) {	
+    public static void imprimeMenuGerenteRelatorioUsuario(Gerente gerente) {	
         System.out.println("USUARIOS CADASTRADOS: \n");
         gerente.gerarRelatorioUsuarios();
         System.out.println();	
     }
-public static int imprimeMenuUsuario(Scanner sc) {
-        int opcao;
+    
+    public static int imprimeMenuUsuario(Scanner sc) {
+        int opcao = 0;
+        boolean continuaLaco = true;
         
         System.out.println("MENU DO USUARIO");
         System.out.println("(1) Comprar Ingresso");
@@ -1190,10 +1285,18 @@ public static int imprimeMenuUsuario(Scanner sc) {
         System.out.println("(3) Ver perfil");
         System.out.println("(4) Sair");
 
-        System.out.print("Digite uma opcao: ");
-        opcao = Integer.parseInt(sc.nextLine());
-        System.out.println();
+        do {      
+            try {
+                System.out.print("Digite uma opcao: ");
+                opcao = Integer.parseInt(sc.nextLine());
+                continuaLaco = false;
+                 
+            } catch(NumberFormatException e) {
+                System.out.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
+            }
+        } while(continuaLaco);
         
+        System.out.println();
         return opcao;
     }
 

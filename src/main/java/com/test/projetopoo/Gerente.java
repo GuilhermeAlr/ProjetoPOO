@@ -249,11 +249,11 @@ public class Gerente extends Pessoa{
         if (inicioSessaoNova.equals(inicioSessao)) { // correct!!
             return true;
         }
-        // checa se horarios de inicio e final da sessao nova estao entre o intervalo da sessao
+        // checa se horarios de inicio e final da sessao nova estao entre o intervalo da sessao existente
         else if ((inicioSessaoNova.isAfter(inicioSessao) && inicioSessaoNova.isBefore(finalSessao)) || (finalSessaoNova.isAfter(inicioSessao) && finalSessaoNova.isBefore(finalSessao))) {
             return true;
         }
-        // checa se horarios de inicio e final de sessao estao entre o intervalo da sessao nova
+        // checa se horarios de inicio e final de sessao existente estao entre o intervalo da sessao nova
         else if ((inicioSessao.isAfter(inicioSessaoNova) && inicioSessao.isBefore(finalSessaoNova)) || (finalSessao.isAfter(inicioSessaoNova)) && finalSessao.isBefore(finalSessaoNova)) {
             return true;
         }
