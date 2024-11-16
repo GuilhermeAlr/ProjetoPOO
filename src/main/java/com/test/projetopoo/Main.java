@@ -9,7 +9,6 @@ public class Main {
 
     public static void main(String[] args) {
         Cinema cinema = new Cinema("GIG CINEMAS");
-
         Gerente gerente = new Gerente("Nome do Admin", "admin", "123", cinema);
         
         Scanner sc = new Scanner(System.in);
@@ -31,14 +30,14 @@ public class Main {
                     case 3:
                         System.exit(0);
                     default:
-                        System.out.println("Opcao invalida. Tente novamente");
+                        System.out.println("- Erro: opcao invalida. Tente novamente!");
                         break;
                 }
                 
             }
             
             else {
-                if (pessoa instanceof Gerente) { // menu gerente
+                if (pessoa instanceof Gerente) { // menu do gerente
                     opcao = imprimeMenuGerente(sc);
                     
                     switch(opcao) {
@@ -62,7 +61,7 @@ public class Main {
                                 case 5:
                                     break;
                                 default:
-                                    System.out.println("Opcao invalida. Tente novamente");
+                                    System.out.println("- Erro: opcao invalida. Tente novamente!");
                                     break;
                             }
                             break;
@@ -86,7 +85,7 @@ public class Main {
                                 case 5:
                                     break;
                                 default:
-                                    System.out.println("Opcao invalida. Tente novamente");
+                                    System.out.println("- Erro: opcao invalida. Tente novamente!");
                                     break;
                             }
                             break;
@@ -110,7 +109,7 @@ public class Main {
                                 case 5:
                                     break;
                                 default:
-                                    System.out.println("Opcao invalida. Tente novamente");
+                                    System.out.println("- Erro: opcao invalida. Tente novamente!");
                                     break;
                             }
                             break;
@@ -130,7 +129,7 @@ public class Main {
                                 case 4: 
                                     break;
                                 default: 
-                                    System.out.println("Opcao invalida. Tente novamente");
+                                    System.out.println("- Erro: opcao invalida. Tente novamente!");
                                     break;
                             }
 
@@ -166,12 +165,12 @@ public class Main {
                             pessoa = null;
                             break;
                         default:
-                            System.out.println("Opcao invalida. Tente novamente");
+                        System.out.println("- Erro: opcao invalida. Tente novamente!");
                             break;
                     } 
                     
                 }
-                else if (pessoa instanceof Usuario) { // menu usuario
+                else if (pessoa instanceof Usuario) { // menu do usuario
                     opcao = imprimeMenuUsuario(sc);
                     
                     switch(opcao) {
@@ -182,20 +181,20 @@ public class Main {
                             pessoa = imprimeMenuUsuarioComprarAssinatura((Usuario)pessoa, gerente, sc);
                             break;
                         case 3: // aba para ver perfil
-                            imprimeMenuUsuarioPerfil((Usuario)pessoa); // VERIFICAR ISSO
+                            imprimeMenuUsuarioPerfil((Usuario)pessoa);
                             sc.nextLine();
                             break;
                         case 4: // sair 
                             pessoa = null;
                             break;
                         default:
-                            System.out.println("Opcao invalida. Tente novamente");
+                            System.out.println("- Erro: opcao invalida. Tente novamente!");
                             break;
                     }    
                 }
             }
         }
-        
+
         sc.close();
     }
     
@@ -253,13 +252,14 @@ public class Main {
             System.out.println("- Senha: " + senhaUsuario);
         }
         else {
-            System.out.println("Erro no cadastro. Usuario ja esta cadastrado");            
+            System.out.println("- Erro no cadastro: usuario ja esta cadastrado. Tente novamente!");
         }
         
-        System.out.println();
+        sc.nextLine();
     }    
 
-    public static Usuario buscarUsuario(String loginUsuario, ArrayList<Usuario> listaUsuarios) {
+    // metodo que busca o login do usuario no arraylist de usuarios
+    private static Usuario buscarUsuario(String loginUsuario, ArrayList<Usuario> listaUsuarios) {
         for (Usuario usuarioTemporario : listaUsuarios) {
             if (loginUsuario.equals(usuarioTemporario.getLoginPessoa())) {
                 return usuarioTemporario;
@@ -280,22 +280,24 @@ public class Main {
         senhaTemporaria = sc.nextLine();
         System.out.println();
 
+        // checa se administrador esta fazendo o login
         if (loginTemporario.equals(gerente.getLoginPessoa()) && senhaTemporaria.equals(gerente.getSenhaPessoa())) {
             System.out.println("Sucesso no Login! Bem-vindo!");   
-            System.out.println();         
+            sc.nextLine();         
             return gerente;
         }
 
+        // checa se usuario cadastrado esta fazendo o login
         for (Usuario usuarioTemporario : listaUsuarios) {
             if (loginTemporario.equals(usuarioTemporario.getLoginPessoa()) && senhaTemporaria.equals(usuarioTemporario.getSenhaPessoa())) {
                 System.out.println("Sucesso no Login! Bem-vindo!");
-                System.out.println();
-                return usuarioTemporario;
+                sc.nextLine();        
+                return usuarioTemporario; 
             }
         }   
         
-        System.out.println("Erro no login. Usuario ou senha incorretos");
-        System.out.println();
+        System.out.println("- Erro no login: usuario ou senha incorretos. Tente novamente!");
+        sc.nextLine();         
         return null;
     }
     
@@ -381,15 +383,15 @@ public class Main {
         confirmacao = sc.nextLine();
         
         if (confirmacao.equalsIgnoreCase("Sim")) {
-            if(gerente.adicionarFilme(filmeTemporario)) {
-                System.out.println("Filme adicionado com sucesso");
-                System.out.println();
+            if(gerente.adicionarFilme(filmeTemporario)) { 
+                System.out.println("Filme adicionado com sucesso!");
             }
             else {
-                System.out.println("Filme ja existe no catalogo");
-                System.out.println();
+                System.out.println("- Erro no cadastro: filme ja existe no catalogo. Tente novamente!");
             }
         }
+
+        sc.nextLine();
     }
     
     public static void imprimeMenuGerenteEdicaoFilme(Gerente gerente, Scanner sc) {
@@ -404,9 +406,10 @@ public class Main {
         nomeFilme = sc.nextLine();
         System.out.println();
         
+        // busca filme disponivel no catalogo e checa se ha alguma sessao cadastrada com aquele filme 
         Filme filme = gerente.buscarFilme(nomeFilme);
-
-        if (filme != null) {
+        
+        if (filme != null && !(gerente.buscarSessaoComFilme(filme))) {
             System.out.println("Parametros que podem ser alterados: ");
             System.out.println("(1) Nome");
             System.out.println("(2) Sinopse");
@@ -440,7 +443,12 @@ public class Main {
                     confirmacao = sc.nextLine();
 
                     if (confirmacao.equalsIgnoreCase("Sim")) {
-                        gerente.editarFilme(filme, nomeNovo, "", -1, "", -1);
+                        if (gerente.editarFilme(filme, nomeNovo, "", -1, "", -1)) {
+                            System.out.println("Filme editado com sucesso!");
+                        }
+                        else {
+                            System.out.println("- Erro na edicao: nome novo do filme ja esta cadastrado. Tente novamente!");
+                        }
                     }
                     break;
                 case 2:
@@ -456,6 +464,7 @@ public class Main {
 
                     if (confirmacao.equalsIgnoreCase("Sim")) {
                         gerente.editarFilme(filme, "", sinopseNova, -1, "", -1);
+                        System.out.println("Filme editado com sucesso!");
                     }
                     break;
                 case 3:
@@ -471,6 +480,7 @@ public class Main {
 
                     if (confirmacao.equalsIgnoreCase("Sim")) {
                         gerente.editarFilme(filme, "", "", classificacaoNova, "", -1);
+                        System.out.println("Filme editado com sucesso!");
                     }
                     break;
                 case 4:
@@ -486,6 +496,7 @@ public class Main {
 
                     if (confirmacao.equalsIgnoreCase("Sim")) {
                         gerente.editarFilme(filme, "", "", -1, generoNovo, -1);
+                        System.out.println("Filme editado com sucesso!");
                     }
                     break;
                 case 5:
@@ -501,18 +512,19 @@ public class Main {
 
                     if (confirmacao.equalsIgnoreCase("Sim")) {
                         gerente.editarFilme(filme, "", "", -1, "", duracaoNova);
+                        System.out.println("Filme editado com sucesso!");
                     }
                     break;
                 default:
-                    System.out.println("Opcao invalida");
+                    System.out.println("- Erro: opcao invalida. Tente novamente!");
                     break;
             }
         }
         else {
-            System.out.println("Filme nao encontrado");
+            System.out.println("- Erro na edicao: filme nao encontrado ou filme com sessao cadastrada. Tente novamente!");
         }
         
-        System.out.println();
+        sc.nextLine();
     }
     
     public static void imprimeMenuGerenteRemocaoFilme(Gerente gerente, Scanner sc) {
@@ -525,41 +537,29 @@ public class Main {
         System.out.printf("Digite o nome do filme a ser removido: ");
         nomeFilme = sc.nextLine();
 
+        // busca filme disponivel no catalogo e checa se ha alguma sessao cadastrada com aquele filme 
         Filme filme = gerente.buscarFilme(nomeFilme);
         
-        if (filme != null) { 
+        if (filme != null && !(gerente.buscarSessaoComFilme(filme))) { 
             System.out.printf("Digite o motivo de exclusao do filme: ");
             motivoExclusaoFilme = sc.nextLine();
-
-            for (Sessao s : gerente.getCinema().getListaSessoes()) { // verifica se ha sessoes cadastradas com aquele filme
-                if (s.getFilmeSessao() == filme) {
-                    System.out.println("Sessao possui filme cadastrado. Tente novamente");
-                    System.out.println();
-                    return;
-                }
-            }
 
             System.out.print("Confirmar remocao do filme (Sim ou Nao): ");
             confirmacao = sc.nextLine();
 
             if (confirmacao.equalsIgnoreCase("Sim")) {
-                if (gerente.removerFilme(filme, motivoExclusaoFilme)) {
-                    System.out.println("Filme removido com sucesso");
-                }
-                else {
-                    System.out.println("Filme ja foi removido");
-                }
+                gerente.removerFilme(filme, motivoExclusaoFilme);
+                System.out.println("Filme removido com sucesso!");
             }
         }
         else {
-            System.out.println("Filme nao encontrado");
+            System.out.println("- Erro na remocao: filme nao encontrado ou filme com sessao cadastrada. Tente novamente!");
         }
         
-        System.out.println();
+        sc.nextLine();
     }
     
     public static void imprimeListaFilmes(Cinema cinema) {
-                
         for (Filme f : cinema.getListaFilmes()) {
             if (!(f instanceof FilmeIndisponivel)) {
                 System.out.println(f.toString());
@@ -608,8 +608,8 @@ public class Main {
         nroAssentos = Integer.parseInt(sc.nextLine());
         System.out.print("- Tipo da Tela (2D ou 3D): ");
         tipoTelaString = sc.nextLine();
-        System.out.println();
 
+        // verifica se o tipo de tela eh valido
         if (tipoTelaString.equalsIgnoreCase("2D")) {
             tipoTela = false;
         }
@@ -617,28 +617,26 @@ public class Main {
             tipoTela = true;
         }
         else {
-            System.out.println("Tipo de tela invalido. Tente novamente");
+            System.out.println("- Erro: tipo de tela invalido. Tente novamente!");
             sc.nextLine();
             return;
         }
 
         Sala salaTemporaria = new Sala(nroSala, nroAssentos, tipoTela);
 
-        
         System.out.println(salaTemporaria.toString());
         System.out.print("Confirmar adicao da sala (Sim ou Nao): ");
         confirmacao = sc.nextLine();
         
         if (confirmacao.equalsIgnoreCase("Sim")) {
             if(gerente.adicionarSala(salaTemporaria)) {
-                System.out.println("Sala adicionada com sucesso");
-                System.out.println();
+                System.out.println("Sala adicionada com sucesso!");
             }
             else {
-                System.out.println("Sala ja existe");
-                System.out.println();
+                System.out.println("- Erro no cadastro: sala ja existe. Tente novamente!");
             }
         }
+        sc.nextLine();
     }
 
     public static void imprimeMenuGerenteEdicaoSala(Gerente gerente, Scanner sc) {
@@ -653,9 +651,10 @@ public class Main {
         nroSala = Integer.parseInt(sc.nextLine());
         System.out.println();
         
+        // busca sala e checa se ha alguma sessao cadastrada com aquela sala 
         Sala sala = gerente.buscarSala(nroSala);
 
-        if (sala != null) { 
+        if (sala != null && !(gerente.buscarSessaoComSala(sala))) { 
             System.out.println("Parametros que podem ser alterados: ");
             System.out.println("(1) Numero da Sala");
             System.out.println("(2) Numero de Assentos");
@@ -687,7 +686,12 @@ public class Main {
                     confirmacao = sc.nextLine();
 
                     if (confirmacao.equalsIgnoreCase("Sim")) {
-                        gerente.editarSala(sala,nroSalaNovo, -1, null);
+                        if (gerente.editarSala(sala,nroSalaNovo, -1, null)) {
+                            System.out.println("Sala editada com sucesso!");
+                        }
+                        else {
+                            System.out.println("Erro na edicao: numero da sala ja esta cadastrado. Tente novamente!");
+                        }
                     }
                     break;
                 case 2:
@@ -703,6 +707,7 @@ public class Main {
 
                     if (confirmacao.equalsIgnoreCase("Sim")) {
                         gerente.editarSala(sala, 0, nroAssentosNovo, null);
+                        System.out.println("Sala editada com sucesso!");
                     }
                     break;
                 case 3:
@@ -731,16 +736,18 @@ public class Main {
 
                     if (confirmacao.equalsIgnoreCase("Sim")) {
                         gerente.editarSala(sala, 0, -1, tipoTelaNovo);
+                        System.out.println("Sala editada com sucesso!");
                     }
                     break;
                 default:
-                    System.out.println("Opcao invalida");
+                    System.out.println("- Erro: opcao invalida. Tente novamente!");
                     break;
             }    
         }
-
-        System.out.println();
-
+        else {
+            System.out.println("- Erro na edicao: sala nao encontrada ou sala com sessao cadastrada. Tente novamente!");
+        }
+        sc.nextLine();
     }
 
     public static void imprimeMenuGerenteRemocaoSala(Gerente gerente, Scanner sc) {
@@ -752,35 +759,22 @@ public class Main {
         System.out.printf("Digite o numero da sala a ser removida: ");
         nroSala = Integer.parseInt(sc.nextLine());
 
+        // busca sala e checa se ha alguma sessao cadastrada com aquela sala 
         Sala sala = gerente.buscarSala(nroSala);
         
-        if (sala != null) {
-
-            for (Sessao s : gerente.getCinema().getListaSessoes()) { // verifica se ha alguma sessao cadastrada para a sala
-                if (s.getSalaSessao() == sala) {
-                    System.out.println("Sala possui sessao cadastrada");
-                    System.out.println();
-                    return;
-                }
-            }
-
+        if (sala != null && !(gerente.buscarSessaoComSala(sala))) {
             System.out.print("Confirmar remocao da sala (Sim ou Nao): ");
             confirmacao = sc.nextLine();
 
             if (confirmacao.equalsIgnoreCase("Sim")) {
-                if (gerente.removerSala(nroSala)) {
-                    System.out.println("Sala removida com sucesso");
-                }
-                else {
-                    System.out.println("Sala ja foi removido");
-                }
+                gerente.removerSala(sala);
+                System.out.println("Sala removida com sucesso!");
             }
         }
         else {
-            System.out.println("Sala nao encontrado");
+            System.out.println("- Erro na edicao: sala nao encontrada ou sala com sessao cadastrada. Tente novamente!");
         }
-        
-        System.out.println();
+        sc.nextLine();
     }
     
     public static void imprimeListaSalas(Cinema cinema) {

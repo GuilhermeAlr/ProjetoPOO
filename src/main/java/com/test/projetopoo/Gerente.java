@@ -1,5 +1,4 @@
 package main.java.com.test.projetopoo;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.LocalDateTime;
@@ -31,88 +30,75 @@ public class Gerente extends Pessoa{
         return this.listaUsuarios;
     }
     
-    // metodos para adicionar, editar e remover filme
+    // metodo para adicionar filme
     public boolean adicionarFilme(Filme filme) {
-        if (buscarFilme(filme.getNomeFilme()) == null) { // se nao encontra o filme
+        // busca se tem filme com o mesmo nome
+        if (this.buscarFilme(filme.getNomeFilme()) == null) { 
             cinema.getListaFilmes().add(filme);
             return true;
         }
-        else {
-            return false;
-        }
-        
+        return false;
     }
 
+    // metodo para editar filme
     public boolean editarFilme(Filme filme, String nomeNovo, String sinopseNova, int classificacaoNova, String generoNovo, int duracaoNova) {
-        if (!(filme instanceof FilmeIndisponivel)) {
-            if (!nomeNovo.equals("")) {
-                if (buscarFilme(nomeNovo) == null) { // checa se a pessoa esta modificando o nome de um filme para um que nao existe
-                    filme.setNomeFilme(nomeNovo); 
-                }
-                else {
-                    return false;
-                }
+        if (!nomeNovo.equals("")) {
+            // checa se o nome novo tem o nome de um filme que ja existe no catalogo
+            if (buscarFilme(nomeNovo) == null) {
+                filme.setNomeFilme(nomeNovo); 
             }
-            else if (!sinopseNova.equals("")) {
-                filme.setSinopseFilme(sinopseNova);
+            else {
+                return false;
             }
-            else if (classificacaoNova != -1) { 
-                filme.setClassificacaoFilme(classificacaoNova);
-            }
-            else if (!generoNovo.equals("")) {
-                filme.setGeneroFilme(generoNovo);
-            }
-            else if (duracaoNova != -1) {
-                filme.setDuracaoFilme(duracaoNova);
-            }
-
         }
-        
+        else if (!sinopseNova.equals("")) {
+            filme.setSinopseFilme(sinopseNova);
+        }
+        else if (classificacaoNova != -1) { 
+            filme.setClassificacaoFilme(classificacaoNova);
+        }
+        else if (!generoNovo.equals("")) {
+            filme.setGeneroFilme(generoNovo);
+        }
+        else if (duracaoNova != -1) {
+            filme.setDuracaoFilme(duracaoNova);
+        }
         return true;
     }
     
-    public boolean removerFilme(Filme filme, String motivoExclusaoFilme) {
-        
-        if (!(filme instanceof FilmeIndisponivel)) {
-            int index = cinema.getListaFilmes().indexOf(filme);
-            FilmeIndisponivel filmeIndisponivel = new FilmeIndisponivel(filme.getNomeFilme(), filme.getSinopseFilme(), filme.getClassificacaoFilme(), filme.getGeneroFilme(), filme.getDuracaoFilme(), motivoExclusaoFilme);
-            cinema.getListaFilmes().set(index, filmeIndisponivel);
-
-            return true;
-        }
-        
-        else {
-            return false;
-        }
-        
+    // metodo para remover filme
+    public void removerFilme(Filme filme, String motivoExclusaoFilme) {
+        // substitui o filme por um filme indisponivel no array
+        int index = cinema.getListaFilmes().indexOf(filme);
+        FilmeIndisponivel filmeIndisponivel = new FilmeIndisponivel(filme.getNomeFilme(), filme.getSinopseFilme(), filme.getClassificacaoFilme(), filme.getGeneroFilme(), filme.getDuracaoFilme(), motivoExclusaoFilme);
+        cinema.getListaFilmes().set(index, filmeIndisponivel);
     }
 
+    // metodo de busca de filme pelo nome (mas nao busca entre filmes indisponiveis)
     public Filme buscarFilme(String nomeFilme) {
         for (Filme f : cinema.getListaFilmes()) {
             if (f.getNomeFilme().equalsIgnoreCase(nomeFilme) && !(f instanceof FilmeIndisponivel)) {
                 return f;
             }
         }
-        
         return null;
-        
     }
 
-    // métodos para adicionar, editar e remover sala
+    // metodo para adicionar sala
     public boolean adicionarSala(Sala sala) {
+        // busca se tem sala com o mesmo numero
         if (buscarSala(sala.getNroSala()) == null) {
             cinema.getListaSalas().add(sala);
             return true;
         }
-        else {
-            return false;
-        }
-        
+        return false;
     }
     
+    // metodo para editar sala
     public boolean editarSala(Sala sala, int nroSalaNovo, int nroAssentoNovo, Boolean tipoTelaNovo){
         if (nroSalaNovo != 0) {
-            if (buscarSala(nroSalaNovo) == null) { // checa se a pessoa esta modificando o numero de uma sala para um que nao existe
+            // checa se o numero novo eh igual ao numero de uma sala que ja existe
+            if (buscarSala(nroSalaNovo) == null) { 
                 sala.setNroSala(nroSalaNovo);
             }
             else {
@@ -126,30 +112,20 @@ public class Gerente extends Pessoa{
             sala.setTipoTela(tipoTelaNovo);
         }
         return true;    
-        
     }
     
-    public boolean removerSala(int nroSala) {
-        Sala sala = buscarSala(nroSala);
-
-        if (sala != null) {
-            cinema.getListaSalas().remove(sala);
-            return true;
-        }
-        else {
-            return false;
-        }
+    public void removerSala(Sala sala) {
+        cinema.getListaSalas().remove(sala);
     }
 
+    // metodo de busca de sala pelo numero
     public Sala buscarSala(int nroSala) {
         for (Sala s : cinema.getListaSalas()) {
             if (s.getNroSala() == nroSala) {
                 return s;
             }
         }
-        
         return null;
-        
     }
 
     // método para adicionar sessao ao ArrayList
@@ -242,6 +218,26 @@ public class Gerente extends Pessoa{
         }
 
         return null;
+    }
+
+    // metodo de busca de sessao com determinado filme (mas nao busca entre sessoes indisponiveis)
+    public boolean buscarSessaoComFilme(Filme filme) {
+        for (Sessao s : cinema.getListaSessoes()) {
+            if (s.getFilmeSessao().equals(filme) && !(s instanceof SessaoIndisponivel)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // metodo de busca de sessao pela sala (mas nao busca entre sessoes indisponiveis)
+    public boolean buscarSessaoComSala(Sala sala) {
+        for (Sessao s : cinema.getListaSessoes()) {
+            if (s.getSalaSessao().equals(sala) && !(s instanceof SessaoIndisponivel)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean checarIntervaloHorario(LocalDateTime inicioSessaoNova, LocalDateTime finalSessaoNova, LocalDateTime inicioSessao, LocalDateTime finalSessao) {
