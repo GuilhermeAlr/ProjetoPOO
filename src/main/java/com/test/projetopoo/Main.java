@@ -6,7 +6,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Main {
-
     public static void main(String[] args) {
         Cinema cinema = new Cinema("GIG CINEMAS");
         Gerente gerente = new Gerente("Nome do Admin", "admin", "123", cinema);
@@ -157,7 +156,7 @@ public class Main {
                                 case 5:
                                     break;
                                 default:
-                                    System.out.println("Opcao invalida. Tente novamente");
+                                    System.out.println("- Erro: opcao invalida. Tente novamente!");
                                     break;                       			
                         	}        
                             break;
@@ -198,7 +197,7 @@ public class Main {
         sc.close();
     }
     
-    public static int imprimeMenuNaoLogado(Cinema cinema, Scanner sc) {
+    private static int imprimeMenuNaoLogado(Cinema cinema, Scanner sc) {
         int opcao = 0;
         boolean continuaLaco = true; 
         
@@ -224,7 +223,7 @@ public class Main {
         return opcao;
     }
     
-    public static void imprimeMenuCadastro(ArrayList<Usuario> listaUsuarios, Gerente gerente, Scanner sc) {
+    private static void imprimeMenuCadastro(ArrayList<Usuario> listaUsuarios, Gerente gerente, Scanner sc) {
         String nomeUsuario;
         String loginUsuario;
         String senhaUsuario;
@@ -269,7 +268,7 @@ public class Main {
         return null;
     }
     
-    public static Pessoa imprimeMenuLogin(ArrayList<Usuario> listaUsuarios, Gerente gerente, Scanner sc) {
+    private static Pessoa imprimeMenuLogin(ArrayList<Usuario> listaUsuarios, Gerente gerente, Scanner sc) {
         String loginTemporario;
         String senhaTemporaria;
         
@@ -301,7 +300,7 @@ public class Main {
         return null;
     }
     
-    public static int imprimeMenuGerente(Scanner sc) {
+    private static int imprimeMenuGerente(Scanner sc) {
         int opcao = 0;
         boolean continuaLaco = true;
 
@@ -328,7 +327,7 @@ public class Main {
         return opcao;
     }
 
-    public static int imprimeMenuGerenteFilme(Scanner sc) {
+    private static int imprimeMenuGerenteFilme(Scanner sc) {
         int opcao = 0;
         boolean continuaLaco = true;
         
@@ -354,7 +353,7 @@ public class Main {
         return opcao;
     }
     
-    public static void imprimeMenuGerenteCadastroFilme(Gerente gerente, Scanner sc) {
+    private static void imprimeMenuGerenteCadastroFilme(Gerente gerente, Scanner sc) {
         String nomeFilme;
         String sinopseFilme;
         int classificacaoFilme;
@@ -394,7 +393,7 @@ public class Main {
         sc.nextLine();
     }
     
-    public static void imprimeMenuGerenteEdicaoFilme(Gerente gerente, Scanner sc) {
+    private static void imprimeMenuGerenteEdicaoFilme(Gerente gerente, Scanner sc) {
         int opcao = 0;
         boolean continuaLaco = true;
         String nomeFilme;
@@ -527,7 +526,7 @@ public class Main {
         sc.nextLine();
     }
     
-    public static void imprimeMenuGerenteRemocaoFilme(Gerente gerente, Scanner sc) {
+    private static void imprimeMenuGerenteRemocaoFilme(Gerente gerente, Scanner sc) {
         String nomeFilme;
         String motivoExclusaoFilme;
         String confirmacao;
@@ -559,7 +558,7 @@ public class Main {
         sc.nextLine();
     }
     
-    public static void imprimeListaFilmes(Cinema cinema) {
+    private static void imprimeListaFilmes(Cinema cinema) {
         for (Filme f : cinema.getListaFilmes()) {
             if (!(f instanceof FilmeIndisponivel)) {
                 System.out.println(f.toString());
@@ -567,7 +566,7 @@ public class Main {
         }
     }
 
-    public static int imprimeMenuGerenteSala(Scanner sc) {
+    private static int imprimeMenuGerenteSala(Scanner sc) {
         int opcao = 0;
         boolean continuaLaco = true;
         
@@ -593,7 +592,7 @@ public class Main {
         return opcao;
     }
 
-    public static void imprimeMenuGerenteCadastroSala(Gerente gerente, Scanner sc) {
+    private static void imprimeMenuGerenteCadastroSala(Gerente gerente, Scanner sc) {
         int nroSala;
         int nroAssentos;
         String tipoTelaString;
@@ -639,7 +638,7 @@ public class Main {
         sc.nextLine();
     }
 
-    public static void imprimeMenuGerenteEdicaoSala(Gerente gerente, Scanner sc) {
+    private static void imprimeMenuGerenteEdicaoSala(Gerente gerente, Scanner sc) {
         int opcao = 0;
         boolean continuaLaco = true;
         int nroSala;
@@ -690,7 +689,7 @@ public class Main {
                             System.out.println("Sala editada com sucesso!");
                         }
                         else {
-                            System.out.println("Erro na edicao: numero da sala ja esta cadastrado. Tente novamente!");
+                            System.out.println("- Erro na edicao: numero da sala ja esta cadastrado. Tente novamente!");
                         }
                     }
                     break;
@@ -723,7 +722,7 @@ public class Main {
                         tipoTelaNovo = true;
                     }
                     else {
-                        System.out.println("Tipo de tela invalido. Tente novamente");
+                        System.out.println("- Erro na edicao: tipo de tela invalido. Tente novamente");
                         sc.nextLine();
                         return;
                     }
@@ -750,7 +749,7 @@ public class Main {
         sc.nextLine();
     }
 
-    public static void imprimeMenuGerenteRemocaoSala(Gerente gerente, Scanner sc) {
+    private static void imprimeMenuGerenteRemocaoSala(Gerente gerente, Scanner sc) {
         int nroSala;
         String confirmacao;
 
@@ -772,18 +771,18 @@ public class Main {
             }
         }
         else {
-            System.out.println("- Erro na edicao: sala nao encontrada ou sala com sessao cadastrada. Tente novamente!");
+            System.out.println("- Erro na remocao: sala nao encontrada ou sala com sessao cadastrada. Tente novamente!");
         }
         sc.nextLine();
     }
     
-    public static void imprimeListaSalas(Cinema cinema) {
+    private static void imprimeListaSalas(Cinema cinema) {
         for (Sala s : cinema.getListaSalas()) {
             System.out.println(s.toString());
         }
     }
 
-    public static int imprimeMenuGerenteSessao(Scanner sc) {
+    private static int imprimeMenuGerenteSessao(Scanner sc) {
         int opcao = 0;
         boolean continuaLaco = true;
         
@@ -809,7 +808,7 @@ public class Main {
         return opcao;
     }
 
-    public static void imprimeMenuGerenteCadastroSessao(Gerente gerente, Scanner sc) {
+    private static void imprimeMenuGerenteCadastroSessao(Gerente gerente, Scanner sc) {
         String nomeFilme;
         Filme filmeSessao; 
         int nroSala;
@@ -830,7 +829,7 @@ public class Main {
         // busca filme disponivel no catalogo
         filmeSessao = gerente.buscarFilme(nomeFilme);
 
-        // se encontra um filme, o cadastro da sessão é realizado
+        // se encontra um filme, o cadastro da sessao eh realizado
         if (filmeSessao != null) {
             System.out.print("- Numero da Sala: ");
             nroSala = Integer.parseInt(sc.nextLine());
@@ -838,7 +837,7 @@ public class Main {
             // busca sala do cinema
             salaSessao = gerente.buscarSala(nroSala);
             
-            // se encontra uma sala, o cadastro de uma sessao é realizado
+            // se encontra uma sala, o cadastro de sessao eh realizado
             if (salaSessao != null) {
                 System.out.print("- Dia da sessao (DD/MM/YYYY): ");
                 diaSessaoString = sc.nextLine();
@@ -862,14 +861,14 @@ public class Main {
                 System.out.print("Confirmar adicao da sessao (Sim ou Nao): ");
                 confirmacao = sc.nextLine();
 
-                // confirma a criacao de uma sessao, checando condições de horário e classificação indicativa
+                // confirma a criacao de uma sessao, checando condicoes de horario e classificacao indicativa
                 if (confirmacao.equalsIgnoreCase("Sim")) {
                     if (gerente.adicionarSessao(sessaoTemporaria)) {
-                        System.out.println("Sessao adicionada com sucesso");
+                        System.out.println("Sessao adicionada com sucesso!");
                     }
                     else {
-                        System.out.println("Erro ao adicionar a sessao.");
-                        System.out.println("Possiveis problemas: dia e horario coincidem com outra sessao ou sessao +18 antes das 20h.");
+                        System.out.println("- Erro no cadastro. Tente novamente!");
+                        System.out.println("- Possiveis problemas: dia e horario coincidem com outra sessao ou sessao +18 antes das 20h.");
                         Sessao.decrementaQuantidadeSessoes();
                     }
                 }
@@ -878,18 +877,16 @@ public class Main {
                 }
             }
             else {
-                System.out.println("Sala nao encontrada");
+                System.out.println("- Erro no cadastro: sala nao encontrada. Tente novamente!");
             }
         }
         else {
-            System.out.println("Filme nao encontrado");
+            System.out.println("- Erro no cadastro: filme nao encontrado. Tente novamente!");
         }
-
-        System.out.println();
-
+        sc.nextLine();
     }
 
-    public static void imprimeMenuGerenteEdicaoSessao(Gerente gerente, Scanner sc) {
+    private static void imprimeMenuGerenteEdicaoSessao(Gerente gerente, Scanner sc) {
         int opcao = 0;
         boolean continuaLaco = true;
         int codigoSessao;
@@ -905,8 +902,8 @@ public class Main {
         // busca sessao disponivel no cinema
         Sessao sessao = gerente.buscarSessao(codigoSessao);
 
-        // se encontra sessao no catalogo, permite a mudança de parâmetros
-        if (sessao != null) {
+        // se encontra sessao no catalogo e sessao nao possui ingressos vendidos, permite a mudança de parametros
+        if (sessao != null && sessao.getAssentosDisponiveis() == sessao.getListaAssentos().length) {
             System.out.println("Parametros que podem ser alterados: ");
             System.out.println("(1) Filme da Sessao");
             System.out.println("(2) Sala da Sessao");
@@ -928,7 +925,7 @@ public class Main {
             System.out.println();
 
             switch(opcao) {
-                case 1: // mudança do filme da sessão
+                case 1: 
                     imprimeListaFilmes(gerente.getCinema());
                     System.out.print("Digite o nome do filme novo: ");
                     String nomeFilmeNovo = sc.nextLine();
@@ -945,13 +942,14 @@ public class Main {
                         
                         if (confirmacao.equalsIgnoreCase("Sim")) {
                             gerente.editarSessao(sessao, null, null, -1, null, filmeSessao);
+                            System.out.println("Sessao editada com sucesso!");
                         }
                     }
                     else {
-                        System.out.println("Filme nao encontrado");
+                        System.out.println("- Erro na edicao: filme nao encontrado. Tente novamente!");
                     }
                     break;
-                case 2: // mudança da sala da sessão
+                case 2: 
                     imprimeListaSalas(gerente.getCinema());
                     System.out.print("Digite o numero novo da sala: ");
                     int nroSalaNovo = Integer.parseInt(sc.nextLine());
@@ -968,10 +966,11 @@ public class Main {
                         
                         if (confirmacao.equalsIgnoreCase("Sim")) {
                             gerente.editarSessao(sessao, null, null, -1, salaSessao, null);
+                            System.out.println("Sessao editada com sucesso!");
                         }
                     }
                     else {
-                        System.out.println("Sala nao encontrada");
+                        System.out.println("- Erro na edicao: sala nao encontrada. Tente novamente!");
                     }
                     break;
                 case 3: // mudança do dia da sessão
@@ -989,7 +988,10 @@ public class Main {
                         
                     if (confirmacao.equalsIgnoreCase("Sim")) {
                         if (!(gerente.editarSessao(sessao, diaSessao, null, -1, null, null))) {
-                            System.out.println("Erro ao editar sessao. Intervalo de horario coincide com o de outra sessao...");
+                            System.out.println("- Erro na edicao: intervalo de horario coincide com o de outra sessao. Tente novamente!");
+                        }
+                        else {
+                            System.out.println("Sessao editada com sucesso!");
                         }
                     }
                     break;
@@ -1008,7 +1010,10 @@ public class Main {
                         
                     if (confirmacao.equalsIgnoreCase("Sim")) {
                         if (!(gerente.editarSessao(sessao, null, horarioSessao, -1, null, null))) {
-                            System.out.println("Erro ao editar sessao. Intervalo de horario coincide com o de outra sessao...");
+                            System.out.println("- Erro na edicao: intervalo de horario coincide com o de outra sessao. Tente novamente!");
+                        }
+                        else {
+                            System.out.println("Sessao editada com sucesso!");
                         }
                     }
                     break;
@@ -1025,22 +1030,21 @@ public class Main {
                         
                     if (confirmacao.equalsIgnoreCase("Sim")) {
                         gerente.editarSessao(sessao, null, null, precoSessaoNovo, null, null);
+                        System.out.println("Sessao editada com sucesso!");
                     }
                     break;
                 default:
-                    System.out.println("Opcao invalida");
+                    System.out.println("- Erro: opcao invalida. Tente novamente!");
                     break;
             }
         }
         else {
-            System.out.println("Sessao nao encontrada");
+            System.out.println("- Erro: sessao nao encontrada. Tente novamente!");
         }
-
-        System.out.println();
-        
+        sc.nextLine();
     }
 
-    public static void imprimeMenuGerenteRemocaoSessao(Gerente gerente, Scanner sc) {
+    private static void imprimeMenuGerenteRemocaoSessao(Gerente gerente, Scanner sc) {
         int codigoSessao;
         String motivoExclusaoSessao;
         String confirmacao;
@@ -1053,8 +1057,8 @@ public class Main {
         // busca sessão disponivel no cinema
         Sessao sessao = gerente.buscarSessao(codigoSessao);
         
-        // se encontra sessão no catálogo, permite a remoção
-        if (sessao != null) {
+        // se encontra sessao no catalogo e sessao nao possui ingressos vendidos, permite a remocao
+        if (sessao != null && sessao.getAssentosDisponiveis() == sessao.getListaAssentos().length) {
 
             System.out.printf("Digite o motivo de exclusao da sessao: ");
             motivoExclusaoSessao = sc.nextLine();
@@ -1063,22 +1067,17 @@ public class Main {
             confirmacao = sc.nextLine();
 
             if (confirmacao.equalsIgnoreCase("Sim")) {
-                if (gerente.removerSessao(sessao, motivoExclusaoSessao)) {
-                    System.out.println("Sessao removida com sucesso");
-                }
-                else {
-                    System.out.println("Sessao ja foi removida");
-                }
+                gerente.removerSessao(sessao, motivoExclusaoSessao);
+                System.out.println("Sessao removida com sucesso!");
             }
         }
         else {
-            System.out.println("Sessao nao encontrada");
+            System.out.println("- Erro na remocao: sessao nao encontrada. Tente novamente!");
         }
-        
-        System.out.println();
+        sc.nextLine();        
     }
 
-    public static void imprimeListaSessoes(Cinema cinema) {
+    private static void imprimeListaSessoes(Cinema cinema) {
         for (Sessao s : cinema.getListaSessoes()) {
             if (!(s instanceof SessaoIndisponivel)) {
                 System.out.println(s.toString());
@@ -1086,7 +1085,7 @@ public class Main {
         }
     }
 
-    public static int imprimeMenuGerentePromocao(Scanner sc) {
+    private static int imprimeMenuGerentePromocao(Scanner sc) {
         int opcao = 0;
         boolean continuaLaco = true;
         
@@ -1111,7 +1110,7 @@ public class Main {
         return opcao;
     }
 
-    public static void imprimeMenuGerenteCadastroPromocao(Gerente gerente, Scanner sc) {
+    private static void imprimeMenuGerenteCadastroPromocao(Gerente gerente, Scanner sc) {
         int codigoSessao;
         double porcentagemPromocional;
         String confirmacao;
@@ -1121,12 +1120,14 @@ public class Main {
         System.out.print("Digite o codigo da sessao a qual a promocao ira ser adicionada : ");
         codigoSessao = Integer.parseInt(sc.nextLine());
 
+        // busca sessao no catalogo
         Sessao sessao = gerente.buscarSessao(codigoSessao);
 
+        // se acha sessao no catalogo, permite o cadastro de promocao
         if (sessao != null) {
             System.out.print("Qual sera a porcentagem da promocao? ");
-            porcentagemPromocional = Double.parseDouble(sc.nextLine()); // 0 < promocao < 100
-
+            // checar se promocao eh um valor entre 0 e 100
+            porcentagemPromocional = Double.parseDouble(sc.nextLine()); 
             porcentagemPromocional = porcentagemPromocional/100.00;
 
             System.out.print("Confirmar adicao da promocao (Sim ou Nao): ");
@@ -1134,21 +1135,20 @@ public class Main {
 
             if (confirmacao.equalsIgnoreCase("Sim")) {
                 if (gerente.adicionarPromocao(sessao, porcentagemPromocional)) {
-                    System.out.println("Promocao adicionada com sucesso");
+                    System.out.println("Promocao adicionada com sucesso!");
                 }
                 else {
-                    System.out.println("Erro ao adicionar promocao. Promocao ja existe");
+                    System.out.println("- Erro no cadastro: promocao ja cadastrada. Tente novamente!");
                 }
             }
         }
         else {
-            System.out.println("Sessao nao encontrada");
+            System.out.println("- Erro no cadastro: sessao nao encontrada. Tente novamente!");
         }
-
-        System.out.println();
+        sc.nextLine();
     }
 
-    public static void imprimeMenuGerenteEdicaoPromocao(Gerente gerente, Scanner sc) {
+    private static void imprimeMenuGerenteEdicaoPromocao(Gerente gerente, Scanner sc) {
         int codigoSessao;
         double porcentagemPromocionalNova;
         String confirmacao;
@@ -1158,11 +1158,14 @@ public class Main {
         System.out.print("Digite o codigo da sessao a qual a promocao esta ligada : ");
         codigoSessao = Integer.parseInt(sc.nextLine());
 
+        // busca sessao no catalogo
         Sessao sessao = gerente.buscarSessao(codigoSessao);
 
+        // se acha sessao no catalogo, permite a edicao de promocao
         if (sessao != null) {
-            System.out.print("Qual sera a porcentagem nova da promocao? ");
-            porcentagemPromocionalNova = Double.parseDouble(sc.nextLine()); // 0 < promocao < 100
+            System.out.print("Qual sera a porcentagem nova da promocao? ");                        // checar se promocao eh um valor entre 0 e 100
+            // checar se promocao eh um valor entre 0 e 100
+            porcentagemPromocionalNova = Double.parseDouble(sc.nextLine());
             porcentagemPromocionalNova = porcentagemPromocionalNova/100.00;
             System.out.println();
                     
@@ -1174,21 +1177,20 @@ public class Main {
 
             if (confirmacao.equalsIgnoreCase("Sim")) {
                 if (gerente.editarPromocao(sessao, porcentagemPromocionalNova)) {
-                    System.out.println("Promocao editada com sucesso");
+                    System.out.println("Promocao editada com sucesso!");
                 }
                 else {
-                    System.out.println("Erro ao editar promocao. Sessao nao possui promocao");
+                    System.out.println("- Erro na edicao: sessao nao possui promocao. Tente novamente!");
                 }
             }
         }
         else {
-            System.out.println("Sessao nao encontrada");
+            System.out.println("- Erro na edicao: sessao nao encontrada. Tente novamente!");
         }
-
-        System.out.println();
+        sc.nextLine();
     }
 
-    public static void imprimeMenuGerenteRemocaoPromocao(Gerente gerente, Scanner sc) {
+    private static void imprimeMenuGerenteRemocaoPromocao(Gerente gerente, Scanner sc) {
         int codigoSessao;
         String confirmacao;
 
@@ -1197,29 +1199,30 @@ public class Main {
         System.out.printf("Digite o codigo da sessao para remover sua promocao: ");
         codigoSessao = Integer.parseInt(sc.nextLine());
 
+        // busca sessao no catalogo
         Sessao sessao = gerente.buscarSessao(codigoSessao);
         
-        if (sessao != null) { // VERIFICAR SE TEM SESSOES CADASTRADAS
+        // se acha sessao no catalogo, permite a edicao de promocao
+        if (sessao != null) {
             System.out.print("Confirmar remocao da promocao (Sim ou Nao): ");
             confirmacao = sc.nextLine();
 
             if (confirmacao.equalsIgnoreCase("Sim")) {
                 if (gerente.excluirPromocao(sessao)) {
-                    System.out.println("Promocao removida com sucesso");
+                    System.out.println("Promocao removida com sucesso!");
                 }
                 else {
-                    System.out.println("Sessao nao possui promocao");
+                    System.out.println("- Erro na remocao: sessao nao possui promocao. Tente novamente!");
                 }
             }
         }
         else {
-            System.out.println("Sessao nao encontrada");
+            System.out.println("- Erro na remocao: sessao nao encontrada. Tente novamente!");
         }
-        
-        System.out.println();
+        sc.nextLine();        
     }
 
-public static int imprimeMenuGerenteRelatorio(Scanner sc) {
+    private static int imprimeMenuGerenteRelatorio(Scanner sc) {
     	int opcao = 0;
         boolean continuaLaco = true; 
     	
@@ -1245,31 +1248,31 @@ public static int imprimeMenuGerenteRelatorio(Scanner sc) {
         return opcao; 
     }
     
-    public static void imprimeMenuGerenteRelatorioFilmes(Gerente gerente, Cinema cinema) {
+    private static void imprimeMenuGerenteRelatorioFilmes(Gerente gerente, Cinema cinema) {
         System.out.println("FILMES CADASTRADOS: \n");
         gerente.gerarRelatorioFilmes(cinema.getListaFilmes());
         System.out.println();
     }
     
-    public static void imprimeMenuGerenteRelatorioSessoes(Gerente gerente, Cinema cinema) {
+    private static void imprimeMenuGerenteRelatorioSessoes(Gerente gerente, Cinema cinema) {
         System.out.println("SESSOES CADASTRADAS: \n");
         gerente.gerarRelatorioSessoes(cinema.getListaSessoes());
         System.out.println();
     }
     
-    public static void imprimeMenuGerenteRelatorioSalas(Gerente gerente, Cinema cinema) {
+    private static void imprimeMenuGerenteRelatorioSalas(Gerente gerente, Cinema cinema) {
         System.out.println("SALAS CADASTRADAS: \n");
         gerente.gerarRelatorioSalas(cinema.getListaSalas());
         System.out.println();	
     }
     
-    public static void imprimeMenuGerenteRelatorioUsuario(Gerente gerente) {	
+    private static void imprimeMenuGerenteRelatorioUsuario(Gerente gerente) {	
         System.out.println("USUARIOS CADASTRADOS: \n");
         gerente.gerarRelatorioUsuarios();
         System.out.println();	
     }
     
-    public static int imprimeMenuUsuario(Scanner sc) {
+    private static int imprimeMenuUsuario(Scanner sc) {
         int opcao = 0;
         boolean continuaLaco = true;
         
@@ -1294,7 +1297,7 @@ public static int imprimeMenuGerenteRelatorio(Scanner sc) {
         return opcao;
     }
 
-    public static void imprimeMenuUsuarioComprarIngresso(Usuario usuario, Gerente gerente, Scanner sc) {
+    private static void imprimeMenuUsuarioComprarIngresso(Usuario usuario, Gerente gerente, Scanner sc) {
         String nomeFilme;
         int codigoSessao;
         int nroAssento;
@@ -1306,10 +1309,11 @@ public static int imprimeMenuGerenteRelatorio(Scanner sc) {
         nomeFilme = sc.nextLine();
         System.out.println();
         
+        // busca filme solicitado e imprime sessoes com esse filme
         Filme filme = gerente.buscarFilme(nomeFilme);
 
-        if (filme != null) { // se o filme existe no catalogo
-            for (Sessao sessao : gerente.getCinema().getListaSessoes()) { // imprime sessoes do filme escolhido
+        if (filme != null) {
+            for (Sessao sessao : gerente.getCinema().getListaSessoes()) {
                 if (sessao.getFilmeSessao() == filme) {
                     System.out.println(sessao.toString());
                 }
@@ -1318,15 +1322,20 @@ public static int imprimeMenuGerenteRelatorio(Scanner sc) {
             System.out.printf("Digite o codigo da sessao escolhida: ");
             codigoSessao = Integer.parseInt(sc.nextLine());
 
+            // busca se sessao existe
             Sessao sessao = gerente.buscarSessao(codigoSessao);
 
-            if (sessao != null) { // se a sessao existe
+            if (sessao != null) {
+                // imprime lista de assentos e pede para usuario digitar um assento disponivel
                 sessao.imprimeListaAssentos();
-            
-                do {
-                    System.out.printf("Digite o numero do assento disponivel: ");
+                System.out.printf("Digite o numero de assento disponivel: ");
+                nroAssento = Integer.parseInt(sc.nextLine());
+                
+                while (sessao.getDisponibilidadeAssento(nroAssento)) {
+                    System.out.println("- Erro na compra: assento indisponivel. Tente novamente!");
+                    System.out.printf("Digite o numero de assento disponivel: ");
                     nroAssento = Integer.parseInt(sc.nextLine());
-                } while (sessao.getDisponibilidadeAssento(nroAssento));            
+                }        
 
                 Ingresso ingresso = new Ingresso(sessao, nroAssento, usuario.getPrecoIngresso(sessao));
                 System.out.println(ingresso.toString());
@@ -1339,30 +1348,28 @@ public static int imprimeMenuGerenteRelatorio(Scanner sc) {
                         System.out.println("Ingresso comprado com sucesso!");
                     }
                     else {
-                        System.out.println("Erro ao comprar ingresso");
+                        System.out.println("- Erro na compra: idade menor que classificacao indicativa. Tente novamente!");
                     }
                 }
             }
             else {
-                System.out.println("Sessao nao encontrada");
+                System.out.println("- Erro na compra: sessao nao encontrada. Tente novamente!");
             }
         }
         else {
-            System.out.println("Filme nao encontrado");
+            System.out.println("- Erro na compra: filme nao encontrado. Tente novamente!");
         }
-        
-        System.out.println();
-
+        sc.nextLine();
     }
 
-    public static Usuario imprimeMenuUsuarioComprarAssinatura(Usuario usuario, Gerente gerente, Scanner sc) { // VERIFICAR ISSO
+    private static Usuario imprimeMenuUsuarioComprarAssinatura(Usuario usuario, Gerente gerente, Scanner sc) {
         System.out.println("ASSINATURA");
 
+        // checa se usuario ja eh assinante
         if (usuario instanceof UsuarioAssinante) {
-            System.out.println("Voce ja possui uma assinatura");
-            sc.nextLine();
-        }
-        
+            System.out.println("Voce ja possui uma assinatura!");
+        }  
+        // caso usuario nao seja, oferece opcao de se tornar assinante
         else {
             String confirmacao;
 
@@ -1376,15 +1383,14 @@ public static int imprimeMenuGerenteRelatorio(Scanner sc) {
                 gerente.getListaUsuarios().set(index, usuario); 
 
                 System.out.println("Assinatura comprada com sucesso!");
-                System.out.println();
             }
             
         }
-
+        sc.nextLine();
         return usuario;
     }
 
-    public static void imprimeMenuUsuarioPerfil(Usuario usuario) {
+    private static void imprimeMenuUsuarioPerfil(Usuario usuario) {
         System.out.println("PERFIL");
         System.out.println("Nome: " + usuario.getNomePessoa());
         System.out.println("Idade: " + usuario.getIdadeUsuario());
@@ -1399,7 +1405,5 @@ public static int imprimeMenuGerenteRelatorio(Scanner sc) {
                 System.out.println(ingressoComprado.toString());
             }
         }
-
     }
-
 }

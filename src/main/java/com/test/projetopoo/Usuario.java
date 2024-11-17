@@ -52,9 +52,7 @@ public class Usuario extends Pessoa {
 
 			return true;
 		} 
-		else {
-			return false;
-		}
+		return false;
 	}
 
 	// metodo para realizar assinatura
@@ -66,9 +64,7 @@ public class Usuario extends Pessoa {
 
 			return novoUsuario;
 		} 
-		else {
-			return this;
-		}
+		return this;
 	}
 
 }

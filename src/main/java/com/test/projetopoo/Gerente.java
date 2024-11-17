@@ -30,7 +30,7 @@ public class Gerente extends Pessoa{
         return this.listaUsuarios;
     }
     
-    // metodo para adicionar filme
+    // metodo para adicionar, editar e remover filme
     public boolean adicionarFilme(Filme filme) {
         // busca se tem filme com o mesmo nome
         if (this.buscarFilme(filme.getNomeFilme()) == null) { 
@@ -40,7 +40,6 @@ public class Gerente extends Pessoa{
         return false;
     }
 
-    // metodo para editar filme
     public boolean editarFilme(Filme filme, String nomeNovo, String sinopseNova, int classificacaoNova, String generoNovo, int duracaoNova) {
         if (!nomeNovo.equals("")) {
             // checa se o nome novo tem o nome de um filme que ja existe no catalogo
@@ -66,7 +65,6 @@ public class Gerente extends Pessoa{
         return true;
     }
     
-    // metodo para remover filme
     public void removerFilme(Filme filme, String motivoExclusaoFilme) {
         // substitui o filme por um filme indisponivel no array
         int index = cinema.getListaFilmes().indexOf(filme);
@@ -84,7 +82,7 @@ public class Gerente extends Pessoa{
         return null;
     }
 
-    // metodo para adicionar sala
+    // metodo para adicionar, editar e remover sala
     public boolean adicionarSala(Sala sala) {
         // busca se tem sala com o mesmo numero
         if (buscarSala(sala.getNroSala()) == null) {
@@ -94,7 +92,6 @@ public class Gerente extends Pessoa{
         return false;
     }
     
-    // metodo para editar sala
     public boolean editarSala(Sala sala, int nroSalaNovo, int nroAssentoNovo, Boolean tipoTelaNovo){
         if (nroSalaNovo != 0) {
             // checa se o numero novo eh igual ao numero de uma sala que ja existe
@@ -128,7 +125,7 @@ public class Gerente extends Pessoa{
         return null;
     }
 
-    // método para adicionar sessao ao ArrayList
+    // metodo para adicionar sessao 
     public boolean adicionarSessao(Sessao sessao) {
         LocalDateTime inicioSessaoNova = sessao.getDiaHorarioSessao();
         LocalDateTime finalSessaoNova = inicioSessaoNova.plusMinutes(sessao.getFilmeSessao().getDuracaoFilme());
@@ -141,7 +138,7 @@ public class Gerente extends Pessoa{
         // varre o array de sessoes e compara sessoes que tem a mesma sala e mesmo dia
         // depois verifica se possuem o mesmo intervalo de horario
         for (Sessao s : getCinema().getListaSessoes()) {
-            if (sessao.getSalaSessao().equals(s.getSalaSessao()) && sessao.getDiaSessao().equals(s.getDiaSessao())) {
+            if (!(s instanceof SessaoIndisponivel) && sessao.getSalaSessao().equals(s.getSalaSessao()) && sessao.getDiaSessao().equals(s.getDiaSessao())) {
                 LocalDateTime inicioSessao = s.getDiaHorarioSessao();
                 LocalDateTime finalSessao = inicioSessao.plusMinutes(s.getFilmeSessao().getDuracaoFilme());
 
@@ -155,7 +152,7 @@ public class Gerente extends Pessoa{
         return true; 
     }
 
-    // método para editar parâmetros de sessão
+    // método para editar sessao
     public boolean editarSessao(Sessao sessao, LocalDate diaSessaoNovo, LocalTime horarioSessaoNovo, double precoSessaoNovo, Sala salaSessaoNovo, Filme filmeSessaoNovo) {
         if (precoSessaoNovo != -1) {
             sessao.setPrecoSessao(precoSessaoNovo);
@@ -171,7 +168,7 @@ public class Gerente extends Pessoa{
             LocalDateTime finalSessaoNovo = inicioSessaNovo.plusMinutes(sessao.getFilmeSessao().getDuracaoFilme());
 
             for (Sessao s : getCinema().getListaSessoes()) {
-                if (sessao.getSalaSessao() == s.getSalaSessao() && diaSessaoNovo == s.getDiaSessao()) {
+                if (!(s instanceof SessaoIndisponivel) && sessao.getSalaSessao() == s.getSalaSessao() && diaSessaoNovo == s.getDiaSessao()) {
                     if (checarIntervaloHorario(inicioSessaNovo, finalSessaoNovo, s.getDiaHorarioSessao(), s.getDiaHorarioSessao().plusMinutes(s.getFilmeSessao().getDuracaoFilme()))) {
                         return false;
                     }
@@ -185,7 +182,7 @@ public class Gerente extends Pessoa{
             LocalDateTime finalSessaoNovo = inicioSessaNovo.plusMinutes(sessao.getFilmeSessao().getDuracaoFilme());
 
             for (Sessao s : getCinema().getListaSessoes()) {
-                if (sessao.getSalaSessao() == s.getSalaSessao() && diaSessaoNovo == s.getDiaSessao()) {
+                if (!(s instanceof SessaoIndisponivel) && sessao.getSalaSessao() == s.getSalaSessao() && diaSessaoNovo == s.getDiaSessao()) {
                     if (checarIntervaloHorario(inicioSessaNovo, finalSessaoNovo, s.getDiaHorarioSessao(), s.getDiaHorarioSessao().plusMinutes(s.getFilmeSessao().getDuracaoFilme()))) {
                         return false;
                     }
@@ -198,29 +195,25 @@ public class Gerente extends Pessoa{
         return true;    
     }
 
-    public boolean removerSessao(Sessao sessao, String motivoExclusaoSessao) {
-        if (!(sessao instanceof SessaoIndisponivel)) {
-            int index = cinema.getListaSessoes().indexOf(sessao);
-            SessaoIndisponivel sessaoIndisponivel = new SessaoIndisponivel(sessao.getDiaHorarioSessao(),sessao.getPrecoSessao(), sessao.getComPromocao(), sessao.getPorcentagemPromocional(), sessao.getSalaSessao(), sessao.getFilmeSessao(), motivoExclusaoSessao);
-            cinema.getListaSessoes().set(index, sessaoIndisponivel);
-            return true;
-        }
-        else {
-            return false;
-        }
+    // metodo para remover sessao
+    public void removerSessao(Sessao sessao, String motivoExclusaoSessao) {
+        // substitui a sessao por uma sessao indisponivel no array
+        int index = cinema.getListaSessoes().indexOf(sessao);
+        SessaoIndisponivel sessaoIndisponivel = new SessaoIndisponivel(sessao.getDiaHorarioSessao(),sessao.getPrecoSessao(), sessao.getComPromocao(), sessao.getPorcentagemPromocional(), sessao.getSalaSessao(), sessao.getFilmeSessao(), motivoExclusaoSessao);
+        cinema.getListaSessoes().set(index, sessaoIndisponivel);
     }
 
+    // metodo para buscar sessao pelo codigo (mas nao busca entre indisponiveis)
     public Sessao buscarSessao(int codigoSessao) {
         for (Sessao s : cinema.getListaSessoes()) {
             if (s.getCodigoSessao() == codigoSessao && !(s instanceof SessaoIndisponivel)) {
                 return s;
             }
         }
-
         return null;
     }
 
-    // metodo de busca de sessao com determinado filme (mas nao busca entre sessoes indisponiveis)
+    // metodo para buscar sessao pelo filme (mas nao busca entre sessoes indisponiveis)
     public boolean buscarSessaoComFilme(Filme filme) {
         for (Sessao s : cinema.getListaSessoes()) {
             if (s.getFilmeSessao().equals(filme) && !(s instanceof SessaoIndisponivel)) {
@@ -230,7 +223,7 @@ public class Gerente extends Pessoa{
         return false;
     }
 
-    // metodo de busca de sessao pela sala (mas nao busca entre sessoes indisponiveis)
+    // metodo para buscar sessao pela sala (mas nao busca entre sessoes indisponiveis)
     public boolean buscarSessaoComSala(Sala sala) {
         for (Sessao s : cinema.getListaSessoes()) {
             if (s.getSalaSessao().equals(sala) && !(s instanceof SessaoIndisponivel)) {
@@ -240,6 +233,7 @@ public class Gerente extends Pessoa{
         return false;
     }
 
+    // metodo para checar intervalos de horario coincidentes
     private boolean checarIntervaloHorario(LocalDateTime inicioSessaoNova, LocalDateTime finalSessaoNova, LocalDateTime inicioSessao, LocalDateTime finalSessao) {
         // checa se horarios de inicio são iguais
         if (inicioSessaoNova.equals(inicioSessao)) { // correct!!
@@ -259,43 +253,40 @@ public class Gerente extends Pessoa{
         }
     }
 
-	// métodos para adicionar, editar e excluir promoções para uma sessão 
+    // metodo para cadastrar promocao 
     public boolean adicionarPromocao(Sessao sessao, double porcentagemPromocional) {
+        // checa se sessao nao possui promocao
         if (!(sessao.getComPromocao())) {
             sessao.setComPromocao(true);
             sessao.setPorcentagemPromocional(porcentagemPromocional);
             return true;
         } 
-        else {
-            return false;
-        }
-        
+        return false;       
     }
 
+    // metodo para editar promocao 
     public boolean editarPromocao(Sessao sessao, double porcentagemPromocionalNova) {
+        // checa se sessao possui promocao cadastrada
     	if(sessao.getComPromocao()) {
     		sessao.setPorcentagemPromocional(porcentagemPromocionalNova);
         	return true; 
     	}	
-    	else {
-            return false; 
-        }
+        return false; 
     }
 
+     // metodo para excluir promocao 
     public boolean excluirPromocao(Sessao sessao) {
+        // checa se sessao possui promocao cadastrada
     	if(sessao.getComPromocao()) {
             sessao.setComPromocao(false); 
     		sessao.setPorcentagemPromocional(1);
     		return true;
     	}
-    	else {
-            return false; 
-        }
+        return false; 
     }    
 
-    //Métodos de relatório 
+    // metodos de relatorio 
     public void gerarRelatorioFilmes(ArrayList <Filme> FilmesCadastrados) {
-    	
     	int nroFilmesEmCartaz = 0;
     	int nroFilmesIndisponiveis = 0; 
     	
@@ -339,9 +330,7 @@ public class Gerente extends Pessoa{
     	}
     }
     
-
-    public void gerarRelatorioSessoes(ArrayList <Sessao> SessoesCadastradas) {
-    	
+    public void gerarRelatorioSessoes(ArrayList <Sessao> SessoesCadastradas) { 	
     	int nroSessoesCadastradas = 0;
     	int nroSessoesIndisponiveis = 0; 
     	
@@ -386,7 +375,7 @@ public class Gerente extends Pessoa{
     	}
     }
 
-   public void gerarRelatorioSalas(ArrayList <Sala> SalasCadastradas) {    	
+    public void gerarRelatorioSalas(ArrayList <Sala> SalasCadastradas) {    	
     	int nroSalasCadastradas = 0; 
 
     	if (SalasCadastradas.size() > 0) {
@@ -402,7 +391,6 @@ public class Gerente extends Pessoa{
     }
     
     public void gerarRelatorioUsuarios() {
-		
     	int nroUsuariosAssinantes = 0; 
 		int nroUsuarios = 0; 
 			
