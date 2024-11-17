@@ -300,6 +300,7 @@ public class Main {
         return null;
     }
     
+    // menu do gerente
     private static int imprimeMenuGerente(Scanner sc) {
         int opcao = 0;
         boolean continuaLaco = true;
@@ -327,6 +328,7 @@ public class Main {
         return opcao;
     }
 
+    // menu do gerente - aba de filmes
     private static int imprimeMenuGerenteFilme(Scanner sc) {
         int opcao = 0;
         boolean continuaLaco = true;
@@ -357,6 +359,7 @@ public class Main {
         String nomeFilme;
         String sinopseFilme;
         int classificacaoFilme;
+        String classificacaoFilmeString;
         String generoFilme;
         int duracaoFilme;
         String confirmacao;
@@ -367,8 +370,19 @@ public class Main {
         nomeFilme = sc.nextLine();
         System.out.print("- Sinopse: ");
         sinopseFilme = sc.nextLine();
+
+        System.out.println("Opcoes de classificacao indicativa: \'livre\', \'10\', \'12\', \'14\', \'16\', \'18\'");
         System.out.print("- Classificacao Indicativa: ");
-        classificacaoFilme = Integer.parseInt(sc.nextLine());
+        classificacaoFilmeString = sc.nextLine();
+        if (checaClassificacaoIndicativa(classificacaoFilmeString) != -1) {
+            classificacaoFilme = checaClassificacaoIndicativa(classificacaoFilmeString); 
+        }
+        else {
+            System.out.println("- Erro no cadastro: classificacao invalida. Tente novamente!");
+            sc.nextLine();
+            return;
+        }
+
         System.out.print("- Genero: ");
         generoFilme = sc.nextLine();
         System.out.print("- Duracao (em minutos): ");
@@ -467,8 +481,19 @@ public class Main {
                     }
                     break;
                 case 3:
-                    System.out.printf("Digite a classificacao indicativa nova: ");
-                    int classificacaoNova = Integer.parseInt(sc.nextLine());
+                    System.out.println("Opcoes de classificacao indicativa: \'livre\', \'10\', \'12\', \'14\', \'16\', \'18\'");
+                    System.out.print("Digite a classificacao indicativa nova: ");
+                    String classificacaoFilmeString = sc.nextLine();
+                    int classificacaoNova;
+
+                    if (checaClassificacaoIndicativa(classificacaoFilmeString) != -1) {
+                        classificacaoNova = checaClassificacaoIndicativa(classificacaoFilmeString); 
+                    }
+                    else {
+                        System.out.println("- Erro no cadastro: classificacao invalida. Tente novamente!");
+                        sc.nextLine();
+                        return;
+                    }
                     System.out.println();
 
                     System.out.println("- Classificacao Indicativa Antiga: " + filme.getClassificacaoFilme());
@@ -565,7 +590,19 @@ public class Main {
             }
         }
     }
-
+    
+    // metodo que retorna a classificacao indicativa como numero inteiro
+    private static int checaClassificacaoIndicativa(String classificacaoFilmeString) {
+        if (classificacaoFilmeString.equalsIgnoreCase("livre")) return 0;
+        else if (classificacaoFilmeString.equals("10")) return 10;
+        else if (classificacaoFilmeString.equals("12")) return 12;
+        else if (classificacaoFilmeString.equals("14")) return 14;
+        else if (classificacaoFilmeString.equals("16")) return 16;
+        else if (classificacaoFilmeString.equals("18")) return 18;
+        else return -1;
+    }
+    
+    // menu do gerente - aba de salas
     private static int imprimeMenuGerenteSala(Scanner sc) {
         int opcao = 0;
         boolean continuaLaco = true;
@@ -782,6 +819,7 @@ public class Main {
         }
     }
 
+    // menu do gerente - aba de sessoes
     private static int imprimeMenuGerenteSessao(Scanner sc) {
         int opcao = 0;
         boolean continuaLaco = true;
@@ -1039,7 +1077,7 @@ public class Main {
             }
         }
         else {
-            System.out.println("- Erro: sessao nao encontrada. Tente novamente!");
+            System.out.println("- Erro na edicao: sessao nao encontrada ou sessao com ingressos comprados. Tente novamente!");
         }
         sc.nextLine();
     }
@@ -1072,7 +1110,7 @@ public class Main {
             }
         }
         else {
-            System.out.println("- Erro na remocao: sessao nao encontrada. Tente novamente!");
+            System.out.println("- Erro na remocao: sessao nao encontrada ou sessao com ingressos comprados. Tente novamente!");
         }
         sc.nextLine();        
     }
@@ -1085,6 +1123,7 @@ public class Main {
         }
     }
 
+    // menu do gerente - aba de promocoes
     private static int imprimeMenuGerentePromocao(Scanner sc) {
         int opcao = 0;
         boolean continuaLaco = true;
@@ -1222,6 +1261,7 @@ public class Main {
         sc.nextLine();        
     }
 
+    // menu do gerente - aba de relatorios
     private static int imprimeMenuGerenteRelatorio(Scanner sc) {
     	int opcao = 0;
         boolean continuaLaco = true; 
@@ -1272,6 +1312,7 @@ public class Main {
         System.out.println();	
     }
     
+    // menu do usuario
     private static int imprimeMenuUsuario(Scanner sc) {
         int opcao = 0;
         boolean continuaLaco = true;
