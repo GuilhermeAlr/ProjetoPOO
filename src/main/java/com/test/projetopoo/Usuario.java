@@ -1,5 +1,4 @@
 package main.java.com.test.projetopoo;
-
 import java.util.ArrayList;
 
 public class Usuario extends Pessoa {
@@ -31,13 +30,21 @@ public class Usuario extends Pessoa {
 		return this.ingressosComprados;
 	}
 
-	// calculo do preco do ingresso
+	// retorna o preco do ingresso de acordo com a idade do usuario ou se eh uma sessao promocional
 	public double getPrecoIngresso(Sessao sessao) {
-		if (this.getIdadeUsuario() < 18) { // calculo da meia-entrada
+		// se usuario eh menor, paga meia entrada
+		if (this.getIdadeUsuario() < 18) { 
 			return sessao.getPrecoSessao() * 0.5;
 		} 
-		else { // sessao sem promocao
-			return sessao.getPrecoSessao();
+		else { 
+			// se sessao possui promocao
+			if (sessao.getComPromocao()) {
+				return sessao.getPrecoSessao() * sessao.getPorcentagemPromocional();
+			}
+			// se sessao nao possui promocao
+			else {
+				return sessao.getPrecoSessao();
+			}
 		}
 	}
 
