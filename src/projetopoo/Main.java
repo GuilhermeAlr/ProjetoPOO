@@ -235,7 +235,7 @@ public class Main {
                 continuaLaco = false;
                  
             } catch(NumberFormatException e) {
-                System.out.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
+                System.err.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
             }
         } while(continuaLaco);
 
@@ -247,7 +247,8 @@ public class Main {
         String nomeUsuario;
         String loginUsuario;
         String senhaUsuario;
-        int idadeUsuario;
+        int idadeUsuario = 0;
+        boolean continuaLaco = true;
         
         System.out.println("CADASTRO");
         System.out.printf("Digite seu nome: ");
@@ -256,9 +257,24 @@ public class Main {
         loginUsuario = sc.nextLine();
         System.out.printf("Digite uma senha: ");
         senhaUsuario = sc.nextLine();
-        System.out.printf("Digite sua idade: ");
-        idadeUsuario = Integer.parseInt(sc.nextLine());
-        System.out.println();
+
+        do {
+            try {
+                System.out.printf("Digite sua idade: ");
+                idadeUsuario = Integer.parseInt(sc.nextLine());
+                System.out.println();
+
+                if (idadeUsuario < 0) throw new IllegalArgumentException();
+
+                continuaLaco = false;
+
+            } catch(NumberFormatException e) {
+                System.err.println("- Erro: a idade deve ser um numero. Tente novamente!");
+            } catch (IllegalArgumentException i) {
+                System.err.println("- Erro: a idade deve ser um numero positivo. Tente novamente!");
+            }
+        } while (continuaLaco);
+
 
         if (buscarUsuario(loginUsuario, listaUsuarios) == null) {
             Usuario usuario = new Usuario(nomeUsuario, loginUsuario, senhaUsuario, idadeUsuario);
@@ -340,7 +356,7 @@ public class Main {
                 continuaLaco = false;
                  
             } catch(NumberFormatException e) {
-                System.out.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
+                System.err.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
             }
         } while(continuaLaco);
 
@@ -367,7 +383,7 @@ public class Main {
                 continuaLaco = false;
                  
             } catch(NumberFormatException e) {
-                System.out.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
+                System.err.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
             }
         } while(continuaLaco);
 
@@ -394,6 +410,8 @@ public class Main {
         System.out.println("Opcoes de classificacao indicativa: \'livre\', \'10\', \'12\', \'14\', \'16\', \'18\'");
         System.out.print("- Classificacao Indicativa: ");
         classificacaoFilmeString = sc.nextLine();
+
+        // MUDAR METODO PARA TRATAR EXCEÇÃO AQUI
         if (checaClassificacaoIndicativa(classificacaoFilmeString) != -1) {
             classificacaoFilme = checaClassificacaoIndicativa(classificacaoFilmeString); 
         }
