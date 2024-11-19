@@ -1,4 +1,4 @@
-package main.java.com.test.projetopoo;
+package projetopoo;
 
 public class UsuarioAssinante extends Usuario {
 	public UsuarioAssinante(String nomeUsuario, String loginUsuario, String senhaUsuario, int idadeUsuario) { 

@@ -1,9 +1,13 @@
-package main.java.com.test.projetopoo;
+package projetopoo;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+
+// comando para compilar o codigo: no diretorio da pasta projetopoo, javac projetopoo/*.java
+// comando para rodar o codigo: java projetopoo.Main
 
 public class Main {
     public static void main(String[] args) {
@@ -18,7 +22,8 @@ public class Main {
         while(estaRodando) {
             if(pessoa == null) { // menu nao logado
                 opcao = imprimeMenuNaoLogado(cinema, sc);
-                
+                limpaConsole();
+
                 switch(opcao) {
                     case 1: 
                         imprimeMenuCadastro(gerente.getListaUsuarios(), gerente, sc);
@@ -30,18 +35,21 @@ public class Main {
                         System.exit(0);
                     default:
                         System.out.println("- Erro: opcao invalida. Tente novamente!");
+                        sc.nextLine();
                         break;
                 }
-                
+                limpaConsole();
             }
             
             else {
                 if (pessoa instanceof Gerente) { // menu do gerente
                     opcao = imprimeMenuGerente(sc);
-                    
+                    limpaConsole();
+
                     switch(opcao) {
                         case 1: // aba de filmes 
                             opcaoMenuGerente = imprimeMenuGerenteFilme(sc);
+                            limpaConsole();
 
                             switch(opcaoMenuGerente) {
                                 case 1:
@@ -61,11 +69,13 @@ public class Main {
                                     break;
                                 default:
                                     System.out.println("- Erro: opcao invalida. Tente novamente!");
+                                    sc.nextLine();
                                     break;
                             }
                             break;
                         case 2: // aba de sala
                             opcaoMenuGerente = imprimeMenuGerenteSala(sc);
+                            limpaConsole();
 
                             switch(opcaoMenuGerente) {
                                 case 1:
@@ -85,11 +95,13 @@ public class Main {
                                     break;
                                 default:
                                     System.out.println("- Erro: opcao invalida. Tente novamente!");
+                                    sc.nextLine();
                                     break;
                             }
                             break;
                         case 3: // aba de sessao
                             opcaoMenuGerente = imprimeMenuGerenteSessao(sc);
+                            limpaConsole();
 
                             switch(opcaoMenuGerente) {
                                 case 1:
@@ -109,11 +121,13 @@ public class Main {
                                     break;
                                 default:
                                     System.out.println("- Erro: opcao invalida. Tente novamente!");
+                                    sc.nextLine();
                                     break;
                             }
                             break;
                         case 4: // aba de promocao
                             opcaoMenuGerente = imprimeMenuGerentePromocao(sc);
+                            limpaConsole();
 
                             switch(opcaoMenuGerente) {
                                 case 1:
@@ -129,13 +143,15 @@ public class Main {
                                     break;
                                 default: 
                                     System.out.println("- Erro: opcao invalida. Tente novamente!");
+                                    sc.nextLine();
                                     break;
                             }
 
                             break;
                         case 5: // aba de relatorios
                             opcaoMenuGerente = imprimeMenuGerenteRelatorio(sc); 
-                        	
+                        	limpaConsole();
+
                         	switch(opcaoMenuGerente) {
                         		case 1:
                         			imprimeMenuGerenteRelatorioFilmes(gerente, cinema);
@@ -157,6 +173,7 @@ public class Main {
                                     break;
                                 default:
                                     System.out.println("- Erro: opcao invalida. Tente novamente!");
+                                    sc.nextLine();
                                     break;                       			
                         	}        
                             break;
@@ -164,14 +181,16 @@ public class Main {
                             pessoa = null;
                             break;
                         default:
-                        System.out.println("- Erro: opcao invalida. Tente novamente!");
+                            System.out.println("- Erro: opcao invalida. Tente novamente!");
+                            sc.nextLine();
                             break;
                     } 
-                    
+                    limpaConsole();
                 }
                 else if (pessoa instanceof Usuario) { // menu do usuario
                     opcao = imprimeMenuUsuario(sc);
-                    
+                    limpaConsole();
+
                     switch(opcao) {
                         case 1: // aba para comprar ingressos
                             imprimeMenuUsuarioComprarIngresso((Usuario)pessoa, gerente, sc);
@@ -188,12 +207,13 @@ public class Main {
                             break;
                         default:
                             System.out.println("- Erro: opcao invalida. Tente novamente!");
+                            sc.nextLine();
                             break;
                     }    
+                    limpaConsole();
                 }
             }
         }
-
         sc.close();
     }
     
@@ -1446,5 +1466,25 @@ public class Main {
                 System.out.println(ingressoComprado.toString());
             }
         }
+    
+    }
+
+    private static void limpaConsole() {
+        try {
+            String sistemaOperacional = System.getProperty("os.name").toLowerCase();
+
+            // comando para windows
+            if (sistemaOperacional.contains("win")) { // comando para windows
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else { // comando para mac/linux
+                
+                new ProcessBuilder("clear").inheritIO().start().waitFor();
+            }
+        } catch (IOException | InterruptedException e) { // caso o comando nao funcione, imprime linhas em branco
+            for (int i = 0; i < 50; i++) {
+                System.out.println();
+            }
+        }
+
     }
 }
