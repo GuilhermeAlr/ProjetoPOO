@@ -257,7 +257,7 @@ public class Main {
                 System.out.printf("Digite sua idade: ");
                 idadeUsuario = Integer.parseInt(sc.nextLine());
                 System.out.println();
-                excecaoInteirosNegativos(idadeUsuario); 
+                excecaoNumerosNegativos(idadeUsuario); 
 
             } catch(NumberFormatException e) {
                 System.err.println("- Erro: a idade deve ser um numero. Tente novamente!");
@@ -406,7 +406,7 @@ public class Main {
        try {
            System.out.print("- Duracao (em minutos): ");
            duracaoFilme = Integer.parseInt(sc.nextLine());
-           excecaoInteirosNegativos(duracaoFilme);
+           excecaoNumerosNegativos(duracaoFilme);
                 
         } catch(NumberFormatException e) {
            System.err.println("- Erro: a duracao deve ser um numero. Tente novamente!");
@@ -551,7 +551,7 @@ public class Main {
                     try {
                        System.out.printf("Digite a duracao nova: ");
                        duracaoNova = Integer.parseInt(sc.nextLine());
-                       excecaoInteirosNegativos(duracaoNova);
+                       excecaoNumerosNegativos(duracaoNova);
                     } catch(NumberFormatException e) {
                        System.err.println("- Erro:a duracao nova deve ser um numero inteiro. Tente novamente!");
                     } catch(IllegalArgumentException e) {
@@ -666,7 +666,7 @@ public class Main {
         try {
             System.out.print("- Numero da Sala: ");
             nroSala = Integer.parseInt(sc.nextLine());
-            excecaoInteirosNegativos(nroSala);
+            excecaoNumerosNegativos(nroSala);
         } catch(NumberFormatException e) {
             System.err.println("- Erro: o numero da sala deve ser um numero inteiro. Tente novamente!");
         }catch(IllegalArgumentException e) {
@@ -750,7 +750,7 @@ public class Main {
                     try {
                         System.out.print("Digite o numero da sala novo: ");
                         nroSalaNovo = Integer.parseInt(sc.nextLine());
-                        excecaoInteirosNegativos(nroSalaNovo);
+                        excecaoNumerosNegativos(nroSalaNovo);
                             
                     } catch(NumberFormatException e) {
                         System.err.println("- Erro: o numero novo da sala deve ser um numero. Tente novamente!");
@@ -850,7 +850,7 @@ public class Main {
         try {
             System.out.printf("Digite o numero da sala a ser removida: ");
             nroSala = Integer.parseInt(sc.nextLine());
-            excecaoInteirosNegativos(nroSala);
+            excecaoNumerosNegativos(nroSala);
                 
         } catch(NumberFormatException e) {
                 System.err.println("- Erro: o numero da sala  deve ser um numero inteiro. Tente novamente!");
@@ -933,7 +933,7 @@ public class Main {
              try {
                  System.out.print("- Numero da Sala: ");
                  nroSala = Integer.parseInt(sc.nextLine());
-                 excecaoInteirosNegativos(nroSala);
+                 excecaoNumerosNegativos(nroSala);
                     
              } catch(NumberFormatException e) {
                     System.err.println("- Erro: o numero da sala  deve ser um numero inteiro. Tente novamente!");
@@ -963,7 +963,7 @@ public class Main {
                  try {
                      System.out.print("- Preco da sessao: ");
                      precoSessao = Double.parseDouble(sc.nextLine());
-                     excecaoDoubles(precoSessao);
+                     excecaoNumerosNegativos(precoSessao);
                         
                  } catch(NumberFormatException e) {
                         System.err.println("- Erro: a porcentagem da promocao deve ser um numero inteiro. Tente novamente!");
@@ -1015,7 +1015,7 @@ public class Main {
         try {
                 System.out.printf("Digite o codigo da sessao a ser alterada: ");
                 codigoSessao = Integer.parseInt(sc.nextLine());
-                excecaoInteirosNegativos(codigoSessao);
+                excecaoNumerosNegativos(codigoSessao);
                 
          } catch(NumberFormatException e) {
                 System.err.println("- Erro: o o codigo da sessao deve ser um numero inteiro. Tente novamente!");
@@ -1077,7 +1077,7 @@ public class Main {
                     try {
                         System.out.print("Digite o numero novo da sala: ");
                         nroSalaNovo = Integer.parseInt(sc.nextLine());
-                        excecaoInteirosNegativos(nroSalaNovo);                            
+                        excecaoNumerosNegativos(nroSalaNovo);                            
                     } catch(NumberFormatException e) {
                         System.err.println("- Erro: o novo numero da sala  deve ser um numero inteiro. Tente novamente!");
                     } catch(IllegalArgumentException e) {
@@ -1155,8 +1155,7 @@ public class Main {
                         try {
                             System.out.print("Digite o numero novo da sala: ");
                             precoSessaoNovo = Double.parseDouble(sc.nextLine());
-                            excecaoDoubles(precoSessaoNovo);
-                            
+                            excecaoNumerosNegativos(precoSessaoNovo);
                             
                         } catch(NumberFormatException e) {
                             System.err.println("- Erro: o novo numero da sala deve ser um numero inteiro. Tente novamente!");
@@ -1198,7 +1197,7 @@ public class Main {
        try {
           System.out.printf("Digite o codigo da sessao a ser removida: ");
           codigoSessao = Integer.parseInt(sc.nextLine());
-          excecaoInteirosNegativos(codigoSessao);
+          excecaoNumerosNegativos(codigoSessao);
                 
         } catch(NumberFormatException e) {
            System.err.println("- Erro: o codigo da sessao deve ser um numero inteiro. Tente novamente!");
@@ -1270,7 +1269,7 @@ public class Main {
         try {
             System.out.print("Digite o codigo da sessao a qual a promocao ira ser adicionada : ");
             codigoSessao = Integer.parseInt(sc.nextLine());
-            excecaoInteirosNegativos(codigoSessao);
+            excecaoNumerosNegativos(codigoSessao);
                 
          } catch(NumberFormatException e) {
                 System.err.println("- Erro: o codigo da sessao deve ser um numero inteiro. Tente novamente!");
@@ -1329,7 +1328,7 @@ public class Main {
         try {
             System.out.print("Digite o codigo da sessao a qual a promocao esta ligada : ");
             codigoSessao = Integer.parseInt(sc.nextLine());
-            excecaoInteirosNegativos(codigoSessao);
+            excecaoNumerosNegativos(codigoSessao);
                 
         } catch(NumberFormatException e) {
                 System.err.println("- Erro: o codigo da sessao deve ser um numero inteiro. Tente novamente!");
@@ -1390,7 +1389,7 @@ public class Main {
         try {
              System.out.printf("Digite o codigo da sessao para remover sua promocao: ");
              codigoSessao = Integer.parseInt(sc.nextLine());
-             excecaoInteirosNegativos(codigoSessao);
+             excecaoNumerosNegativos(codigoSessao);
         } catch(NumberFormatException e) {
                 System.err.println("- Erro: o codigo da sessao deve ser um numero. Tente novamente!");
         } catch(IllegalArgumentException e) {
@@ -1512,7 +1511,7 @@ public class Main {
             try {
                  System.out.printf("Digite o codigo da sessao escolhida: ");
                  codigoSessao = Integer.parseInt(sc.nextLine());
-                 excecaoInteirosNegativos(codigoSessao);
+                 excecaoNumerosNegativos(codigoSessao);
                     
             } catch(NumberFormatException e) {
                  System.err.println("- Erro: o codigo da sessao deve ser um numero inteiro. Tente novamente!");
@@ -1647,8 +1646,8 @@ public class Main {
     }
     
     //Métodos de excecao - a fim de simplificar as estruturas em outros métodos
-    private static void excecaoInteirosNegativos(int numeroEntrada) throws IllegalArgumentException {
-    	if(numeroEntrada < 0) {//Aceita apenas numeros positivos - Opção, Códigos, Idade, Duração, nroSala  
+    private static <T extends Number & Comparable<T>> void excecaoNumerosNegativos(T numeroEntrada) throws IllegalArgumentException {
+    	if(numeroEntrada.doubleValue() < 0) {//Aceita apenas numeros positivos - Opção, Códigos, Idade, Duração, nroSala  
     		throw new IllegalArgumentException(); 
     	}
     }
@@ -1662,11 +1661,7 @@ public class Main {
     		throw new IllegalArgumentException(); 
     	}
     }     
-    private static void excecaoDoubles(double numeroEntrada) throws IllegalArgumentException {
-    	if(numeroEntrada < 0) {//Apenas números do tipo double positivos - Preço
-    		throw new IllegalArgumentException(); 
-    	}
-    }
+    
     private static void excecaoCompraIngresso(int numeroEntrada, Sessao sessao) throws ArrayIndexOutOfBoundsException {
         if (numeroEntrada < 0 || numeroEntrada > sessao.getSalaSessao().getNroAssentos()) {
             throw new ArrayIndexOutOfBoundsException("Número de assento fora do intervalo válido.");
