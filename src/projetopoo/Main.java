@@ -435,9 +435,9 @@ public class Main {
                 continuaLaco = false;
                 
             } catch(NumberFormatException e) {
-                System.err.println("- Erro: o numero de assento deve ser um numero. Tente novamente!");
+                System.err.println("- Erro: a duracao deve ser um numero. Tente novamente!");
             } catch(IllegalArgumentException e) {
-                System.err.println("- Erro: o numero de assento deve ser um numero positivo maior que 20. Tente novamente!");
+                System.err.println("- Erro: a duracao deve ser um numero inteiro positivo. Tente novamente!");
             }
         } while(continuaLaco);
         System.out.println();
@@ -590,7 +590,7 @@ public class Main {
                             continuaLaco = true;
                             
                         } catch(NumberFormatException e) {
-                            System.err.println("- Erro:a duracao nova deve ser um numero. Tente novamente!");
+                            System.err.println("- Erro:a duracao nova deve ser um numero inteiro. Tente novamente!");
                         } catch(IllegalArgumentException e) {
                             System.err.println("- Erro: a duracao nova deve ser um numero positivo. Tente novamente!");
                         }
@@ -718,7 +718,7 @@ public class Main {
                 continuaLaco = false;
                  
             } catch(NumberFormatException e) {
-                System.err.println("- Erro: o numero da sala deve ser um numero. Tente novamente!");
+                System.err.println("- Erro: o numero da sala deve ser um numero inteiro. Tente novamente!");
             }catch(IllegalArgumentException e) {
                 System.err.println("- Erro: o numero da sala deve ser um numero positivo. Tente novamente!");
             }
@@ -849,7 +849,7 @@ public class Main {
                             continuaLaco = true;
                             
                         } catch(NumberFormatException e) {
-                            System.err.println("- Erro: o novo numero de assentos deve ser um numero. Tente novamente!");
+                            System.err.println("- Erro: o novo numero de assentos deve ser um numero inteiro. Tente novamente!");
                         } catch(IllegalArgumentException e) {
                         	 System.err.println("- Erro: o novo numero de assento deve ser um numero positivo maior que 30. Tente novamente!");
                         }
@@ -924,7 +924,7 @@ public class Main {
                 continuaLaco = false;
                 
             } catch(NumberFormatException e) {
-                System.err.println("- Erro: o numero da sala  deve ser um numero. Tente novamente!");
+                System.err.println("- Erro: o numero da sala  deve ser um numero inteiro. Tente novamente!");
             } catch(IllegalArgumentException e) {
                 System.err.println("- Erro: o numero da sala deve ser um numero positivo. Tente novamente!");
             }
@@ -1017,7 +1017,7 @@ public class Main {
                     continuaLaco = false;
                     
                 } catch(NumberFormatException e) {
-                    System.err.println("- Erro: o numero da sala  deve ser um numero. Tente novamente!");
+                    System.err.println("- Erro: o numero da sala  deve ser um numero inteiro. Tente novamente!");
                 } catch(IllegalArgumentException e) {
                     System.err.println("- Erro: o numero da sala deve ser um numero positivo. Tente novamente!");
                 }
@@ -1050,7 +1050,7 @@ public class Main {
                         continuaLaco = true;
                         
                     } catch(NumberFormatException e) {
-                        System.err.println("- Erro: a porcentagem da promocao deve ser um numero. Tente novamente!");
+                        System.err.println("- Erro: a porcentagem da promocao deve ser um numero inteiro. Tente novamente!");
                     } catch(IllegalArgumentException e) {
                         System.err.println("- Erro: o preco do filme deve ser um numero positivo. Tente novamente!");
                     }
@@ -1106,7 +1106,7 @@ public class Main {
                 continuaLaco = false;
                 
             } catch(NumberFormatException e) {
-                System.err.println("- Erro: o o codigo da sessao deve ser um numero. Tente novamente!");
+                System.err.println("- Erro: o o codigo da sessao deve ser um numero inteiro. Tente novamente!");
             } catch(IllegalArgumentException e) {
                 System.err.println("- Erro: o o codigo da sessao deve ser um numero positivo. Tente novamente!");
             }
@@ -1177,7 +1177,7 @@ public class Main {
                             continuaLaco = false;
                             
                         } catch(NumberFormatException e) {
-                            System.err.println("- Erro: o novo numero da sala  deve ser um numero. Tente novamente!");
+                            System.err.println("- Erro: o novo numero da sala  deve ser um numero inteiro. Tente novamente!");
                         } catch(IllegalArgumentException e) {
                             System.err.println("- Erro: o novo numero da sala deve ser um numero positivo. Tente novamente!");
                         }
@@ -1260,9 +1260,9 @@ public class Main {
                             continuaLaco = false;
                             
                         } catch(NumberFormatException e) {
-                            System.err.println("- Erro: o novo preco do ingresso deve ser um numero. Tente novamente!");
+                            System.err.println("- Erro: o novo numero da sala deve ser um numero inteiro. Tente novamente!");
                         } catch(IllegalArgumentException e) {
-                            System.err.println("- Erro: o novo preco do ingresso deve ser um numero positivo. Tente novamente!");
+                            System.err.println("- Erro: o novo numero da sala deve ser um numero positivo. Tente novamente!");
                         }
                     } while(continuaLaco);
                     System.out.println();
@@ -1306,7 +1306,7 @@ public class Main {
                 
                 continuaLaco = false;
             } catch(NumberFormatException e) {
-                System.err.println("- Erro: o codigo da sessao deve ser um numero. Tente novamente!");
+                System.err.println("- Erro: o codigo da sessao deve ser um numero inteiro. Tente novamente!");
             } catch(IllegalArgumentException e) {
                 System.err.println("- Erro: o codigo da sessao deve ser um numero positivo. Tente novamente!");
             }
@@ -1389,7 +1389,7 @@ public class Main {
                 continuaLaco = false;
                 
             } catch(NumberFormatException e) {
-                System.err.println("- Erro: o codigo da sessao deve ser um numero. Tente novamente!");
+                System.err.println("- Erro: o codigo da sessao deve ser um numero inteiro. Tente novamente!");
             } catch(IllegalArgumentException e) {
                 System.err.println("- Erro: o codigo da sessao deve ser um numero positivo. Tente novamente!");
             }
@@ -1414,7 +1414,7 @@ public class Main {
                 } catch(NumberFormatException e) {
                     System.err.println("- Erro: a porcentagem da promocao deve ser um numero. Tente novamente!");
                 } catch(IllegalArgumentException e) {
-                    System.err.println("- Erro: a porcentagem da promocao deve ser um numero positivo entre 0 e 1. Tente novamente!");
+                    System.err.println("- Erro: a porcentagem da promocao deve ser um numero entre 0 e 100. Tente novamente!");
                 }
             } while(!continuaLaco);
             porcentagemPromocional = porcentagemPromocional/100.00;
@@ -1456,7 +1456,7 @@ public class Main {
                 continuaLaco = false;
                 
             } catch(NumberFormatException e) {
-                System.err.println("- Erro: o codigo da sessao deve ser um numero. Tente novamente!");
+                System.err.println("- Erro: o codigo da sessao deve ser um numero inteiro. Tente novamente!");
             } catch(IllegalArgumentException e) {
                 System.err.println("- Erro: o codigo da sessao deve ser um numero positivo. Tente novamente!");
             }
@@ -1480,7 +1480,7 @@ public class Main {
                 } catch(NumberFormatException e) {
                     System.err.println("- Erro: a porcentagem da promocao deve ser um numero. Tente novamente!");
                 } catch(IllegalArgumentException e) {
-                    System.err.println("- Erro: a porcentagem da promocao deve ser um numero positivo entre 0 e 1. Tente novamente!");
+                    System.err.println("- Erro: a porcentagem da promocao deve ser um numero entre 0 e 100. Tente novamente!");
                 }
             } while(!continuaLaco);
             porcentagemPromocionalNova = porcentagemPromocionalNova/100.00;
@@ -1666,7 +1666,7 @@ public class Main {
                     continuaLaco = false;
                     
                 } catch(NumberFormatException e) {
-                    System.err.println("- Erro: o codigo da sessao deve ser um numero. Tente novamente!");
+                    System.err.println("- Erro: o codigo da sessao deve ser um numero inteiro. Tente novamente!");
                 } catch(IllegalArgumentException e) {
                     System.err.println("- Erro: o codigo da sessao deve ser um numero positivo. Tente novamente!");
                 }
@@ -1703,7 +1703,7 @@ public class Main {
                             continuaLaco = true;
                             
                         } catch(NumberFormatException e) {
-                            System.err.println("- Erro: o numero de assento deve ser um numero. Tente novamente!");
+                            System.err.println("- Erro: o numero de assento deve ser um numero inteiro. Tente novamente!");
                         }
                     } while(!continuaLaco);
                     System.out.println();
