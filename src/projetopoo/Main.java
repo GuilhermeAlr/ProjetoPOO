@@ -220,7 +220,6 @@ public class Main {
     
     private static int imprimeMenuNaoLogado(Cinema cinema, Scanner sc) {
         int opcao = 0;
-        boolean continuaLaco = true; 
         
         System.out.println(cinema.getNomeCinema());
         System.out.println("Bem Vindo!");
@@ -229,18 +228,12 @@ public class Main {
         System.out.println("(2) Login");
         System.out.println("(3) Sair");
         
-        do {
-            try {
-                System.out.printf("Entre uma opcao: ");
-                opcao = Integer.parseInt(sc.nextLine());
-                continuaLaco = false;
-                
-                System.out.println();
+        try {
+            System.out.printf("Entre uma opcao: ");
+            opcao = Integer.parseInt(sc.nextLine());
+            System.out.println();
                  
-            } catch(NumberFormatException e) {
-                System.err.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
-            }
-        } while(continuaLaco);
+        } catch(NumberFormatException e) {}
 
         System.out.println();
         return opcao;
@@ -251,7 +244,6 @@ public class Main {
         String loginUsuario;
         String senhaUsuario;
         int idadeUsuario = 0;
-        boolean continuaLaco = true;
         
         System.out.println("CADASTRO");
         System.out.printf("Digite seu nome: ");
@@ -261,21 +253,19 @@ public class Main {
         System.out.printf("Digite uma senha: ");
         senhaUsuario = sc.nextLine();
 
-        do {
-            try {
+        try {
                 System.out.printf("Digite sua idade: ");
                 idadeUsuario = Integer.parseInt(sc.nextLine());
                 System.out.println();
                 excecaoInteirosNegativos(idadeUsuario); 
-                
-                continuaLaco = false;
 
             } catch(NumberFormatException e) {
                 System.err.println("- Erro: a idade deve ser um numero. Tente novamente!");
+                return;
             } catch (IllegalArgumentException i) {
                 System.err.println("- Erro: a idade deve ser um numero positivo. Tente novamente!");
-            }
-        } while (continuaLaco);
+                return; 
+        }
 
 
         if (buscarUsuario(loginUsuario, listaUsuarios) == null) {
@@ -341,7 +331,6 @@ public class Main {
     // menu do gerente
     private static int imprimeMenuGerente(Scanner sc) {
         int opcao = 0;
-        boolean continuaLaco = true;
 
         System.out.println("MENU DO GERENTE");
         System.out.println("(1) Filme");
@@ -351,25 +340,18 @@ public class Main {
         System.out.println("(5) Exibir Relatorios");
         System.out.println("(6) Sair");
 
-        do {
-            try {
-                System.out.printf("Entre uma opcao: ");
-                opcao = Integer.parseInt(sc.nextLine());
-                continuaLaco = false;
-                 
-            } catch(NumberFormatException e) {
-                System.err.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
-            }
-        } while(continuaLaco);
-
+        try {
+             System.out.printf("Entre uma opcao: ");
+             opcao = Integer.parseInt(sc.nextLine());
+        } catch(NumberFormatException e) {}
+        
         System.out.println();
         return opcao;
     }
 
     // menu do gerente - aba de filmes
-    private static int imprimeMenuGerenteFilme(Scanner sc) {
+    private static int imprimeMenuGerenteFilme(Scanner sc) throws NumberFormatException{
         int opcao = 0;
-        boolean continuaLaco = true;
         
         System.out.println("FILME");
         System.out.println("(1) Cadastrar Filme");
@@ -378,22 +360,17 @@ public class Main {
         System.out.println("(4) Listar Filmes");
         System.out.println("(5) Sair");
 
-        do {
-            try {
-                System.out.printf("Entre uma opcao: ");
-                opcao = Integer.parseInt(sc.nextLine());
-                continuaLaco = false;
+        try {
+            System.out.printf("Entre uma opcao: ");
+            opcao = Integer.parseInt(sc.nextLine());
                  
-            } catch(NumberFormatException e) {
-                System.err.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
-            }
-        } while(continuaLaco);
+        } catch(NumberFormatException e) {}
 
         System.out.println();
         return opcao;
     }
     
-    private static void imprimeMenuGerenteCadastroFilme(Gerente gerente, Scanner sc) {
+    private static void imprimeMenuGerenteCadastroFilme(Gerente gerente, Scanner sc)  throws NumberFormatException, IllegalArgumentException {
         String nomeFilme;
         String sinopseFilme;
         int classificacaoFilme = 0;
@@ -401,7 +378,6 @@ public class Main {
         String generoFilme;
         int duracaoFilme = 0;
         String confirmacao;
-        Boolean continuaLaco = true;
                 
         System.out.println("CADASTRAR FILME NO CATALOGO");
         System.out.println("Entre com as informacoes do filme desejado: ");
@@ -427,20 +403,16 @@ public class Main {
         System.out.print("- Genero: ");
         generoFilme = sc.nextLine();
         
-        do {
-            try {
-                System.out.print("- Duracao (em minutos): ");
-                duracaoFilme = Integer.parseInt(sc.nextLine());
-                excecaoInteirosNegativos(duracaoFilme);
+       try {
+           System.out.print("- Duracao (em minutos): ");
+           duracaoFilme = Integer.parseInt(sc.nextLine());
+           excecaoInteirosNegativos(duracaoFilme);
                 
-                continuaLaco = false;
-                
-            } catch(NumberFormatException e) {
-                System.err.println("- Erro: a duracao deve ser um numero. Tente novamente!");
-            } catch(IllegalArgumentException e) {
-                System.err.println("- Erro: a duracao deve ser um numero inteiro positivo. Tente novamente!");
-            }
-        } while(continuaLaco);
+        } catch(NumberFormatException e) {
+           System.err.println("- Erro: a duracao deve ser um numero. Tente novamente!");
+        } catch(IllegalArgumentException e) {
+           System.err.println("- Erro: a duracao deve ser um numero inteiro positivo. Tente novamente!");
+        }
         System.out.println();
                 
         Filme filmeTemporario = new Filme(nomeFilme, sinopseFilme, classificacaoFilme, generoFilme, duracaoFilme);
@@ -461,9 +433,8 @@ public class Main {
         sc.nextLine();
     }
     
-    private static void imprimeMenuGerenteEdicaoFilme(Gerente gerente, Scanner sc) {
+    private static void imprimeMenuGerenteEdicaoFilme(Gerente gerente, Scanner sc) throws NumberFormatException, IllegalArgumentException {
         int opcao = 0;
-        boolean continuaLaco = true;
         String nomeFilme;
         String confirmacao;
 
@@ -485,16 +456,11 @@ public class Main {
             System.out.println("(5) Duracao");
             System.out.print("Escolha um parametro: ");
             
-            do {
-                try {
-                    System.out.printf("Entre uma opcao: ");
-                    opcao = Integer.parseInt(sc.nextLine());
-                    continuaLaco = false;
+            try {
+               System.out.printf("Entre uma opcao: ");
+               opcao = Integer.parseInt(sc.nextLine());
                      
-                } catch(NumberFormatException e) {
-                    System.err.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
-                }
-            } while(continuaLaco);
+            } catch(NumberFormatException e) {}
             System.out.println();
 
             switch(opcao) {
@@ -582,22 +548,17 @@ public class Main {
                     System.out.println();
                     int duracaoNova = 0;
                     
-                    do {
-                        try {
-                            System.out.printf("Digite a duracao nova: ");
-                            duracaoNova = Integer.parseInt(sc.nextLine());
-                            excecaoInteirosNegativos(duracaoNova);
-                            
-                            continuaLaco = true;
-                            
-                        } catch(NumberFormatException e) {
-                            System.err.println("- Erro:a duracao nova deve ser um numero inteiro. Tente novamente!");
-                        } catch(IllegalArgumentException e) {
-                            System.err.println("- Erro: a duracao nova deve ser um numero positivo. Tente novamente!");
-                        }
-                    } while(!continuaLaco);
+                    try {
+                       System.out.printf("Digite a duracao nova: ");
+                       duracaoNova = Integer.parseInt(sc.nextLine());
+                       excecaoInteirosNegativos(duracaoNova);
+                    } catch(NumberFormatException e) {
+                       System.err.println("- Erro:a duracao nova deve ser um numero inteiro. Tente novamente!");
+                    } catch(IllegalArgumentException e) {
+                       System.err.println("- Erro: a duracao nova deve ser um numero positivo. Tente novamente!");
+                    }
+                    
                     System.out.println();
-
                     System.out.println("- Duracao Antiga: " + filme.getDuracaoFilme());
                     System.out.println("- Duracao Nova: " + duracaoNova);
                     
@@ -675,7 +636,6 @@ public class Main {
     // menu do gerente - aba de salas
     private static int imprimeMenuGerenteSala(Scanner sc) {
         int opcao = 0;
-        boolean continuaLaco = true;
         
         System.out.println("SALA");
         System.out.println("(1) Cadastrar Sala");
@@ -684,60 +644,44 @@ public class Main {
         System.out.println("(4) Listar Salas");
         System.out.println("(5) Sair");
 
-        do {
-            try {
-                System.out.printf("Entre uma opcao: ");
-                opcao = Integer.parseInt(sc.nextLine());
-                continuaLaco = false;
-                 
-            } catch(NumberFormatException e) {
-                System.err.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
-            }
-        } while(continuaLaco);
+        try {
+            System.out.printf("Entre uma opcao: ");
+            opcao = Integer.parseInt(sc.nextLine());
+        } catch(NumberFormatException e) {}
 
         System.out.println();
         return opcao;
     }
 
-    private static void imprimeMenuGerenteCadastroSala(Gerente gerente, Scanner sc) {
+    private static void imprimeMenuGerenteCadastroSala(Gerente gerente, Scanner sc) throws NumberFormatException, IllegalArgumentException {
         int nroSala = 0;
         int nroAssentos = 0;
         String tipoTelaString;
         boolean tipoTela;
         String confirmacao;
-        Boolean continuaLaco = true;
 
         System.out.println("CADASTRAR SALA");
         System.out.println("Entre com as informacoes da sala:");
 
-        do {
-            try {
-                System.out.print("- Numero da Sala: ");
-                nroSala = Integer.parseInt(sc.nextLine());
-                excecaoInteirosNegativos(nroSala);
-                
-                continuaLaco = false;
-                 
-            } catch(NumberFormatException e) {
-                System.err.println("- Erro: o numero da sala deve ser um numero inteiro. Tente novamente!");
-            }catch(IllegalArgumentException e) {
-                System.err.println("- Erro: o numero da sala deve ser um numero positivo. Tente novamente!");
-            }
-        } while(continuaLaco);
+        try {
+            System.out.print("- Numero da Sala: ");
+            nroSala = Integer.parseInt(sc.nextLine());
+            excecaoInteirosNegativos(nroSala);
+        } catch(NumberFormatException e) {
+            System.err.println("- Erro: o numero da sala deve ser um numero inteiro. Tente novamente!");
+        }catch(IllegalArgumentException e) {
+            System.err.println("- Erro: o numero da sala deve ser um numero positivo. Tente novamente!");
+        }
      
-        do {
-            try {
-                System.out.print("- Numero de Assentos: ");
-                nroAssentos = Integer.parseInt(sc.nextLine());
-                excecaoNroAssentos(nroAssentos);
-                
-                continuaLaco = true;
-            } catch(NumberFormatException e) {
+        try {
+            System.out.print("- Numero de Assentos: ");
+            nroAssentos = Integer.parseInt(sc.nextLine());
+            excecaoNroAssentos(nroAssentos);
+        } catch(NumberFormatException e) {
                 System.err.println("- Erro: o numero de assentos deve ser um numero. Tente novamente!");
-            } catch(IllegalArgumentException e) {
+        } catch(IllegalArgumentException e) {
             	 System.err.println("- Erro: o numero de assento deve ser um numero positivo maior que 30. Tente novamente!");
-            }
-        } while(!continuaLaco);
+        }
         
         System.out.print("- Tipo da Tela (2D ou 3D): ");
         tipoTelaString = sc.nextLine();
@@ -772,9 +716,8 @@ public class Main {
         sc.nextLine();
     }
 
-    private static void imprimeMenuGerenteEdicaoSala(Gerente gerente, Scanner sc) {
+    private static void imprimeMenuGerenteEdicaoSala(Gerente gerente, Scanner sc) throws NumberFormatException, IllegalArgumentException {
         int opcao = 0;
-        boolean continuaLaco = true;
         int nroSala;
         String confirmacao;
 
@@ -794,36 +737,28 @@ public class Main {
             System.out.println("(3) Tipo de Tela");
             System.out.print("Escolha um parametro: ");
             
-            do {
-                try {
-                    System.out.printf("Entre uma opcao: ");
-                    opcao = Integer.parseInt(sc.nextLine());
-                    continuaLaco = false;
-                     
-                } catch(NumberFormatException e) {
-                    System.err.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
-                }
-            } while(continuaLaco);
+            try {
+                 System.out.printf("Entre uma opcao: ");
+                 opcao = Integer.parseInt(sc.nextLine());
+            } catch(NumberFormatException e) {}
             System.out.println();
 
             switch(opcao) {
                 case 1:
                     int nroSalaNovo = 0;
-                    do {
-                        try {
-                        	System.out.print("Digite o numero da sala novo: ");
-                            nroSalaNovo = Integer.parseInt(sc.nextLine());
-                            excecaoInteirosNegativos(nroSalaNovo);
-                            
-                            continuaLaco = true;
-                        } catch(NumberFormatException e) {
-                            System.err.println("- Erro: o numero novo da sala deve ser um numero. Tente novamente!");
-                        } catch(IllegalArgumentException e) {
-                            System.err.println("- Erro: o numero novo da sala deve ser um numero positivo. Tente novamente!");
-                        }
-                    } while(!continuaLaco);
-                    System.out.println();
 
+                    try {
+                        System.out.print("Digite o numero da sala novo: ");
+                        nroSalaNovo = Integer.parseInt(sc.nextLine());
+                        excecaoInteirosNegativos(nroSalaNovo);
+                            
+                    } catch(NumberFormatException e) {
+                        System.err.println("- Erro: o numero novo da sala deve ser um numero. Tente novamente!");
+                    } catch(IllegalArgumentException e) {
+                        System.err.println("- Erro: o numero novo da sala deve ser um numero positivo. Tente novamente!");
+                    }
+                    
+                    System.out.println();
                     System.out.println("- Numero da Sala Antigo: " + sala.getNroSala());
                     System.out.println("- Numero da Sala Novo: " + nroSalaNovo);
 
@@ -841,20 +776,16 @@ public class Main {
                     break;
                 case 2:
                     int nroAssentosNovo = 0;
-                    do {
-                        try {
-                            System.out.printf("Digite o numero de assentos novo: ");
-                        	nroAssentosNovo = Integer.parseInt(sc.nextLine());
-                        	excecaoNroAssentos(nroAssentosNovo);
-                        	
-                            continuaLaco = true;
-                            
-                        } catch(NumberFormatException e) {
-                            System.err.println("- Erro: o novo numero de assentos deve ser um numero inteiro. Tente novamente!");
-                        } catch(IllegalArgumentException e) {
-                        	 System.err.println("- Erro: o novo numero de assento deve ser um numero positivo maior que 30. Tente novamente!");
-                        }
-                    } while(!continuaLaco);
+
+                    try {
+                        System.out.printf("Digite o numero de assentos novo: ");
+                        nroAssentosNovo = Integer.parseInt(sc.nextLine());
+                        excecaoNroAssentos(nroAssentosNovo);
+                    } catch(NumberFormatException e) {
+                        System.err.println("- Erro: o novo numero de assentos deve ser um numero inteiro. Tente novamente!");
+                    } catch(IllegalArgumentException e) {
+                         System.err.println("- Erro: o novo numero de assento deve ser um numero positivo maior que 30. Tente novamente!");
+                    }
                     System.out.println();
                     
 
@@ -909,27 +840,23 @@ public class Main {
         sc.nextLine();
     }
 
-    private static void imprimeMenuGerenteRemocaoSala(Gerente gerente, Scanner sc) {
+    private static void imprimeMenuGerenteRemocaoSala(Gerente gerente, Scanner sc) throws NumberFormatException, IllegalArgumentException {
         int nroSala = 0;
         String confirmacao;
-        Boolean continuaLaco = true;
         
         System.out.println("REMOCAO DE SALA");
         imprimeListaSalas(gerente.getCinema());
         
-        do {
-            try {
-                System.out.printf("Digite o numero da sala a ser removida: ");
-                nroSala = Integer.parseInt(sc.nextLine());
-                excecaoInteirosNegativos(nroSala);
-                continuaLaco = false;
+        try {
+            System.out.printf("Digite o numero da sala a ser removida: ");
+            nroSala = Integer.parseInt(sc.nextLine());
+            excecaoInteirosNegativos(nroSala);
                 
-            } catch(NumberFormatException e) {
+        } catch(NumberFormatException e) {
                 System.err.println("- Erro: o numero da sala  deve ser um numero inteiro. Tente novamente!");
-            } catch(IllegalArgumentException e) {
+        } catch(IllegalArgumentException e) {
                 System.err.println("- Erro: o numero da sala deve ser um numero positivo. Tente novamente!");
-            }
-        } while(continuaLaco);
+        }
         System.out.println();
         
         
@@ -961,7 +888,6 @@ public class Main {
     // menu do gerente - aba de sessoes
     private static int imprimeMenuGerenteSessao(Scanner sc) {
         int opcao = 0;
-        boolean continuaLaco = true;
         
         System.out.println("SESSAO");
         System.out.println("(1) Cadastrar Sessao");
@@ -970,22 +896,17 @@ public class Main {
         System.out.println("(4) Listar Sessoes");
         System.out.println("(5) Sair");
 
-        do {
-            try {
-                System.out.printf("Entre uma opcao: ");
-                opcao = Integer.parseInt(sc.nextLine());
-                continuaLaco = false;
+        try {
+            System.out.printf("Entre uma opcao: ");
+            opcao = Integer.parseInt(sc.nextLine());
                  
-            } catch(NumberFormatException e) {
-                System.err.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
-            }
-        } while(continuaLaco);
+        } catch(NumberFormatException e) {}
         System.out.println();
 
         return opcao;
     }
 
-    private static void imprimeMenuGerenteCadastroSessao(Gerente gerente, Scanner sc) {
+    private static void imprimeMenuGerenteCadastroSessao(Gerente gerente, Scanner sc) throws NumberFormatException, IllegalArgumentException {
         String nomeFilme;
         Filme filmeSessao; 
         int nroSala = 0;
@@ -997,7 +918,6 @@ public class Main {
         DateTimeFormatter formatter;
         double precoSessao = 0.0;
         String confirmacao;
-        Boolean continuaLaco = true;
 
         System.out.println("CADASTRAR SESSAO");
         System.out.println("Entre com as informacoes da sessao: ");
@@ -1010,19 +930,16 @@ public class Main {
         // se encontra um filme, o cadastro da sessao eh realizado
         if (filmeSessao != null) {
 
-            do {
-                try {
-                    System.out.print("- Numero da Sala: ");
-                    nroSala = Integer.parseInt(sc.nextLine());
-                    excecaoInteirosNegativos(nroSala);
-                    continuaLaco = false;
+             try {
+                 System.out.print("- Numero da Sala: ");
+                 nroSala = Integer.parseInt(sc.nextLine());
+                 excecaoInteirosNegativos(nroSala);
                     
-                } catch(NumberFormatException e) {
+             } catch(NumberFormatException e) {
                     System.err.println("- Erro: o numero da sala  deve ser um numero inteiro. Tente novamente!");
-                } catch(IllegalArgumentException e) {
+             } catch(IllegalArgumentException e) {
                     System.err.println("- Erro: o numero da sala deve ser um numero positivo. Tente novamente!");
-                }
-            } while(continuaLaco);
+             }
             System.out.println();
             
 
@@ -1043,19 +960,16 @@ public class Main {
 
                 LocalDateTime diaHorarioSessao = diaSessao.atTime(horarioSessao);
                 
-                do {
-                    try {
-                        System.out.print("- Preco da sessao: ");
-                        precoSessao = Double.parseDouble(sc.nextLine());
-                        excecaoDoubles(precoSessao);
-                        continuaLaco = true;
+                 try {
+                     System.out.print("- Preco da sessao: ");
+                     precoSessao = Double.parseDouble(sc.nextLine());
+                     excecaoDoubles(precoSessao);
                         
-                    } catch(NumberFormatException e) {
+                 } catch(NumberFormatException e) {
                         System.err.println("- Erro: a porcentagem da promocao deve ser um numero inteiro. Tente novamente!");
-                    } catch(IllegalArgumentException e) {
+                 } catch(IllegalArgumentException e) {
                         System.err.println("- Erro: o preco do filme deve ser um numero positivo. Tente novamente!");
-                    }
-                } while(!continuaLaco);
+                 }
                 System.out.println();
                 
                 Sessao sessaoTemporaria = new Sessao(diaHorarioSessao, precoSessao, false, 1, salaSessao, filmeSessao); // conferir promocao
@@ -1089,9 +1003,8 @@ public class Main {
         sc.nextLine();
     }
 
-    private static void imprimeMenuGerenteEdicaoSessao(Gerente gerente, Scanner sc) {
+    private static void imprimeMenuGerenteEdicaoSessao(Gerente gerente, Scanner sc) throws NumberFormatException, IllegalArgumentException{
         int opcao = 0;
-        boolean continuaLaco = true;
         int codigoSessao = 0;
         DateTimeFormatter formatter;
         String confirmacao;
@@ -1099,19 +1012,17 @@ public class Main {
         System.out.println("EDITAR SESSAO");
         imprimeListaSessoes(gerente.getCinema());
         
-        do {
-            try {
+        try {
                 System.out.printf("Digite o codigo da sessao a ser alterada: ");
                 codigoSessao = Integer.parseInt(sc.nextLine());
                 excecaoInteirosNegativos(codigoSessao);
-                continuaLaco = false;
                 
-            } catch(NumberFormatException e) {
+         } catch(NumberFormatException e) {
                 System.err.println("- Erro: o o codigo da sessao deve ser um numero inteiro. Tente novamente!");
-            } catch(IllegalArgumentException e) {
+         } catch(IllegalArgumentException e) {
                 System.err.println("- Erro: o o codigo da sessao deve ser um numero positivo. Tente novamente!");
-            }
-        } while(continuaLaco);
+         }
+        
         System.out.println();
         
         // busca sessao disponivel no cinema
@@ -1127,16 +1038,10 @@ public class Main {
             System.out.println("(5) Preco da Sessao");
             System.out.print("Escolha um parametro: ");
             
-            do {
-                try {
-                    System.out.printf("Entre uma opcao: ");
-                    opcao = Integer.parseInt(sc.nextLine());
-                    continuaLaco = false;
-                     
-                } catch(NumberFormatException e) {
-                    System.err.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
-                }
-            } while(continuaLaco);
+            try {
+                System.out.printf("Entre uma opcao: ");
+                opcao = Integer.parseInt(sc.nextLine());
+                } catch(NumberFormatException e) {}
             System.out.println();
 
             switch(opcao) {
@@ -1169,20 +1074,15 @@ public class Main {
                 	
                     imprimeListaSalas(gerente.getCinema());
                     
-                    do {
-                        try {
-                            System.out.print("Digite o numero novo da sala: ");
-                            nroSalaNovo = Integer.parseInt(sc.nextLine());
-                            excecaoInteirosNegativos(nroSalaNovo);                            
-                            
-                            continuaLaco = false;
-                            
-                        } catch(NumberFormatException e) {
-                            System.err.println("- Erro: o novo numero da sala  deve ser um numero inteiro. Tente novamente!");
-                        } catch(IllegalArgumentException e) {
-                            System.err.println("- Erro: o novo numero da sala deve ser um numero positivo. Tente novamente!");
-                        }
-                    } while(continuaLaco);
+                    try {
+                        System.out.print("Digite o numero novo da sala: ");
+                        nroSalaNovo = Integer.parseInt(sc.nextLine());
+                        excecaoInteirosNegativos(nroSalaNovo);                            
+                    } catch(NumberFormatException e) {
+                        System.err.println("- Erro: o novo numero da sala  deve ser um numero inteiro. Tente novamente!");
+                    } catch(IllegalArgumentException e) {
+                        System.err.println("- Erro: o novo numero da sala deve ser um numero positivo. Tente novamente!");
+                    }
                     System.out.println();
 
                     Sala salaSessao = gerente.buscarSala(nroSalaNovo);
@@ -1252,20 +1152,17 @@ public class Main {
                 	
                 	System.out.print("Digite o preco novo: ");
                     
-                    do {
                         try {
                             System.out.print("Digite o numero novo da sala: ");
                             precoSessaoNovo = Double.parseDouble(sc.nextLine());
                             excecaoDoubles(precoSessaoNovo);
                             
-                            continuaLaco = false;
                             
                         } catch(NumberFormatException e) {
                             System.err.println("- Erro: o novo numero da sala deve ser um numero inteiro. Tente novamente!");
                         } catch(IllegalArgumentException e) {
                             System.err.println("- Erro: o novo numero da sala deve ser um numero positivo. Tente novamente!");
                         }
-                    } while(continuaLaco);
                     System.out.println();
 
                     System.out.println("- Preco Antigo: " + sessao.getPrecoSessao());
@@ -1290,28 +1187,24 @@ public class Main {
         sc.nextLine();
     }
 
-    private static void imprimeMenuGerenteRemocaoSessao(Gerente gerente, Scanner sc) {
+    private static void imprimeMenuGerenteRemocaoSessao(Gerente gerente, Scanner sc) throws NumberFormatException, IllegalArgumentException {
         int codigoSessao = 0;
         String motivoExclusaoSessao;
         String confirmacao;
-        Boolean continuaLaco = true;
 
         System.out.println("REMOCAO DE SESSAO");
         imprimeListaSessoes(gerente.getCinema());
         
-        do {
-            try {
-                System.out.printf("Digite o codigo da sessao a ser removida: ");
-                codigoSessao = Integer.parseInt(sc.nextLine());
-                excecaoInteirosNegativos(codigoSessao);
+       try {
+          System.out.printf("Digite o codigo da sessao a ser removida: ");
+          codigoSessao = Integer.parseInt(sc.nextLine());
+          excecaoInteirosNegativos(codigoSessao);
                 
-                continuaLaco = false;
-            } catch(NumberFormatException e) {
-                System.err.println("- Erro: o codigo da sessao deve ser um numero inteiro. Tente novamente!");
-            } catch(IllegalArgumentException e) {
-                System.err.println("- Erro: o codigo da sessao deve ser um numero positivo. Tente novamente!");
-            }
-        } while(continuaLaco);
+        } catch(NumberFormatException e) {
+           System.err.println("- Erro: o codigo da sessao deve ser um numero inteiro. Tente novamente!");
+        } catch(IllegalArgumentException e) {
+           System.err.println("- Erro: o codigo da sessao deve ser um numero positivo. Tente novamente!");
+        }
         System.out.println();
         
 
@@ -1349,7 +1242,6 @@ public class Main {
     // menu do gerente - aba de promocoes
     private static int imprimeMenuGerentePromocao(Scanner sc) {
         int opcao = 0;
-        boolean continuaLaco = true;
         
         System.out.println("PROMOCAO");
         System.out.println("(1) Cadastrar Promocao");
@@ -1357,44 +1249,34 @@ public class Main {
         System.out.println("(3) Remover Promocao");
         System.out.println("(4) Sair");
         
-        do {
-            try {
-                System.out.printf("Entre uma opcao: ");
-                opcao = Integer.parseInt(sc.nextLine());
-                continuaLaco = false;
+        try {
+             System.out.printf("Entre uma opcao: ");
+             opcao = Integer.parseInt(sc.nextLine());
                  
-            } catch(NumberFormatException e) {
-                System.err.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
-            }
-        } while(continuaLaco);
+        } catch(NumberFormatException e) {}
 
         System.out.println();
         return opcao;
     }
 
-    private static void imprimeMenuGerenteCadastroPromocao(Gerente gerente, Scanner sc) {
+    private static void imprimeMenuGerenteCadastroPromocao(Gerente gerente, Scanner sc) throws NumberFormatException, IllegalArgumentException {
         int codigoSessao = 0;
         double porcentagemPromocional = 0.0;
         String confirmacao;
-        Boolean continuaLaco = true;
 
         System.out.println("CADASTRAR PROMOCAO");
         imprimeListaSessoes(gerente.getCinema());
         
-        do {
-            try {
-                System.out.print("Digite o codigo da sessao a qual a promocao ira ser adicionada : ");
-                codigoSessao = Integer.parseInt(sc.nextLine());
-                excecaoInteirosNegativos(codigoSessao);
+        try {
+            System.out.print("Digite o codigo da sessao a qual a promocao ira ser adicionada : ");
+            codigoSessao = Integer.parseInt(sc.nextLine());
+            excecaoInteirosNegativos(codigoSessao);
                 
-                continuaLaco = false;
-                
-            } catch(NumberFormatException e) {
+         } catch(NumberFormatException e) {
                 System.err.println("- Erro: o codigo da sessao deve ser um numero inteiro. Tente novamente!");
-            } catch(IllegalArgumentException e) {
+         } catch(IllegalArgumentException e) {
                 System.err.println("- Erro: o codigo da sessao deve ser um numero positivo. Tente novamente!");
-            }
-        } while(continuaLaco);
+         }
         System.out.println();
         
 
@@ -1404,20 +1286,17 @@ public class Main {
         // se acha sessao no catalogo, permite o cadastro de promocao
         if (sessao != null) {
             // checar se promocao eh um valor entre 0 e 100
-            do {
-                try {
-                    System.out.print("Qual sera a porcentagem da promocao? ");
-                    porcentagemPromocional = Double.parseDouble(sc.nextLine()); 
-                    execcaoPorcentagemPromocional(porcentagemPromocional);
+            try {
+                System.out.print("Qual sera a porcentagem da promocao? ");
+                porcentagemPromocional = Double.parseDouble(sc.nextLine()); 
+                execcaoPorcentagemPromocional(porcentagemPromocional);
                     
-                    continuaLaco = true;
                     
-                } catch(NumberFormatException e) {
+            } catch(NumberFormatException e) {
                     System.err.println("- Erro: a porcentagem da promocao deve ser um numero. Tente novamente!");
-                } catch(IllegalArgumentException e) {
-                    System.err.println("- Erro: a porcentagem da promocao deve ser um numero entre 0 e 100. Tente novamente!");
-                }
-            } while(!continuaLaco);
+            } catch(IllegalArgumentException e) {
+                System.err.println("- Erro: a porcentagem da promocao deve ser um numero entre 0 e 100. Tente novamente!");
+            }
             porcentagemPromocional = porcentagemPromocional/100.00;
 
             System.out.println();
@@ -1439,29 +1318,24 @@ public class Main {
         sc.nextLine();
     }
 
-    private static void imprimeMenuGerenteEdicaoPromocao(Gerente gerente, Scanner sc) {
+    private static void imprimeMenuGerenteEdicaoPromocao(Gerente gerente, Scanner sc) throws NumberFormatException, IllegalArgumentException{
         int codigoSessao = 0;
         double porcentagemPromocionalNova = 0;
         String confirmacao;
-        Boolean continuaLaco = true;
 
         System.out.println("EDITAR PROMOCAO");
         imprimeListaSessoes(gerente.getCinema());
         
-        do {
-            try {
-                System.out.print("Digite o codigo da sessao a qual a promocao esta ligada : ");
-                codigoSessao = Integer.parseInt(sc.nextLine());
-                excecaoInteirosNegativos(codigoSessao);
+        try {
+            System.out.print("Digite o codigo da sessao a qual a promocao esta ligada : ");
+            codigoSessao = Integer.parseInt(sc.nextLine());
+            excecaoInteirosNegativos(codigoSessao);
                 
-                continuaLaco = false;
-                
-            } catch(NumberFormatException e) {
+        } catch(NumberFormatException e) {
                 System.err.println("- Erro: o codigo da sessao deve ser um numero inteiro. Tente novamente!");
-            } catch(IllegalArgumentException e) {
+        } catch(IllegalArgumentException e) {
                 System.err.println("- Erro: o codigo da sessao deve ser um numero positivo. Tente novamente!");
-            }
-        } while(continuaLaco);
+        }
         System.out.println();
 
         // busca sessao no catalogo
@@ -1470,20 +1344,17 @@ public class Main {
         // se acha sessao no catalogo, permite a edicao de promocao
         if (sessao != null) {                   
             // checar se promocao eh um valor entre 0 e 100
-            do {
                 try {
                     System.out.print("Qual sera a porcentagem nova da promocao? ");
                     porcentagemPromocionalNova = Double.parseDouble(sc.nextLine());
                     execcaoPorcentagemPromocional(porcentagemPromocionalNova);
                     
-                    continuaLaco = true;
                     
                 } catch(NumberFormatException e) {
                     System.err.println("- Erro: a porcentagem da promocao deve ser um numero. Tente novamente!");
                 } catch(IllegalArgumentException e) {
                     System.err.println("- Erro: a porcentagem da promocao deve ser um numero entre 0 e 100. Tente novamente!");
                 }
-            } while(!continuaLaco);
             porcentagemPromocionalNova = porcentagemPromocionalNova/100.00;
 
             System.out.println();
@@ -1509,28 +1380,22 @@ public class Main {
         sc.nextLine();
     }
 
-    private static void imprimeMenuGerenteRemocaoPromocao(Gerente gerente, Scanner sc) {
+    private static void imprimeMenuGerenteRemocaoPromocao(Gerente gerente, Scanner sc) throws NumberFormatException, IllegalArgumentException {
         int codigoSessao = 0;
         String confirmacao;
-        Boolean continuaLaco = true;
 
         System.out.println("REMOCAO DE PROMOCAO");
         imprimeListaSessoes(gerente.getCinema());
-        
-        do {
-            try {
-                System.out.printf("Digite o codigo da sessao para remover sua promocao: ");
-                codigoSessao = Integer.parseInt(sc.nextLine());
-                excecaoInteirosNegativos(codigoSessao);
-                
-                continuaLaco = false;
-                
-            } catch(NumberFormatException e) {
+            
+        try {
+             System.out.printf("Digite o codigo da sessao para remover sua promocao: ");
+             codigoSessao = Integer.parseInt(sc.nextLine());
+             excecaoInteirosNegativos(codigoSessao);
+        } catch(NumberFormatException e) {
                 System.err.println("- Erro: o codigo da sessao deve ser um numero. Tente novamente!");
-            } catch(IllegalArgumentException e) {
+        } catch(IllegalArgumentException e) {
                 System.err.println("- Erro: o codigo da sessao deve ser um numero positivo. Tente novamente!");
-            }
-        } while(continuaLaco);
+        }
         System.out.println();
         
 
@@ -1558,9 +1423,8 @@ public class Main {
     }
 
     // menu do gerente - aba de relatorios
-    private static int imprimeMenuGerenteRelatorio(Scanner sc) {
+    private static int imprimeMenuGerenteRelatorio(Scanner sc) throws NumberFormatException {
     	int opcao = 0;
-        boolean continuaLaco = true; 
     	
     	System.out.println("RELATORIO");
         System.out.println("(1) Filmes");
@@ -1569,17 +1433,11 @@ public class Main {
         System.out.println("(4) Usuarios");
         System.out.println("(5) Sair");
 
-        do {
-            try {
-                System.out.printf("Entre uma opcao: ");
-                opcao = Integer.parseInt(sc.nextLine());
-                
-                continuaLaco = false;
+        try {
+             System.out.printf("Entre uma opcao: ");
+             opcao = Integer.parseInt(sc.nextLine());
                  
-            } catch(NumberFormatException e) {
-                System.err.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
-            }
-        } while(continuaLaco);
+        } catch(NumberFormatException e) {}
 
         System.out.println();
         return opcao; 
@@ -1612,7 +1470,6 @@ public class Main {
     // menu do usuario
     private static int imprimeMenuUsuario(Scanner sc) {
         int opcao = 0;
-        boolean continuaLaco = true;
         
         System.out.println("MENU DO USUARIO");
         System.out.println("(1) Comprar Ingresso");
@@ -1620,27 +1477,21 @@ public class Main {
         System.out.println("(3) Ver perfil");
         System.out.println("(4) Sair");
 
-        do {      
-            try {
-                System.out.print("Digite uma opcao: ");
-                opcao = Integer.parseInt(sc.nextLine());
-                continuaLaco = false;
+        try {
+            System.out.print("Digite uma opcao: ");
+            opcao = Integer.parseInt(sc.nextLine());
                  
-            } catch(NumberFormatException e) {
-                System.out.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
-            }
-        } while(continuaLaco);
-        
+        } catch(NumberFormatException e) {}
         System.out.println();
+        
         return opcao;
     }
 
-    private static void imprimeMenuUsuarioComprarIngresso(Usuario usuario, Gerente gerente, Scanner sc) {
+    private static void imprimeMenuUsuarioComprarIngresso(Usuario usuario, Gerente gerente, Scanner sc) throws NumberFormatException, IllegalArgumentException, ArrayIndexOutOfBoundsException {
         String nomeFilme;
         int codigoSessao = 0;
         int nroAssento = 0;
         String confirmacao;
-        Boolean continuaLaco = true;
 
         System.out.println("CATALOGO DE FILMES");
         imprimeListaFilmes(gerente.getCinema());
@@ -1658,20 +1509,16 @@ public class Main {
                 }
             }
 
-            do {
-                try {
-                    System.out.printf("Digite o codigo da sessao escolhida: ");
-                    codigoSessao = Integer.parseInt(sc.nextLine());
-                    excecaoInteirosNegativos(codigoSessao);
+            try {
+                 System.out.printf("Digite o codigo da sessao escolhida: ");
+                 codigoSessao = Integer.parseInt(sc.nextLine());
+                 excecaoInteirosNegativos(codigoSessao);
                     
-                    continuaLaco = false;
-                    
-                } catch(NumberFormatException e) {
-                    System.err.println("- Erro: o codigo da sessao deve ser um numero inteiro. Tente novamente!");
-                } catch(IllegalArgumentException e) {
-                    System.err.println("- Erro: o codigo da sessao deve ser um numero positivo. Tente novamente!");
-                }
-            } while(continuaLaco);
+            } catch(NumberFormatException e) {
+                 System.err.println("- Erro: o codigo da sessao deve ser um numero inteiro. Tente novamente!");
+            } catch(IllegalArgumentException e) {
+                 System.err.println("- Erro: o codigo da sessao deve ser um numero positivo. Tente novamente!");
+            }
             System.out.println();
 
 
@@ -1681,39 +1528,31 @@ public class Main {
             if (sessao != null) {
                 // imprime lista de assentos e pede para usuario digitar um assento disponivel
                 sessao.imprimeListaAssentos();
-                do {
-                    try {
-                        System.out.printf("Digite o numero de assentos disponivel: ");
-                        nroAssento = Integer.parseInt(sc.nextLine());
-                        excecaoCompraIngresso(nroAssento, sessao);
-                        
-                        continuaLaco = true;
-                        
-                    } catch(NumberFormatException e) {
+                
+                try {
+                      System.out.printf("Digite o numero de assentos disponivel: ");
+                      nroAssento = Integer.parseInt(sc.nextLine());
+                      excecaoCompraIngresso(nroAssento, sessao);
+                } catch(NumberFormatException e) {
                         System.err.println("- Erro: o numero de assento deve ser um numero. Tente novamente!");
-                    } catch(ArrayIndexOutOfBoundsException e) {
+                } catch(ArrayIndexOutOfBoundsException e) {
                         System.err.println("- Erro: o assento selecionado deve estar listado. Tente novamente!");
-                    }
-                } while(!continuaLaco);
+                }
                 System.out.println();
                 
                 while (sessao.getDisponibilidadeAssento(nroAssento)) {
                 	System.out.println("- Erro na compra: assento indisponivel. Tente novamente!");
                     
-                    do {
-                        try {
-                            System.out.printf("Digite o numero de assento disponivel: ");
-                            nroAssento = Integer.parseInt(sc.nextLine());
-                            excecaoCompraIngresso(nroAssento, sessao);
+                   try {
+                       System.out.printf("Digite o numero de assento disponivel: ");
+                       nroAssento = Integer.parseInt(sc.nextLine());
+                       excecaoCompraIngresso(nroAssento, sessao);
                             
-                            continuaLaco = true;
-                            
-                        } catch(NumberFormatException e) {
-                            System.err.println("- Erro: o numero de assento deve ser um numero. Tente novamente!");
-                        } catch(ArrayIndexOutOfBoundsException e) {
-                            System.err.println("- Erro: o assento selecionado deve estar listado. Tente novamente!");
-                        }
-                    } while(!continuaLaco);
+                    } catch(NumberFormatException e) {
+                        System.err.println("- Erro: o numero de assento deve ser um numero. Tente novamente!");
+                    } catch(ArrayIndexOutOfBoundsException e) {
+                    	System.err.println("- Erro: o assento selecionado deve estar listado. Tente novamente!");
+                    }
                     System.out.println();
                      
                 }  
@@ -1808,27 +1647,27 @@ public class Main {
     }
     
     //Métodos de excecao - a fim de simplificar as estruturas em outros métodos
-    private static void excecaoInteirosNegativos(int numeroEntrada) {
+    private static void excecaoInteirosNegativos(int numeroEntrada) throws IllegalArgumentException {
     	if(numeroEntrada < 0) {//Aceita apenas numeros positivos - Opção, Códigos, Idade, Duração, nroSala  
     		throw new IllegalArgumentException(); 
     	}
     }
-    private static void excecaoNroAssentos(int numeroEntrada) {
+    private static void excecaoNroAssentos(int numeroEntrada) throws IllegalArgumentException {
     	if(numeroEntrada < 30) {//Numeros de assentos são obrigatoriamente definidos a partir de 30 - cadastro e edição de sala
     		throw new IllegalArgumentException(); 
     	}
     }
-    private static void execcaoPorcentagemPromocional(double numeroEntrada) {
+    private static void execcaoPorcentagemPromocional(double numeroEntrada) throws IllegalArgumentException {
     	if(numeroEntrada <= 0 || numeroEntrada >= 100) {//Aceita apenas numeros entre 0 e 100, caso contrário lança excecao - métodos de promoção
     		throw new IllegalArgumentException(); 
     	}
     }     
-    private static void excecaoDoubles(double numeroEntrada) {
+    private static void excecaoDoubles(double numeroEntrada) throws IllegalArgumentException {
     	if(numeroEntrada < 0) {//Apenas números do tipo double positivos - Preço
     		throw new IllegalArgumentException(); 
     	}
     }
-    private static void excecaoCompraIngresso(int numeroEntrada, Sessao sessao) {
+    private static void excecaoCompraIngresso(int numeroEntrada, Sessao sessao) throws ArrayIndexOutOfBoundsException {
         if (numeroEntrada < 0 || numeroEntrada > sessao.getSalaSessao().getNroAssentos()) {
             throw new ArrayIndexOutOfBoundsException("Número de assento fora do intervalo válido.");
         }
