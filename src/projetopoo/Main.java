@@ -1,3 +1,4 @@
+
 package projetopoo;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -1684,31 +1685,17 @@ public class Main {
                     try {
                         System.out.printf("Digite o numero de assentos disponivel: ");
                         nroAssento = Integer.parseInt(sc.nextLine());
+                        excecaoCompraIngresso(nroAssento, sessao);
                         
-                        continuaLaco = false;
+                        continuaLaco = true;
                         
                     } catch(NumberFormatException e) {
                         System.err.println("- Erro: o numero de assento deve ser um numero. Tente novamente!");
-                    } 
-                } while(continuaLaco);
+                    } catch(ArrayIndexOutOfBoundsException e) {
+                        System.err.println("- Erro: o assento selecionado deve estar listado. Tente novamente!");
+                    }
+                } while(!continuaLaco);
                 System.out.println();
-                
-                while (sessao.getDisponibilidadeAssento(nroAssento)) {
-                    System.out.println("- Erro na compra: assento indisponivel. Tente novamente!");
-                    do {
-                        try {
-                            System.out.printf("Digite o numero de assentos disponivel: ");
-                            nroAssento = Integer.parseInt(sc.nextLine());
-                            
-                            continuaLaco = true;
-                            
-                        } catch(NumberFormatException e) {
-                            System.err.println("- Erro: o numero de assento deve ser um numero inteiro. Tente novamente!");
-                        }
-                    } while(!continuaLaco);
-                    System.out.println();
-                    
-                }        
 
                 Ingresso ingresso = new Ingresso(sessao, nroAssento, usuario.getPrecoIngresso(sessao));
                 System.out.println(ingresso.toString());
@@ -1806,7 +1793,7 @@ public class Main {
     	}
     }
     private static void excecaoNroAssentos(int numeroEntrada) {
-    	if(numeroEntrada <= 30) {//Numeros de assentos são obrigatoriamente definidos a partir de 30 - cadastro e edição de sala
+    	if(numeroEntrada < 30) {//Numeros de assentos são obrigatoriamente definidos a partir de 30 - cadastro e edição de sala
     		throw new IllegalArgumentException(); 
     	}
     }
@@ -1819,5 +1806,10 @@ public class Main {
     	if(numeroEntrada < 0) {//Apenas números do tipo double positivos - Preço
     		throw new IllegalArgumentException(); 
     	}
+    }
+    private static void excecaoCompraIngresso(int numeroEntrada, Sessao sessao) { //Evita problemas com a tentativa de compra de um ingresso com númeto superior ao tamanho do vetor
+        if (numeroEntrada < 0 || numeroEntrada > sessao.getSalaSessao().getNroAssentos()) {
+            throw new ArrayIndexOutOfBoundsException("Número de assento fora do intervalo válido.");
+        }
     } 
 }
