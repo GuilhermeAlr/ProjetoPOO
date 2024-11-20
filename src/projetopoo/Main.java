@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 // comando para compilar o codigo: no diretorio da pasta projetopoo, javac projetopoo/*.java
@@ -19,6 +20,7 @@ public class Main {
         Pessoa pessoa = null;
         int opcao, opcaoMenuGerente;
         
+        limpaConsole();
         while(estaRodando) {
             if(pessoa == null) { // menu nao logado
                 opcao = imprimeMenuNaoLogado(cinema, sc);
@@ -890,12 +892,13 @@ public class Main {
         int nroSala;
         Sala salaSessao;
         String diaSessaoString; 
-        LocalDate diaSessao;
+        LocalDate diaSessao = null;
         String horarioSessaoString;
-        LocalTime horarioSessao;
+        LocalTime horarioSessao = null;
         DateTimeFormatter formatter;
         double precoSessao;
         String confirmacao;
+        boolean continuaLaco = true;
 
         System.out.println("CADASTRAR SESSAO");
         System.out.println("Entre com as informacoes da sessao: ");
@@ -915,16 +918,36 @@ public class Main {
             
             // se encontra uma sala, o cadastro de sessao eh realizado
             if (salaSessao != null) {
-                System.out.print("- Dia da sessao (DD/MM/YYYY): ");
-                diaSessaoString = sc.nextLine();
-                formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                diaSessao = LocalDate.parse(diaSessaoString, formatter); 
+                do {
+                    try {
+                        System.out.print("- Dia da sessao (DD/MM/YYYY): ");
+                        diaSessaoString = sc.nextLine();
+                        formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                        
+                        diaSessao = LocalDate.parse(diaSessaoString, formatter);
+                        continuaLaco = false;
 
-                System.out.print("- Horario da sessao (HH:mm): ");
-                horarioSessaoString = sc.nextLine();
-                formatter = DateTimeFormatter.ofPattern("HH:mm");
-                horarioSessao = LocalTime.parse(horarioSessaoString, formatter);
+                    } catch (DateTimeParseException e) {
+                        System.err.println("- Erro: data invalida. Tente novamente!");
+                    }
+                } while(continuaLaco);
+                
+                continuaLaco = true; 
+                do {
+                    try {
+                        System.out.print("- Horario da sessao (HH:mm): ");
+                        horarioSessaoString = sc.nextLine();
+                        formatter = DateTimeFormatter.ofPattern("HH:mm");
+                        
+                        horarioSessao = LocalTime.parse(horarioSessaoString, formatter);
+                        continuaLaco = false;
 
+                    } catch(DateTimeParseException e) {
+                        System.err.println("- Erro: data invalida. Tente novamente!");
+                    }
+                } while(continuaLaco);
+                
+                // combina data e horario em diaHorarioSessao
                 LocalDateTime diaHorarioSessao = diaSessao.atTime(horarioSessao);
 
                 System.out.print("- Preco da sessao: ");
@@ -979,7 +1002,7 @@ public class Main {
         Sessao sessao = gerente.buscarSessao(codigoSessao);
 
         // se encontra sessao no catalogo e sessao nao possui ingressos vendidos, permite a mudança de parametros
-        if (sessao != null && sessao.getAssentosDisponiveis() == sessao.getListaAssentos().length) {
+        if (sessao != null && sessao.getAssentosDisponiveis() == sessao.getListaAssentos().length - 1) {
             System.out.println("Parametros que podem ser alterados: ");
             System.out.println("(1) Filme da Sessao");
             System.out.println("(2) Sala da Sessao");
@@ -1050,12 +1073,23 @@ public class Main {
                     }
                     break;
                 case 3: // mudança do dia da sessão
-                    System.out.print("Digite o dia novo (DD/MM/YYYY): ");
-                    String diaSessaoString = sc.nextLine();
-                    formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                    LocalDate diaSessao = LocalDate.parse(diaSessaoString, formatter); // TESTAR EXCECAO
-                    System.out.println();
+                    continuaLaco = true;
+                    LocalDate diaSessao = null;
+
+                    do {
+                        try {
+                            System.out.print("Digite o dia novo (DD/MM/YYYY): ");
+                            String diaSessaoString = sc.nextLine();
+                            formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                            diaSessao = LocalDate.parse(diaSessaoString, formatter);
+                            continuaLaco = false;
+
+                        } catch (DateTimeParseException e) {
+                            System.err.println("- Erro: data invalida. Tente novamente!");
+                        }
+                    } while(continuaLaco);
                     
+                    System.out.println();
                     System.out.println("- Dia Antigo: " + sessao.getDiaSessao());
                     System.out.println("- Dia Novo: " + diaSessao);
 
@@ -1072,12 +1106,24 @@ public class Main {
                     }
                     break;
                 case 4: // mudança do horário da sessão
-                    System.out.print("Digite o horario novo (MM:mm): ");
-                    String horarioSessaoString = sc.nextLine();
-                    formatter = DateTimeFormatter.ofPattern("HH:mm");
-                    LocalTime horarioSessao = LocalTime.parse(horarioSessaoString, formatter); // TESTAR EXCECAO
-                    System.out.println();
+                    continuaLaco = true;
+                    LocalTime horarioSessao = null;
                     
+                    do {
+                        try {
+                            System.out.print("Digite o horario novo (MM:mm): ");
+                            String horarioSessaoString = sc.nextLine();
+                            formatter = DateTimeFormatter.ofPattern("HH:mm");
+                            
+                            horarioSessao = LocalTime.parse(horarioSessaoString, formatter);
+                            continuaLaco = false;
+
+                        } catch(DateTimeParseException e) {
+                            System.err.println("- Erro: data invalida. Tente novamente!");
+                        }
+                    } while(continuaLaco);
+                    
+                    System.out.println();
                     System.out.println("- Horario Antigo: " + sessao.getHorarioSessao());
                     System.out.println("- Horario Novo: " + horarioSessao);
 
@@ -1134,7 +1180,7 @@ public class Main {
         Sessao sessao = gerente.buscarSessao(codigoSessao);
         
         // se encontra sessao no catalogo e sessao nao possui ingressos vendidos, permite a remocao
-        if (sessao != null && sessao.getAssentosDisponiveis() == sessao.getListaAssentos().length) {
+        if (sessao != null && sessao.getAssentosDisponiveis() == sessao.getListaAssentos().length -1) {
 
             System.out.printf("Digite o motivo de exclusao da sessao: ");
             motivoExclusaoSessao = sc.nextLine();
