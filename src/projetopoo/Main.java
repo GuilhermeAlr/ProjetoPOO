@@ -218,7 +218,7 @@ public class Main {
         sc.close();
     }
     
-    private static int imprimeMenuNaoLogado(Cinema cinema, Scanner sc) {
+    private static int imprimeMenuNaoLogado(Cinema cinema, Scanner sc) throws NumberFormatException{
         int opcao = 0;
         
         System.out.println(cinema.getNomeCinema());
@@ -239,7 +239,7 @@ public class Main {
         return opcao;
     }
     
-    private static void imprimeMenuCadastro(ArrayList<Usuario> listaUsuarios, Gerente gerente, Scanner sc) {
+    private static void imprimeMenuCadastro(ArrayList<Usuario> listaUsuarios, Gerente gerente, Scanner sc) throws NumberFormatException, IllegalArgumentException{
         String nomeUsuario;
         String loginUsuario;
         String senhaUsuario;
