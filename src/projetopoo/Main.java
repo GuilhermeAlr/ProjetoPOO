@@ -1696,6 +1696,27 @@ public class Main {
                     }
                 } while(!continuaLaco);
                 System.out.println();
+                
+                while (sessao.getDisponibilidadeAssento(nroAssento)) {
+                	System.out.println("- Erro na compra: assento indisponivel. Tente novamente!");
+                    
+                    do {
+                        try {
+                            System.out.printf("Digite o numero de assento disponivel: ");
+                            nroAssento = Integer.parseInt(sc.nextLine());
+                            excecaoCompraIngresso(nroAssento, sessao);
+                            
+                            continuaLaco = true;
+                            
+                        } catch(NumberFormatException e) {
+                            System.err.println("- Erro: o numero de assento deve ser um numero. Tente novamente!");
+                        } catch(ArrayIndexOutOfBoundsException e) {
+                            System.err.println("- Erro: o assento selecionado deve estar listado. Tente novamente!");
+                        }
+                    } while(!continuaLaco);
+                    System.out.println();
+                     
+                }  
 
                 Ingresso ingresso = new Ingresso(sessao, nroAssento, usuario.getPrecoIngresso(sessao));
                 System.out.println(ingresso.toString());
@@ -1807,7 +1828,7 @@ public class Main {
     		throw new IllegalArgumentException(); 
     	}
     }
-    private static void excecaoCompraIngresso(int numeroEntrada, Sessao sessao) { //Evita problemas com a tentativa de compra de um ingresso com númeto superior ao tamanho do vetor
+    private static void excecaoCompraIngresso(int numeroEntrada, Sessao sessao) {
         if (numeroEntrada < 0 || numeroEntrada > sessao.getSalaSessao().getNroAssentos()) {
             throw new ArrayIndexOutOfBoundsException("Número de assento fora do intervalo válido.");
         }
