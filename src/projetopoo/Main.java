@@ -262,11 +262,14 @@ public class Main {
 
             } catch(NumberFormatException e) {
                 System.err.println("- Erro: a idade deve ser um numero. Tente novamente!");
-                return;
+                sc.nextLine();
+                return; 
+                
             } catch (IllegalArgumentException i) {
                 System.err.println("- Erro: a idade deve ser um numero positivo. Tente novamente!");
+                sc.nextLine();
                 return; 
-        }
+            }
 
         if (buscarUsuario(loginUsuario, listaUsuarios) == null) {
             Usuario usuario = new Usuario(nomeUsuario, loginUsuario, senhaUsuario, idadeUsuario);
@@ -1173,6 +1176,8 @@ public class Main {
 
                     } catch (DateTimeParseException e) {
                         System.err.println("- Erro: data invalida. Tente novamente!");
+                        sc.nextLine();
+                        return; 
                     }                    
                     System.out.println();
 
@@ -1202,6 +1207,8 @@ public class Main {
 
                     } catch(DateTimeParseException e) {
                         System.err.println("- Erro: data invalida. Tente novamente!");
+                        sc.nextLine();
+                        return; 
                     }                    
                     System.out.println();
 
@@ -1230,8 +1237,12 @@ public class Main {
 
                     } catch(NumberFormatException e) {
                         System.err.println("- Erro: o preco do filme deve ser um numero double. Tente novamente!");
+                        sc.nextLine();
+                        return; 
                     } catch(IllegalArgumentException e) {
                         System.err.println("- Erro: o preco do filme deve ser um numero positivo. Tente novamente!");
+                        sc.nextLine();
+                        return; 
                     }
                     System.out.println();
 
