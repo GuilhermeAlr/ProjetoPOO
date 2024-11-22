@@ -670,32 +670,42 @@ public class Main {
     }
 
     private static void imprimeMenuGerenteCadastroSala(Gerente gerente, Scanner sc) {
-        int nroSala;
-        int nroAssentos;
+        int nroSala = 0;
+        int nroAssentos = 0;
         String tipoTelaString;
-        boolean tipoTela;
+        boolean tipoTela = false;
         String confirmacao;
 
         System.out.println("CADASTRAR SALA");
         System.out.println("Entre com as informacoes da sala:");
-        System.out.print("- Numero da Sala: ");
-        nroSala = Integer.parseInt(sc.nextLine());
-        System.out.print("- Numero de Assentos: ");
-        nroAssentos = Integer.parseInt(sc.nextLine());
-        System.out.print("- Tipo da Tela (2D ou 3D): ");
-        tipoTelaString = sc.nextLine();
 
-        // verifica se o tipo de tela eh valido
-        if (tipoTelaString.equalsIgnoreCase("2D")) {
-            tipoTela = false;
+        try {
+            System.out.print("- Numero da Sala: ");
+            nroSala = Integer.parseInt(sc.nextLine());
+            excecaoNumerosNegativos(nroSala);
+        } catch(NumberFormatException e) {
+            System.err.println("- Erro: o numero da sala deve ser um numero inteiro. Tente novamente!");
+        } catch(IllegalArgumentException e) {
+            System.err.println("- Erro: o numero da sala deve ser um numero positivo. Tente novamente!");
         }
-        else if (tipoTelaString.equalsIgnoreCase("3D")) {
-            tipoTela = true;
+        
+        try {
+            System.out.print("- Numero de Assentos: ");
+            nroAssentos = Integer.parseInt(sc.nextLine());
+            excecaoNroAssentos(nroAssentos);
+        } catch(NumberFormatException e) {
+                System.err.println("- Erro: o numero de assentos deve ser um numero. Tente novamente!");
+        } catch(IllegalArgumentException e) {
+            	 System.err.println("- Erro: o numero de assento deve ser um numero positivo maior que 30. Tente novamente!");
         }
-        else {
-            System.out.println("- Erro: tipo de tela invalido. Tente novamente!");
-            sc.nextLine();
-            return;
+
+        try {
+            System.out.printf("Digite o tipo de tela novo (2D ou 3D): ");
+            tipoTelaString = sc.nextLine();
+            tipoTela = excecaoTipoTela(tipoTelaString);
+            
+        } catch (IllegalArgumentException e) {
+            System.err.println("- Erro: tipo de tela invalido. Tente novamente");
         }
 
         Sala salaTemporaria = new Sala(nroSala, nroAssentos, tipoTela);
@@ -717,14 +727,22 @@ public class Main {
 
     private static void imprimeMenuGerenteEdicaoSala(Gerente gerente, Scanner sc) {
         int opcao = 0;
-        boolean continuaLaco = true;
-        int nroSala;
+        int nroSala = 0;
         String confirmacao;
 
         System.out.println("EDITAR SALA");
         imprimeListaSalas(gerente.getCinema());
-        System.out.printf("Digite o numero da sala a ser alterada: ");
-        nroSala = Integer.parseInt(sc.nextLine());
+
+        try {
+            System.out.printf("Digite o numero da sala a ser removida: ");
+            nroSala = Integer.parseInt(sc.nextLine());
+            excecaoNumerosNegativos(nroSala);
+
+        } catch(NumberFormatException e) {
+            System.err.println("- Erro: o numero da sala  deve ser um numero inteiro. Tente novamente!");
+        } catch(IllegalArgumentException e) {
+            System.err.println("- Erro: o numero da sala deve ser um numero positivo. Tente novamente!");
+        }
         System.out.println();
         
         // busca sala e checa se ha alguma sessao cadastrada com aquela sala 
@@ -735,24 +753,31 @@ public class Main {
             System.out.println("(1) Numero da Sala");
             System.out.println("(2) Numero de Assentos");
             System.out.println("(3) Tipo de Tela");
-            System.out.print("Escolha um parametro: ");
-            
-            do {
-                try {
-                    System.out.printf("Entre uma opcao: ");
-                    opcao = Integer.parseInt(sc.nextLine());
-                    continuaLaco = false;
+            System.out.print("Escolha um parametro: ");            
+
+            try {
+                System.out.printf("Entre uma opcao: ");
+                opcao = Integer.parseInt(sc.nextLine());
                      
-                } catch(NumberFormatException e) {
-                    System.out.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
-                }
-            } while(continuaLaco);
+            } catch(NumberFormatException e) {
+                System.out.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
+            }
             System.out.println();
 
             switch(opcao) {
                 case 1:
-                    System.out.print("Digite o numero da sala novo: ");
-                    int nroSalaNovo = Integer.parseInt(sc.nextLine());
+                    int nroSalaNovo = 0;
+
+                    try {
+                        System.out.print("Digite o numero da sala novo: ");
+                        nroSalaNovo = Integer.parseInt(sc.nextLine());
+                        excecaoNumerosNegativos(nroSalaNovo);
+
+                    } catch(NumberFormatException e) {
+                        System.err.println("- Erro: o numero novo da sala deve ser um numero. Tente novamente!");
+                    } catch(IllegalArgumentException e) {
+                        System.err.println("- Erro: o numero novo da sala deve ser um numero positivo. Tente novamente!");
+                    }
                     System.out.println();
 
                     System.out.println("- Numero da Sala Antigo: " + sala.getNroSala());
@@ -771,8 +796,18 @@ public class Main {
                     }
                     break;
                 case 2:
-                    System.out.printf("Digite o numero de assentos novo: ");
-                    int nroAssentosNovo = Integer.parseInt(sc.nextLine());
+                    int nroAssentosNovo = 0;
+
+                    try {
+                        System.out.printf("Digite o numero de assentos novo: ");
+                        nroAssentosNovo = Integer.parseInt(sc.nextLine());
+                        excecaoNroAssentos(nroAssentosNovo);
+
+                    } catch(NumberFormatException e) {
+                        System.err.println("- Erro: o novo numero de assentos deve ser um numero inteiro. Tente novamente!");
+                    } catch(IllegalArgumentException e) {
+                        System.err.println("- Erro: o novo numero de assento deve ser um numero positivo maior que 30. Tente novamente!");
+                    }
                     System.out.println();
 
                     System.out.println("- Numero de Assentos Antigo: " + sala.getNroAssentos());
@@ -787,23 +822,19 @@ public class Main {
                     }
                     break;
                 case 3:
-                    System.out.printf("Digite o tipo de tela novo (2D ou 3D): ");
-                    String tipoTelaString = sc.nextLine();
+                    boolean tipoTelaNovo = false;
+                    String tipoTelaString;
+
+                    try {
+                        System.out.printf("Digite o tipo de tela novo (2D ou 3D): ");
+                        tipoTelaString = sc.nextLine();
+                        tipoTelaNovo = excecaoTipoTela(tipoTelaString);
+                        
+                    } catch (IllegalArgumentException e) {
+                        System.err.println("- Erro: tipo de tela invalido. Tente novamente");
+                    }
                     System.out.println();
-
-                    boolean tipoTelaNovo;
-                    if (tipoTelaString.equalsIgnoreCase("2D")) {
-                        tipoTelaNovo = false;
-                    }
-                    else if (tipoTelaString.equalsIgnoreCase("3D")) {
-                        tipoTelaNovo = true;
-                    }
-                    else {
-                        System.out.println("- Erro na edicao: tipo de tela invalido. Tente novamente");
-                        sc.nextLine();
-                        return;
-                    }
-
+                    
                     System.out.println("- Tipo de Tela Antigo: " + (sala.getTipoTela() ? "3D" : "2D"));
                     System.out.println("- Numero de Assentos Novo: " + (tipoTelaNovo ? "3D" : "2D"));
 
@@ -827,13 +858,22 @@ public class Main {
     }
 
     private static void imprimeMenuGerenteRemocaoSala(Gerente gerente, Scanner sc) {
-        int nroSala;
+        int nroSala = 0;
         String confirmacao;
 
         System.out.println("REMOCAO DE SALA");
         imprimeListaSalas(gerente.getCinema());
-        System.out.printf("Digite o numero da sala a ser removida: ");
-        nroSala = Integer.parseInt(sc.nextLine());
+
+        try {
+            System.out.printf("Digite o numero da sala a ser removida: ");
+            nroSala = Integer.parseInt(sc.nextLine());
+            excecaoNumerosNegativos(nroSala);
+        } catch(NumberFormatException e) {
+            System.err.println("- Erro: o numero da sala  deve ser um numero inteiro. Tente novamente!");
+        } catch(IllegalArgumentException e) {
+            System.err.println("- Erro: o numero da sala deve ser um numero positivo. Tente novamente!");
+        }
+        System.out.println();
 
         // busca sala e checa se ha alguma sessao cadastrada com aquela sala 
         Sala sala = gerente.buscarSala(nroSala);
@@ -1637,6 +1677,19 @@ public class Main {
     	if(numeroEntrada < 30) {
     		throw new IllegalArgumentException(); 
     	}
+    }
+
+    // checa se o tipo de tela eh igual a 2d ou 3d
+    private static boolean excecaoTipoTela(String tipoTela) throws IllegalArgumentException {
+        if (tipoTela.equalsIgnoreCase("2D")) {
+            return false;
+        }
+        else if (tipoTela.equalsIgnoreCase("3D")) {
+            return true;
+        }
+        else {
+            throw new IllegalArgumentException();
+        }
     }
 
     // aceita apenas numeros entre 0 e 100, caso contrário lança excecao - métodos de promoção
