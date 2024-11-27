@@ -2,7 +2,6 @@ package projetopoo;
 import java.util.ArrayList;
 
 public class Cinema {
-    
     private String nomeCinema;
     private ArrayList<Filme> listaFilmes;
     private ArrayList<Sala> listaSalas;
