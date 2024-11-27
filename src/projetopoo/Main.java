@@ -24,13 +24,14 @@ public class Main {
         while(estaRodando) {
             if(pessoa == null) { // menu nao logado
                 opcao = imprimeMenuNaoLogado(cinema, sc);
-                limpaConsole();
 
                 switch(opcao) {
-                    case 1: 
+                    case 1:
+                        limpaConsole();
                         imprimeMenuCadastro(gerente.getListaUsuarios(), gerente, sc);
                         break;
                     case 2:
+                        limpaConsole();
                         pessoa = imprimeMenuLogin(gerente.getListaUsuarios(), gerente, sc);
                         break;
                     case 3:
@@ -159,7 +160,7 @@ public class Main {
                         			imprimeMenuGerenteRelatorioFilmes(gerente, cinema);
                         			sc.nextLine();
                         			break;
-                        		case 2: 
+                        		case 2:
                         			imprimeMenuGerenteRelatorioSessoes(gerente, cinema); 
                         			sc.nextLine();
                         			break;
@@ -221,7 +222,6 @@ public class Main {
     
     private static int imprimeMenuNaoLogado(Cinema cinema, Scanner sc) {
         int opcao = 0;
-        boolean continuaLaco = true; 
         
         System.out.println(cinema.getNomeCinema());
         System.out.println("Bem Vindo!");
@@ -230,18 +230,13 @@ public class Main {
         System.out.println("(2) Login");
         System.out.println("(3) Sair");
         
-        do {
-            try {
-                System.out.printf("Entre uma opcao: ");
-                opcao = Integer.parseInt(sc.nextLine());
-                continuaLaco = false;
-                 
-            } catch(NumberFormatException e) {
-                System.err.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
-            }
-        } while(continuaLaco);
+        try {
+            System.out.printf("Entre uma opcao: ");
+            opcao = Integer.parseInt(sc.nextLine());        
+        } catch(NumberFormatException e) {
+            System.out.println("- Erro: a opcao deve ser um numero inteiro.");
+        }
 
-        System.out.println();
         return opcao;
     }
     
@@ -250,7 +245,6 @@ public class Main {
         String loginUsuario;
         String senhaUsuario;
         int idadeUsuario = 0;
-        boolean continuaLaco = true;
         
         System.out.println("CADASTRO");
         System.out.printf("Digite seu nome: ");
@@ -260,23 +254,21 @@ public class Main {
         System.out.printf("Digite uma senha: ");
         senhaUsuario = sc.nextLine();
 
-        do {
-            try {
-                System.out.printf("Digite sua idade: ");
-                idadeUsuario = Integer.parseInt(sc.nextLine());
-                System.out.println();
+        try {
+            System.out.printf("Digite sua idade: ");
+            idadeUsuario = Integer.parseInt(sc.nextLine());
+            excecaoNumerosNegativos(idadeUsuario); 
+        } catch(NumberFormatException e) {
+            System.err.println("- Erro: a idade deve ser um numero. Tente novamente!");
+            sc.nextLine();
+            return;
+        } catch (IllegalArgumentException i) {
+            System.err.println("- Erro: a idade deve ser um numero positivo. Tente novamente!");
+            sc.nextLine();
+            return;
+        }
 
-                if (idadeUsuario < 0) throw new IllegalArgumentException();
-
-                continuaLaco = false;
-
-            } catch(NumberFormatException e) {
-                System.err.println("- Erro: a idade deve ser um numero. Tente novamente!");
-            } catch (IllegalArgumentException i) {
-                System.err.println("- Erro: a idade deve ser um numero positivo. Tente novamente!");
-            }
-        } while (continuaLaco);
-
+        System.out.println();
 
         if (buscarUsuario(loginUsuario, listaUsuarios) == null) {
             Usuario usuario = new Usuario(nomeUsuario, loginUsuario, senhaUsuario, idadeUsuario);
@@ -291,18 +283,16 @@ public class Main {
         else {
             System.out.println("- Erro no cadastro: usuario ja esta cadastrado. Tente novamente!");
         }
-        
         sc.nextLine();
     }    
 
-    // metodo que busca o login do usuario no arraylist de usuarios
+    // metodo que busca o login do usuario no arraylist de usuarios e o retorna
     private static Usuario buscarUsuario(String loginUsuario, ArrayList<Usuario> listaUsuarios) {
         for (Usuario usuarioTemporario : listaUsuarios) {
             if (loginUsuario.equals(usuarioTemporario.getLoginPessoa())) {
                 return usuarioTemporario;
             }
         }
-
         return null;
     }
     
