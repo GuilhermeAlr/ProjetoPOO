@@ -212,17 +212,20 @@ public class Main {
                     limpaConsole();
                 }
                 else if (pessoa instanceof Usuario) { // menu do usuario
-                    opcao = imprimeMenuUsuario(sc);
                     limpaConsole();
+                    opcao = imprimeMenuUsuario(sc);
 
                     switch(opcao) {
                         case 1: // aba para comprar ingressos
+                            limpaConsole(); 
                             imprimeMenuUsuarioComprarIngresso((Usuario)pessoa, gerente, sc);
                             break;
                         case 2: // aba para comprar assinatura
+                            limpaConsole();
                             pessoa = imprimeMenuUsuarioComprarAssinatura((Usuario)pessoa, gerente, sc);
                             break;
                         case 3: // aba para ver perfil
+                            limpaConsole();
                             imprimeMenuUsuarioPerfil((Usuario)pessoa);
                             sc.nextLine();
                             break;
@@ -1337,10 +1340,10 @@ public class Main {
         try {
             System.out.printf("Entre uma opcao: ");
             opcao = Integer.parseInt(sc.nextLine());
-                 
-        } catch(NumberFormatException e) {}
+        } catch(NumberFormatException e) {
+            System.out.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
+        }
 
-        System.out.println();
         return opcao;
     }
 
@@ -1356,11 +1359,14 @@ public class Main {
             System.out.print("Digite o codigo da sessao a qual a promocao ira ser adicionada : ");
             codigoSessao = Integer.parseInt(sc.nextLine());
             excecaoNumerosNegativos(codigoSessao);
-                
         } catch(NumberFormatException e) {
             System.err.println("- Erro: o codigo da sessao deve ser um numero inteiro. Tente novamente!");
+            sc.nextLine();
+            return;
         } catch(IllegalArgumentException e) {
             System.err.println("- Erro: o codigo da sessao deve ser um numero positivo. Tente novamente!");
+            sc.nextLine();
+            return;
         }
         System.out.println();
 
@@ -1369,16 +1375,19 @@ public class Main {
 
         // se acha sessao no catalogo, permite o cadastro de promocao
         if (sessao != null) {
-            // checar se promocao eh um valor entre 0 e 100
+            // checa se promocao eh um valor entre 0 e 100
             try {
                 System.out.print("Qual sera a porcentagem da promocao? ");
                 porcentagemPromocional = Double.parseDouble(sc.nextLine()); 
-                execcaoPorcentagemPromocional(porcentagemPromocional);     
-                    
+                excecaoPorcentagemPromocional(porcentagemPromocional);     
             } catch(NumberFormatException e) {
-                    System.err.println("- Erro: a porcentagem da promocao deve ser um numero. Tente novamente!");
+                System.err.println("- Erro: a porcentagem da promocao deve ser um numero. Tente novamente!");
+                sc.nextLine();
+                return;
             } catch(IllegalArgumentException e) {
                 System.err.println("- Erro: a porcentagem da promocao deve ser um numero entre 0 e 100. Tente novamente!");
+                sc.nextLine();
+                return;
             }
             porcentagemPromocional = porcentagemPromocional/100.00;
             System.out.println();
@@ -1415,8 +1424,12 @@ public class Main {
             excecaoNumerosNegativos(codigoSessao);
         } catch(NumberFormatException e) {
             System.err.println("- Erro: o codigo da sessao deve ser um numero inteiro. Tente novamente!");
+            sc.nextLine();
+            return;
         } catch(IllegalArgumentException e) {
             System.err.println("- Erro: o codigo da sessao deve ser um numero positivo. Tente novamente!");
+            sc.nextLine();
+            return;
         }
         System.out.println();
 
@@ -1425,15 +1438,19 @@ public class Main {
 
         // se acha sessao no catalogo, permite a edicao de promocao
         if (sessao != null) {
-            // checar se promocao eh um valor entre 0 e 100
+            // checa se promocao eh um valor entre 0 e 100
             try {
                 System.out.print("Qual sera a porcentagem nova da promocao? ");
                 porcentagemPromocionalNova = Double.parseDouble(sc.nextLine());
-                execcaoPorcentagemPromocional(porcentagemPromocionalNova);
+                excecaoPorcentagemPromocional(porcentagemPromocionalNova);
             } catch(NumberFormatException e) {
                 System.err.println("- Erro: a porcentagem da promocao deve ser um numero. Tente novamente!");
+                sc.nextLine();
+                return;
             } catch(IllegalArgumentException e) {
                 System.err.println("- Erro: a porcentagem da promocao deve ser um numero entre 0 e 100. Tente novamente!");
+                sc.nextLine();
+                return;
             }         
             porcentagemPromocionalNova = porcentagemPromocionalNova/100.00;
             System.out.println();
@@ -1472,8 +1489,12 @@ public class Main {
             excecaoNumerosNegativos(codigoSessao);
         } catch(NumberFormatException e) {
             System.err.println("- Erro: o codigo da sessao deve ser um numero. Tente novamente!");
+            sc.nextLine();
+            return;
         } catch(IllegalArgumentException e) {
             System.err.println("- Erro: o codigo da sessao deve ser um numero positivo. Tente novamente!");
+            sc.nextLine();
+            return;
         }
         System.out.println();
         
@@ -1514,10 +1535,10 @@ public class Main {
         try {
             System.out.printf("Entre uma opcao: ");
             opcao = Integer.parseInt(sc.nextLine());
-                         
-        } catch(NumberFormatException e) {}
+        } catch(NumberFormatException e) {
+            System.out.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
+        }
 
-        System.out.println();
         return opcao; 
     }
     
@@ -1558,10 +1579,10 @@ public class Main {
         try {
             System.out.print("Digite uma opcao: ");
             opcao = Integer.parseInt(sc.nextLine());
-                 
-        } catch(NumberFormatException e) {}
+        } catch(NumberFormatException e) {
+            System.out.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
+        }
         
-        System.out.println();
         return opcao;
     }
 
@@ -1581,6 +1602,7 @@ public class Main {
         Filme filme = gerente.buscarFilme(nomeFilme);
 
         if (filme != null) {
+            // imprime sessoes com o filme escolhido
             for (Sessao sessao : gerente.getCinema().getListaSessoes()) {
                 if (sessao.getFilmeSessao() == filme) {
                     System.out.println(sessao.toString());
@@ -1593,8 +1615,12 @@ public class Main {
                 excecaoNumerosNegativos(codigoSessao);
             } catch(NumberFormatException e) {
                 System.err.println("- Erro: o codigo da sessao deve ser um numero inteiro. Tente novamente!");
+                sc.nextLine();
+                return;
             } catch(IllegalArgumentException e) {
                 System.err.println("- Erro: o codigo da sessao deve ser um numero positivo. Tente novamente!");
+                sc.nextLine();
+                return;
             }
             System.out.println();
 
@@ -1611,8 +1637,12 @@ public class Main {
                     excecaoCompraIngresso(nroAssento, sessao);
                 } catch(NumberFormatException e) {
                     System.err.println("- Erro: o numero de assento deve ser um numero. Tente novamente!");
+                    sc.nextLine();
+                    return;
                 } catch(ArrayIndexOutOfBoundsException e) {
                     System.err.println("- Erro: o assento selecionado deve estar listado. Tente novamente!");
+                    sc.nextLine();
+                    return;
                 }
                 System.out.println();                
                 
@@ -1626,8 +1656,12 @@ public class Main {
                         excecaoCompraIngresso(nroAssento, sessao);
                     } catch(NumberFormatException e) {
                         System.err.println("- Erro: o numero de assento deve ser um numero. Tente novamente!");
+                        sc.nextLine();
+                        return;
                     } catch(ArrayIndexOutOfBoundsException e) {
                         System.err.println("- Erro: o assento selecionado deve estar listado. Tente novamente!");
+                        sc.nextLine();
+                        return;
                     }
                     System.out.println();
                 }
@@ -1722,7 +1756,7 @@ public class Main {
 
     }
 
-    // metodos de excecao para simplificar as estruturas em outros metodos
+    // metodos de excecao para simplificar o tratamento em outros metodos
     // aceita apenas numeros positivos - opção, códigos, idade, duração, nroSala
     private static <T extends Number & Comparable<T>> void excecaoNumerosNegativos(T numeroEntrada) throws IllegalArgumentException {
     	if(numeroEntrada.doubleValue() < 0) {  
@@ -1762,7 +1796,7 @@ public class Main {
     }
 
     // aceita apenas numeros entre 0 e 100, caso contrário lança excecao - métodos de promoção
-    private static void execcaoPorcentagemPromocional(double numeroEntrada) throws IllegalArgumentException {
+    private static void excecaoPorcentagemPromocional(double numeroEntrada) throws IllegalArgumentException {
     	if(numeroEntrada <= 0 || numeroEntrada >= 100) {
     		throw new IllegalArgumentException(); 
     	}
@@ -1773,4 +1807,5 @@ public class Main {
             throw new ArrayIndexOutOfBoundsException("Número de assento fora do intervalo válido.");
         }
     } 
+    
 }
