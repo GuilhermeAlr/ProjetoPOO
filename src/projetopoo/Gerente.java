@@ -4,6 +4,11 @@ import java.time.LocalTime;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+/** !!!
+ * @author Guilherme Almendro
+ * @author Giovanna Noventa
+ * @author Isabela Aoki
+ */
 public class Gerente extends Pessoa{
     private Cinema cinema;
     private ArrayList<Usuario> listaUsuarios = new ArrayList<>();

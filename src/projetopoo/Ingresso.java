@@ -42,7 +42,7 @@ public class Ingresso {
     }
     
     /**
-     * Obtêm a sessão do ingresso.
+     * Obtém a sessão do ingresso.
      * 
      * @return <code>Sessao</code> Sessão associada ao ingresso.
      */
@@ -60,7 +60,7 @@ public class Ingresso {
     }
     
     /**
-     * Obtêm o número do assento do ingresso.
+     * Obtém o número do assento do ingresso.
      * 
      * @return <code>integer</code> Número do assento. 
      */
@@ -78,7 +78,7 @@ public class Ingresso {
     }
     
     /**
-     * Obtêm o preço do ingresso.
+     * Obtém o preço do ingresso.
      * 
      * @return <code>double</code> Preço do ingresso. 
      */

@@ -1,39 +1,87 @@
 package projetopoo;
 
-public class Pessoa {
+/** A classe Pessoa representa uma pessoa com informações básicas.
+ * 
+ *  <p>
+ *  Essa classe é usada como superclasse para as classes {@link Usuario} e {@link Gerente}, 
+ *  fornecendo informações, como nome, login e senha da pessoa.
+ *  </p>
+ * 
+ *  @author Giovanna Noventa
+ *  @since 1.0
+ */
 
-	private String nomePessoa; 
-	private String loginPessoa; 
-	private String senhaPessoa;
+public class Pessoa {
+    private String nomePessoa; 
+    private String loginPessoa; 
+    private String senhaPessoa;
 	
-	public Pessoa(String nomePessoa, String loginPessoa, String senhaPessoa) { 
+    /** Construtor da classe Pessoa. 
+     * 
+     *  Inicializa uma pessoa com suas características.
+     * 
+     *  @param nomePessoa Nome da pessoa.
+     *  @param loginPessoa Login da pessoa.
+     *  @param senhaPessoa Senha da pessoa.
+     */
+    public Pessoa(String nomePessoa, String loginPessoa, String senhaPessoa) { 
 		setNomePessoa(nomePessoa); 
 		setLoginPessoa(loginPessoa); 
 		setSenhaPessoa(senhaPessoa); 		
-	}
+    }
 	
-	public void setNomePessoa (String nomePessoa) {
+    /** 
+     * Muda o nome da pessoa.
+     * 
+     * @param nomePessoa Novo nome da pessoa.
+     */
+    public final void setNomePessoa (String nomePessoa) {
 		this.nomePessoa = nomePessoa; 
-	}
+    }
 
-	public String getNomePessoa() {
-		return this.nomePessoa; 
-	}
-	
-	public void setLoginPessoa (String loginPessoa) {
+    /**
+     * Obtém o nome da pessoa.
+     * 
+     * @return <code>String</code> Nome da pessoa.
+     */
+    public String getNomePessoa() {
+        return this.nomePessoa; 
+    }
+
+    /** 
+     * Muda o login da pessoa.
+     * 
+     * @param loginPessoa Novo login da pessoa.
+     */
+    public final void setLoginPessoa (String loginPessoa) {
 		this.loginPessoa = loginPessoa; 
-	}
+    }
 
-	public String getLoginPessoa() {
+    /**
+     * Obtém o login da pessoa.
+     * 
+     * @return <code>String</code> Login da pessoa.
+     */
+    public String getLoginPessoa() {
 		return this.loginPessoa;
-	}
+    }
 	
-	public void setSenhaPessoa (String senhaPessoa) {
+    /** 
+     * Muda a senha da pessoa.
+     * 
+     * @param senhaPessoa Nova senha da pessoa.
+     */
+    public final void setSenhaPessoa (String senhaPessoa) {
 		this.senhaPessoa = senhaPessoa;
-	}
-	
-	public String getSenhaPessoa() {
+    }
+
+    /**
+     * Obtém a senha da pessoa.
+     * 
+     * @return <code>String</code> Senha da pessoa.
+     */
+    public String getSenhaPessoa() {
 		return this.senhaPessoa;
-	}
-		
+    }
+    
 }

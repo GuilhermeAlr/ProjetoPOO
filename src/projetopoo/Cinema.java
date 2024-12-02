@@ -14,13 +14,14 @@ import java.util.ArrayList;
  *  @see Filme
  *  @see Sala
  *  @see Sessao
+ *  @see java.util.ArrayList
  */
 
 public class Cinema {
     private String nomeCinema;
-    private ArrayList<Filme> listaFilmes;
-    private ArrayList<Sala> listaSalas;
-    private ArrayList<Sessao> listaSessoes;
+    private final ArrayList<Filme> listaFilmes;
+    private final ArrayList<Sala> listaSalas;
+    private final ArrayList<Sessao> listaSessoes;
 
     /** Construtor da classe Cinema. 
      * 
@@ -45,7 +46,7 @@ public class Cinema {
     }
     
     /**
-     * Obtêm o nome do cinema.
+     * Obtém o nome do cinema.
      * 
      * @return <code>String</code> Nome do cinema.
      */
@@ -54,7 +55,7 @@ public class Cinema {
     }
 
     /**
-     * Obtêm a lista de filmes do cinema.
+     * Obtém a lista de filmes do cinema.
      * 
      * @return <code>ArrayList</code> contendo os filmes cadastrados.
      */
@@ -63,7 +64,7 @@ public class Cinema {
     }
     
     /**
-     * Obtêm a lista de salas do cinema.
+     * Obtém a lista de salas do cinema.
      * 
      * @return <code>ArrayList</code> contendo as salas cadastradas.
      */
@@ -72,7 +73,7 @@ public class Cinema {
     }
     
     /**
-     * Obtêm a lista de sessões do cinema.
+     * Obtém a lista de sessões do cinema.
      * 
      * @return <code>ArrayList</code> contendo as sessões cadastradas.
      */

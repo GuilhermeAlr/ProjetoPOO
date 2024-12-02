@@ -1,7 +1,12 @@
 package projetopoo;
 
 /** A classe Filme representa um objeto filme com suas características, 
- *  que contém nome, sinopse, classificação, genêro e duração.
+ *  as quais são o nome, a sinopse, a classificação, o genêro e a duração do filme.
+ * 
+ *  <p>
+ *  Essa classe serve como superclassse para {@link FilmeIndisponivel}, 
+ *  oferecendo todas as características de um filme disponível.
+ *  </P>
  * 
  *  @author Isabela Aoki
  *  @since 1.0
@@ -16,7 +21,7 @@ public class Filme {
 
     /** Construtor da classe Filme. 
      * 
-     *  Inicializa a classe filme com suas características.
+     *  Inicializa um objeto filme com suas características.
      * 
      *  @param nomeFilme Nome do filme.
      *  @param sinopseFilme Sinopse do filme.
@@ -42,7 +47,7 @@ public class Filme {
     }
     
     /**
-     * Obtêm o nome do filme.
+     * Obtém o nome do filme.
      * 
      * @return <code>String</code> Nome do filme.
      */
@@ -60,7 +65,7 @@ public class Filme {
     }
 
     /**
-     * Obtêm a sinopse do filme.
+     * Obtém a sinopse do filme.
      * 
      * @return <code>String</code> Sinopse do filme.
      */
@@ -86,7 +91,7 @@ public class Filme {
     }
     
     /**
-     * Obtêm a classificação do filme.
+     * Obtém a classificação do filme.
      * 
      * @return <code>integer</code> Classificação do filme.
      */
@@ -104,7 +109,7 @@ public class Filme {
     }
 
     /**
-     * Obtêm o gênero do filme.
+     * Obtém o gênero do filme.
      * 
      * @return <code>String</code> Gênero do filme.
      */
@@ -122,7 +127,7 @@ public class Filme {
     }
 
     /**
-     * Obtêm a duração do filme.
+     * Obtém a duração do filme.
      * 
      * @return <code>integer</code> Duração do filme (em minutos).
      */

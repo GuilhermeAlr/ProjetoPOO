@@ -40,7 +40,7 @@ public class FilmeIndisponivel extends Filme {
     }
     
     /**
-     * Obtêm o motivo de exclusão do filme.
+     * Obtém o motivo de exclusão do filme.
      * 
      * @return <code>String</code> Motivo de exclusão do filme.
      */
