@@ -2581,7 +2581,7 @@ public class Main {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(",");
                 // compara com o nome do usuario e analisa se é assinante
-                if (dados[0].equals(usuario.getNomePessoa())) { 
+                if (dados[0].equals(usuario.getLoginPessoa())) { 
                     isAssinante = "true".equalsIgnoreCase(dados[4]);
                     break;
                 }
@@ -2604,7 +2604,7 @@ public class Main {
                 bw.write("Nome,CodigoSessao,NumeroAssento,Preco\n");
             }
 
-            bw.write(usuario.getNomePessoa() + ","
+            bw.write(usuario.getLoginPessoa() + ","
                     + ingresso.getSessao().getCodigoSessao() + ","
                     + ingresso.getNroAssento() + ","
                     + precoFinal + "\n");
@@ -2670,7 +2670,7 @@ public class Main {
                     double precoIngresso = Double.parseDouble(dados[3]);
 
                     //verifica se o nome no arquivo corresponde ao nome do usuario atual
-                    if (usuario.getNomePessoa().equalsIgnoreCase(nomeUsuario)) {
+                    if (usuario.getLoginPessoa().equalsIgnoreCase(nomeUsuario)) {
                         Sessao sessao = cinema.getListaSessoes().stream()
                                 .filter(s -> s.getCodigoSessao() == sessaoCodigo)
                                 .findFirst()
@@ -2682,7 +2682,7 @@ public class Main {
                             System.out.println("Sessão nao encontrada para o código: " + sessaoCodigo);
                         }
                     } else {
-                        System.out.println("Nome no arquivo nao corresponde ao usuario logado: " + usuario.getNomePessoa());
+                        System.out.println("Nome no arquivo nao corresponde ao usuario logado: " + usuario.getLoginPessoa());
                     }
                 }
             }
@@ -2745,7 +2745,7 @@ public class Main {
                     if (dados.length == 5) {
                         String nome = dados[0];
 
-                        if (nome.equalsIgnoreCase(usuario.getNomePessoa())) {
+                        if (nome.equalsIgnoreCase(usuario.getLoginPessoa())) {
                             bw.write(usuario.getNomePessoa() + ","
                                     + usuario.getLoginPessoa() + ","
                                     + usuario.getSenhaPessoa() + ","
@@ -2788,10 +2788,10 @@ public class Main {
             	numeroIngressos++;
                 String[] dados = linha.split(",");
                 if (dados.length >= 5) {
-                    String login = dados[1];
+                    String login = dados[0];
                     boolean assinante = Boolean.parseBoolean(dados[4]);
 
-                    if (login.equalsIgnoreCase(usuario.getLoginPessoa())) {
+                    if (login.equalsIgnoreCase(usuario.getNomePessoa())) {
                         isAssinante = assinante;
                         break;
                     }
