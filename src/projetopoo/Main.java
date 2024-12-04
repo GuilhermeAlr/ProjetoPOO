@@ -323,6 +323,8 @@ public class Main {
         String senhaUsuario;
         int idadeUsuario;
         
+        System.out.println();
+
         try {
             System.out.printf("Digite seu nome: ");
             nomeUsuario = sc.nextLine();
@@ -2386,7 +2388,6 @@ public class Main {
 
                     // Número de assentos, baseado no tamanho do array no arquivo
                     String[] assentosStr = dados[2].split(";");
-                    int nroAssentos = assentosStr.length;
 
                     double precoSessao = Double.parseDouble(dados[3]);
                     boolean comPromocao = Boolean.parseBoolean(dados[4]);
@@ -2415,33 +2416,35 @@ public class Main {
                     if (sala != null && filme != null) {
                     	if(motivoExclusao == null) {
 	                    	Sessao sessao = new Sessao(codigoSessao, diaHorario, precoSessao, comPromocao, porcentagemPromocional, sala, filme);
-	                        sessao.setListaAssentos(nroAssentos); // Configurar os assentos usando o método existente
 	
 	                        // Atualizar a lista de assentos conforme o arquivo
-	                        for (int i = 0; i < assentosStr.length; i++) {
-	                            if (!"null".equalsIgnoreCase(assentosStr[i])) {
-	                                sessao.getListaAssentos()[i] = Boolean.valueOf(assentosStr[i]);
-	                            }
-	                        }
+	                        /** for (int i = 1; i < assentosStr.length - 1; i++) {
+	                            Boolean assentoReservado = Boolean.valueOf(assentosStr[i]);
+                                if (assentoReservado == true) {
+                                    sessao.reservarAssento(i);
+                                }
+	                        } **/
 	
+                            for (int i = 1; i < assentosStr.length - 1; i++) {
+                                if (assentosStr[i].equals("true")) {
+                                    sessao.reservarAssento(i);
+                                }
+	                        }
+
 	                        cinema.getListaSessoes().add(sessao);
                     	}else {
 	                    	Sessao sessao = new SessaoIndisponivel(codigoSessao, diaHorario, precoSessao, comPromocao, porcentagemPromocional, sala, filme, motivoExclusao);
-	                        sessao.setListaAssentos(nroAssentos); // Configurar os assentos usando o método existente
 	
 	                        // Atualizar a lista de assentos conforme o arquivo
-	                        for (int i = 0; i < assentosStr.length; i++) {
-	                            if (!"null".equalsIgnoreCase(assentosStr[i])) {
-	                                sessao.getListaAssentos()[i] = Boolean.valueOf(assentosStr[i]);
-	                            }
+	                        for (int i = 1; i < assentosStr.length - 1; i++) {
+                                if (assentosStr[i].equals("true")) {
+                                    sessao.reservarAssento(i);
+                                }
 	                        }
 	
 	                        cinema.getListaSessoes().add(sessao);
-                    	                    		
-                    		
                     	}
                     } 
-                    
                     
                     else {
                         System.out.println("Erro: Sala ou Filme não encontrado para a sessão.");
@@ -3132,7 +3135,7 @@ public class Main {
 
                 if (dados[0].equals(String.valueOf(ingresso.getSessao().getCodigoSessao()))) {
                     String[] assentos = dados[2].split(";");
-                    int assentoSelecionado = ingresso.getNroAssento() - 1;
+                    int assentoSelecionado = ingresso.getNroAssento();
 
                     if ("false".equals(assentos[assentoSelecionado])) {
                         assentos[assentoSelecionado] = "true";
