@@ -323,7 +323,7 @@ public class Main {
         String senhaUsuario;
         int idadeUsuario;
         
-        System.out.println();
+        System.out.println("CADASTRO");
 
         try {
             System.out.printf("Digite seu nome: ");
