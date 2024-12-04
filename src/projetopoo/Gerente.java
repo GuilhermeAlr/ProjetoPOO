@@ -368,6 +368,23 @@ public class Gerente extends Pessoa{
     }
     
     /**
+     * Busca codigo da sessão na lista de sessões.
+     * 
+     * @param codigoSessao Código da sessão procurada.
+     * @return <code>True</code> se sessao for encontrada <code>false</code>, caso não for encontrada.
+     * @see Sessao
+     * @see Cinema
+     */
+    public Boolean buscarSessoes(int codigoSessao) {
+        for (Sessao s : cinema.getListaSessoes()) {
+            if (s.getCodigoSessao() == codigoSessao) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
      * Busca sessão na lista de sessões disponíveis pelo código.
      * 
      * @param codigoSessao Código da sessão procurada.
@@ -544,7 +561,7 @@ public class Gerente extends Pessoa{
                 else {
                     nroSessoesIndisponiveis++; 
                 }
-	    }
+            }
     	}
     	
     	System.out.println("Sessoes disponiveis: ");
