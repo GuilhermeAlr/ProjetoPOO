@@ -298,13 +298,25 @@ public class Main {
         int idadeUsuario = 0;
 
         System.out.println("CADASTRO");
-        System.out.printf("Digite seu nome: ");
-        nomeUsuario = sc.nextLine();
-        System.out.printf("Digite um usuario: ");
-        loginUsuario = sc.nextLine();
-        System.out.printf("Digite uma senha: ");
-        senhaUsuario = sc.nextLine();
 
+        try {
+            System.out.printf("Digite seu nome: ");
+            nomeUsuario = sc.nextLine();
+            excecaoStringVazia(nomeUsuario);
+            System.out.printf("Digite um usuario: ");
+            loginUsuario = sc.nextLine();
+            excecaoStringVazia(loginUsuario);
+            System.out.printf("Digite uma senha: ");
+            senhaUsuario = sc.nextLine();
+            excecaoStringVazia(senhaUsuario);
+
+        } catch (IllegalArgumentException i) {
+            System.err.println("- Erro: o dado inserido deve conter numeros ou algarismos. Tente novamente!");
+            sc.nextLine();
+            return;
+        }
+        
+        
         try {
             System.out.printf("Digite sua idade: ");
             idadeUsuario = Integer.parseInt(sc.nextLine());
@@ -488,11 +500,29 @@ public class Main {
 
         System.out.println("CADASTRAR FILME NO CATALOGO");
         System.out.println("Entre com as informacoes do filme desejado: ");
-        System.out.print("- Nome: ");
-        nomeFilme = sc.nextLine();
-        System.out.print("- Sinopse: ");
-        sinopseFilme = sc.nextLine();
 
+        try {
+            System.out.print("- Nome: ");
+            nomeFilme = sc.nextLine();
+            excecaoStringVazia(nomeFilme);
+        } catch (IllegalArgumentException e) {
+            System.err.println("- Erro no cadastro: o nome do filme deve conter letras ou algarismos. Tente novamente!");
+            sc.nextLine();
+            return;
+        }
+        
+        
+        try {
+            System.out.print("- Sinopse: ");
+            sinopseFilme = sc.nextLine();
+            excecaoStringVazia(sinopseFilme);
+        } catch (IllegalArgumentException e) {
+            System.err.println("- Erro no cadastro: a sinopse do filme deve conter letras ou algarismos. Tente novamente!");
+            sc.nextLine();
+            return;
+        }
+        
+        
         try {
             System.out.println("Opcoes de classificacao indicativa: \'livre\', \'10\', \'12\', \'14\', \'16\', \'18\'");
             System.out.print("- Classificacao Indicativa: ");
@@ -504,9 +534,17 @@ public class Main {
             return;
         }
 
-        System.out.print("- Genero: ");
-        generoFilme = sc.nextLine();
-
+        
+        try {
+        	System.out.print("- Genero: ");
+            generoFilme = sc.nextLine();
+            excecaoStringVazia(generoFilme);
+        } catch (IllegalArgumentException e) {
+            System.err.println("- Erro no cadastro: o genero do filme deve conter letras ou algarismos. Tente novamente!");
+            sc.nextLine();
+            return;
+        }
+               
         try {
             System.out.print("- Duracao (em minutos): ");
             duracaoFilme = Integer.parseInt(sc.nextLine());
@@ -2785,6 +2823,7 @@ public class Main {
         }
         
     }
+    
     private static void limpaConsole() {
         try {
             String sistemaOperacional = System.getProperty("os.name").toLowerCase();
@@ -2830,7 +2869,15 @@ public class Main {
             throw new IllegalArgumentException();
         }
     }
-
+    
+    //entradas de uma sequencia de caracteres nao podem estar vazias
+    private static void excecaoStringVazia(String string) throws IllegalArgumentException {
+        if (string.equals("")){
+        	throw new IllegalArgumentException(); 
+        }
+    }
+    
+    
     // numeros de assentos são obrigatoriamente definidos a partir de 30 - cadastro e edição de sala
     private static void excecaoNroAssentos(int numeroEntrada) throws IllegalArgumentException {
         if (numeroEntrada < 30) {
