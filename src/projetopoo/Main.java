@@ -1246,7 +1246,7 @@ public class Main {
                     return;
                 }
 
-                if (gerente.buscarSessaoTodas(codigoSessao) == null) {
+                if (!gerente.buscarSessaoTodas(codigoSessao)) {
                     try {
                         System.out.print("- Dia da sessao (DD/MM/YYYY): ");
                         diaSessaoString = sc.nextLine();
