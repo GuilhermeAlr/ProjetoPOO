@@ -53,7 +53,7 @@ public class Main {
         Pessoa pessoa = null;
         int opcao, opcaoMenuGerente;
         
-        carregarDados("arquivos", cinema, gerente, null);
+        carregarDados("arquivos", cinema, gerente);
 
         limpaConsole();
         while(estaRodando) {
