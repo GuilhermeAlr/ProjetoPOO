@@ -2251,12 +2251,11 @@ public class Main {
 
     // Métodos de carregar dados ao programa.
     /**
-     * Carrega dados dos arquivos Usuarios, Salas, Sessoes, Filmes, Ingressos para o programa.
+     * Carrega dados dos arquivos CSV Usuarios, Salas, Sessoes, Filmes e Ingressos para o programa.
      * 
      * @param caminhoDiretorio Caminho do diretório.
      * @param cinema Cinema.
      * @param gerente Gerente do cinema.
-     * @param usuario Usuário. 
      */
     public static void carregarDados(String caminhoDiretorio, Cinema cinema, Gerente gerente) {
         File diretorio = new File(caminhoDiretorio);
@@ -2289,6 +2288,12 @@ public class Main {
         }
     }
 
+    /**
+     * Lê o arquivo de usuários e carrega para a memória do programa, diferencia-os entre usuários normais e assinantes. 
+     * 
+     * @param arquivoUsuario Arquivo do usuário.
+     * @param gerente Gerente do cinema.
+     */
     public static void carregarUsuariosArquivo(File arquivoUsuario, Gerente gerente) {
         try (BufferedReader br = new BufferedReader(new FileReader(arquivoUsuario))) {
             String linha;
@@ -2308,17 +2313,21 @@ public class Main {
                     }
                     else if (assinatura.equals("false")) {
                         gerente.getListaUsuarios().add(new Usuario(nome, login, senha, idade));
-
                     }
 
                 }
-
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Lê o arquivo de filme e carrega para a memória do programa, diferencia-os entre filmes disponíveis e indisponíveis.
+     * 
+     * @param arquivo Arquivo de filmes.
+     * @param cinema Cinema.
+     */
     public static void carregarFilmesArquivo(File arquivo, Cinema cinema) {
         try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
             String linha;
@@ -2352,6 +2361,12 @@ public class Main {
         }
     }
 
+    /**
+     * Lê o arquivo de sala e carrega para a memória do programa.
+     * 
+     * @param arquivo Arquivo de salas.
+     * @param cinema Cinema.
+     */
     public static void carregarSalasArquivo(File arquivo, Cinema cinema) {
         try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
             String linha;
@@ -2372,6 +2387,12 @@ public class Main {
         }
     }
 
+    /**
+     * Lê o arquivo de sessão e carrega para a memória do programa, diferencia-os entre sessões disponíveis e indisponíveis.
+     * 
+     * @param arquivo Arquivo de sessão.
+     * @param cinema Cinema.
+     */
     public static void carregarSessoesArquivo(File arquivo, Cinema cinema) {
         try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
             String linha;
@@ -2417,14 +2438,6 @@ public class Main {
                     	if(motivoExclusao == null) {
 	                    	Sessao sessao = new Sessao(codigoSessao, diaHorario, precoSessao, comPromocao, porcentagemPromocional, sala, filme);
 	
-	                        // Atualizar a lista de assentos conforme o arquivo
-	                        /** for (int i = 1; i < assentosStr.length - 1; i++) {
-	                            Boolean assentoReservado = Boolean.valueOf(assentosStr[i]);
-                                if (assentoReservado == true) {
-                                    sessao.reservarAssento(i);
-                                }
-	                        } **/
-	
                             for (int i = 1; i < assentosStr.length - 1; i++) {
                                 if (assentosStr[i].equals("true")) {
                                     sessao.reservarAssento(i);
@@ -2432,7 +2445,7 @@ public class Main {
 	                        }
 
 	                        cinema.getListaSessoes().add(sessao);
-                    	}else {
+                    	} else {
 	                    	Sessao sessao = new SessaoIndisponivel(codigoSessao, diaHorario, precoSessao, comPromocao, porcentagemPromocional, sala, filme, motivoExclusao);
 	
 	                        // Atualizar a lista de assentos conforme o arquivo
@@ -2457,6 +2470,13 @@ public class Main {
         }
     }
 
+    /**
+     * Lê o arquivo de ingresso e carrega para a memória do programa.
+     * 
+     * @param arquivo Arquivo de ingresso.
+     * @param cinema Cinema.
+     * @param usuario Usuário ao qual possui os ingressos.
+     */
     public static void carregarIngressos(File arquivo, Cinema cinema, Usuario usuario) {
         try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
             String linha;
@@ -2491,6 +2511,11 @@ public class Main {
         }
     }
 
+    /**
+     * Escreve o usuário no arquivo de usuários. 
+     * 
+     * @param usuario Usuario a ser cadastrado. 
+     */
     private static void cadastrarUsuarioArquivo(Usuario usuario) {
         // caminho do arquivo de usuários
         String arquivoUsuario = "arquivos/Usuarios.csv";
@@ -2514,6 +2539,11 @@ public class Main {
         }
     }
 
+    /**
+     * Escreve o filme no arquivo de filmes.
+     * 
+     * @param filme Filme a ser escrita.
+     */
     private static void cadastrarFilmeArquivo(Filme filme) {
         String arquivoFilme = "arquivos/Filmes.csv";
 
@@ -2533,6 +2563,12 @@ public class Main {
         }
     }
 
+    /**
+     * Edita o filme no arquivo de filme.
+     * 
+     * @param filmeNovo Filme novo.
+     * @param nomeAntigo Nome do filme antigo.
+     */
     private static void editarFilmeArquivo(Filme filmeNovo, String nomeAntigo) {
         String arquivoFilme = "arquivos/Filmes.csv";
 
@@ -2576,7 +2612,7 @@ public class Main {
                 }
             }
 
-            //substitui origial -> temporario
+            //substitui original -> temporario
             if (arquivoOriginal.delete()) {
                 arquivoTemporario.renameTo(arquivoOriginal);
             } else {
@@ -2587,6 +2623,12 @@ public class Main {
         }
     }
 
+    /**
+     * Remove o filme no arquivo de filme.
+     * 
+     * @param filme Filme a ser removido.
+     * @param motivoExclusao Motivo de exclusão. 
+     */
     private static void removerFilmeArquivo(Filme filme, String motivoExclusao) {
         String caminhoArquivo = "arquivos/Filmes.csv";
 
@@ -2637,6 +2679,11 @@ public class Main {
         }
     }
 
+    /**
+     * Escreve a sala no arquivo de salas.
+     * 
+     * @param sala Sala a ser escrita.
+     */
     private static void cadastrarSalaArquivo(Sala sala) {
         String caminhoArquivo = "arquivos/Salas.csv";
 
@@ -2654,6 +2701,12 @@ public class Main {
         }
     }
 
+    /**
+     * Edita a sala no arquivo de sala.
+     * 
+     * @param salaNova Sala nova.
+     * @param numeroAntigoSala Número da sala antiga.
+     */
     private static void editarSalaArquivo(Sala salaNova, int numeroAntigoSala) {
         String arquivoSalas = "arquivos/Salas.csv";
 
@@ -2704,9 +2757,13 @@ public class Main {
 
     }
 
-    private static boolean removerSalaArquivo(Sala salaRemovida) {
+    /**
+     * Remove a sala no arquivo de sala.
+     * 
+     * @param salaRemovida Sala a ser removida
+     */
+    private static void removerSalaArquivo(Sala salaRemovida) {
         String caminhoArquivo = "arquivos/Salas.csv"; // O arquivo onde as salas estão armazenadas
-        boolean sucesso = false;
 
         try {
             File arquivoOriginal = new File(caminhoArquivo);
@@ -2732,9 +2789,7 @@ public class Main {
                         if (nroSala != salaRemovida.getNroSala()) {
                             bw.write(linha);
                             bw.newLine();
-                        } else {
-                            sucesso = true;
-                        }
+                        } 
                     }
                 }
             }
@@ -2748,9 +2803,13 @@ public class Main {
             e.printStackTrace();
         }
 
-        return sucesso;
     }
 
+    /**
+     * Escreve a sessão no arquivo de sessão.
+     * 
+     * @param sessao Sessão a ser escrita.
+     */
     private static void cadastrarSessaoArquivo(Sessao sessao) {
         String caminhoArquivo = "arquivos/Sessoes.csv";
 
@@ -2777,6 +2836,11 @@ public class Main {
         }
     }
 
+    /**
+     * Edita a sessão no arquivo de sessão.
+     * 
+     * @param sessaoNova Sessão nova.
+     */
     private static void editarSessaoArquivo(Sessao sessaoNova) {
         String arquivoSessao = "arquivos/Sessoes.csv";
 
@@ -2837,6 +2901,12 @@ public class Main {
         }
     }
 
+    /**
+     * Remove a sessão no arquivo de sessão.
+     * 
+     * @param sessao Sessão a ser removida.
+     * @param motivoExclusao Motivo de exclusão.
+     */
     private static void removerSessaoArquivo(Sessao sessao, String motivoExclusao) {
         String caminhoArquivo = "arquivos/Sessoes.csv";
 
@@ -2893,6 +2963,12 @@ public class Main {
         }
     }
 
+    /**
+     * Modifica sessão no arquivo de sessão para adicionar promoção.
+     * 
+     * @param codigoSessao Código da sessão a cadastrar a promoção.
+     * @param porcentagemPromocional Porcentagem promocional.
+     */
     public static void cadastrarPromocaoArquivo(int codigoSessao, double porcentagemPromocional) {
         String arquivoSessao = "arquivos/Sessoes.csv";
         String arquivoTemporario = "arquivos/SessoesTemporarias.csv";
@@ -2947,6 +3023,12 @@ public class Main {
         System.out.println("Promocao atualizada no arquivo com sucesso.");
     }
 
+    /**
+     * Edita a promoção no arquivo de sessão.
+     * 
+     * @param arquivo Arquivo de sessão.
+     * @param sessaoEditada Sessão com promoção editada.
+     */
     public static void editarPromocaoArquivo(File arquivo, Sessao sessaoEditada) {
         String arquivoTemporario = "arquivos/SessoesTemporarias.csv";
 
@@ -3010,6 +3092,12 @@ public class Main {
         }
     }
 
+    /**
+     * Remove a promoção no arquivo de sessão.
+     * 
+     * @param arquivo Arquivo de sessão.
+     * @param sessaoEditada Sessão com promoção removida.
+     */ 
     public static void removerPromocaoArquivo(File arquivo, Sessao sessaoEditada) {
         String arquivoTemporario = "arquivos/SessoesTemporarias.csv";
 
@@ -3074,6 +3162,13 @@ public class Main {
         }
     }
 
+    /**
+     * Escreve ingressos no arquivo de ingresso. 
+     * 
+     * @param arquivo Arquivo de ingresso.
+     * @param usuario Usuário ao qual comprou o ingresso.
+     * @param ingresso Ingresso comprado.
+     */
     public static void cadastrarIngressoArquivo(File arquivo, Usuario usuario, Ingresso ingresso) {
         String arquivoUsuarios = "arquivos/Usuarios.csv"; 
         String arquivoIngressos = "arquivos/Ingressos.csv";
@@ -3163,6 +3258,11 @@ public class Main {
         }
     }
 
+    /**
+     * Modifica o usuário para um usuário assinante. 
+     * 
+     * @param usuario Usuário que irá ser tornar assinante. 
+     */
     private static void cadastrarUsuarioAssinanteArquivo(UsuarioAssinante usuario) {
         String arquivoFilme = "arquivos/Usuarios.csv";
 
