@@ -4,45 +4,85 @@ import java.time.LocalTime;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+/** A classe Gerente representa o gerente do cinema, que pode gerenciar o cinema com
+ *  filmes, salas, sessões e promoções. 
+ * 
+ * <p>
+ * Essa classe herda de {@link Pessoa}, adicionando a uma pessoa as funcionalidades de um gerente, 
+ * como as funções de adicionar, editar, remover e buscar filmes, salas, sessões e promoções. 
+ * Além disso, essa classe gera relatórios sobre o cinema.
+ * </p>
+ * 
+ * @author Guilherme Almendro
+ * @author Giovanna Noventa
+ * @author Isabela Aoki
+ * @since 1.0
+ * @see Pessoa
+ * @see java.time.LocalDate
+ * @see java.time.LocalTime
+ * @see java.time.LocalDateTime
+ * @see java.util.ArrayList
+ */
 public class Gerente extends Pessoa{
     private Cinema cinema;
-    private ArrayList<Usuario> listaUsuarios = new ArrayList<>();
+    private ArrayList<Usuario> listaUsuarios;
 
+    /** Construtor da classe Gerente.
+     * 
+     * Inicializa um gerente com as características de {@link Pessoa}, um cinema e a lista de usuários. 
+     * 
+     * @param nomeGerente Nome do gerente.
+     * @param loginGerente Login do gerente.
+     * @param senhaGerente Senha do gerente.
+     * @param cinema Cinema.
+     * @see Pessoa#Pessoa(java.lang.String, java.lang.String, java.lang.String) 
+     */
     public Gerente(String nomeGerente, String loginGerente, String senhaGerente, Cinema cinema) {
         super(nomeGerente, loginGerente, senhaGerente);
         setCinema(cinema);
-        setListaUsuarios(listaUsuarios);
+        listaUsuarios = new ArrayList<>();
     }
 
-    public void setCinema(Cinema cinema) {
-        this.cinema = cinema;
-    }
-
-    public Cinema getCinema() {
-        return this.cinema;
-    }
-
-    public void setListaUsuarios(ArrayList<Usuario> listaUsuarios) {
-        this.listaUsuarios = listaUsuarios;
-    }
-
-    public ArrayList<Usuario> getListaUsuarios() {
-        return this.listaUsuarios;
-    }
-    
-    // metodo para adicionar, editar e remover filme
+    /**
+     * Adiciona filme ao catálogo de filmes do cinema.
+     * <p>
+     * Busca primeiro se existe um filme no catálogo com o mesmo nome do que irá ser adicionado. 
+     * Se existe, ele retorna <code>false</code> e não permite o cadastro de filmes repetidos. 
+     * Se não existe, ele adiciona o filme ao catálogo e retorna <code>true</code>.
+     * </p>
+     * 
+     * @param filme Filme a ser adicionado.
+     * @return <code>boolean</code> Indica se o filme foi adicionado com sucesso. 
+     * @see Cinema#getListaFilmes() 
+     * @see Filme
+     */
     public boolean adicionarFilme(Filme filme) {
-        // busca se tem filme com o mesmo nome
-        if (this.buscarFilme(filme.getNomeFilme()) == null) { 
+        if (buscarFilme(filme.getNomeFilme()) == null) { 
             cinema.getListaFilmes().add(filme);
             return true;
         }
         return false;
     }
 
+    /**
+     * Edita filme do catálogo do cinema.
+     * <p>
+     * Realiza a edição dos atributos de um filme. Ele edita somente os parâmetros válidos ou não nulos fornecidos. 
+     * Se o nome do filme for alterado, verifica se ele já existe no catálogo. Caso exista, ele retorna <code>false</code> e não edita o atributo.
+     * </p>
+     * 
+     * @param filme Filme a ser editado.
+     * @param nomeNovo Novo nome do filme. Se for uma string vazia, o nome não é alterado.
+     * @param sinopseNova Nova sinopse do filme. Se for uma string vazia, a sinopse não é alterada.
+     * @param classificacaoNova Nova classificação do filme. Se for -1, a classificação não é alterada.
+     * @param generoNovo Novo gênero do filme. Se for uma string vazia, o gênero não é alterada.
+     * @param duracaoNova Nova duração do filme. Se for -1, a duração não é alterada.
+     * @return <code>boolean</code> Indica se o filme foi editado com sucesso.
+     * @see Filme
+     */
     public boolean editarFilme(Filme filme, String nomeNovo, String sinopseNova, int classificacaoNova, String generoNovo, int duracaoNova) {
         if (!nomeNovo.equals("")) {
-            // checa se o nome novo tem o nome de um filme que ja existe no catalogo
+            // Checa se o nome novo tem o mesmo nome de um filme que ja existe no catalogo
             if (buscarFilme(nomeNovo) == null) {
                 filme.setNomeFilme(nomeNovo); 
             }
@@ -65,14 +105,32 @@ public class Gerente extends Pessoa{
         return true;
     }
     
+    /**
+     * Indisponibiliza filme no catálogo.
+     * <p>
+     * Substitui o filme por um filme indisponivel no array, copiando suas informações.
+     * </p>
+     * 
+     * @param filme Filme a ser removido.
+     * @param motivoExclusaoFilme Motivo de exclusão do filme.
+     * @see FilmeIndisponivel
+     * @see Cinema
+     */
     public void removerFilme(Filme filme, String motivoExclusaoFilme) {
-        // substitui o filme por um filme indisponivel no array
         int index = cinema.getListaFilmes().indexOf(filme);
         FilmeIndisponivel filmeIndisponivel = new FilmeIndisponivel(filme.getNomeFilme(), filme.getSinopseFilme(), filme.getClassificacaoFilme(), filme.getGeneroFilme(), filme.getDuracaoFilme(), motivoExclusaoFilme);
         cinema.getListaFilmes().set(index, filmeIndisponivel);
     }
 
-    // metodo de busca de filme pelo nome (mas nao busca entre filmes indisponiveis)
+    /**
+     * Busca filme na lista de filmes disponíveis pelo nome.
+     * 
+     * @param nomeFilme Nome do filme procurado. 
+     * @return <code>Filme</code> buscado ou <code>null</code>, caso não for encontrado.
+     * @see Filme
+     * @see FilmeIndisponivel
+     * @see Cinema
+     */
     public Filme buscarFilme(String nomeFilme) {
         for (Filme f : cinema.getListaFilmes()) {
             if (f.getNomeFilme().equalsIgnoreCase(nomeFilme) && !(f instanceof FilmeIndisponivel)) {
@@ -81,8 +139,20 @@ public class Gerente extends Pessoa{
         }
         return null;
     }
-
-    // metodo para adicionar, editar e remover sala
+    
+    /**
+     * Adiciona sala à lista de salas do cinema.
+     * <p>
+     * Busca primeiro se existe uma sala com o mesmo número. 
+     * Se existe, ele retorna <code>false</code> e não permite o cadastro da sala. 
+     * Se não existe, ele adiciona a sala à lista e retorna <code>true</code>.
+     * </p>
+     * 
+     * @param sala Sala a ser adicionada. 
+     * @return <code>boolean</code> Indica se a sala foi adicionada com sucesso. 
+     * @see Cinema#getListaSalas() 
+     * @see Sala
+     */
     public boolean adicionarSala(Sala sala) {
         // busca se tem sala com o mesmo numero
         if (buscarSala(sala.getNroSala()) == null) {
@@ -92,9 +162,23 @@ public class Gerente extends Pessoa{
         return false;
     }
     
+    /**
+     * Edita sala do cinema. 
+     * <p>
+     * Realiza a edição dos atributos de uma sala. Ele edita somente os parâmetros válidos ou não nulos fornecidos. 
+     * Se o número da sala for alterado, verifica se ele já existe no catálogo. Caso exista, ele retorna <code>false</code> e não edita o atributo.
+     * </p>
+     * 
+     * @param sala Sala a ser editada. 
+     * @param nroSalaNovo Novo número da sala. Se for 0, o número não é alterado.
+     * @param nroAssentoNovo Nova quantidade de assentos. Se for -1, a quantidade não é alterada.
+     * @param tipoTelaNovo Novo tipo de tela. Se for null, o tipo não é alterado.
+     * @return <code>boolean</code> Indica se a sala foi editada com sucesso.
+     * @see Sala
+     */
     public boolean editarSala(Sala sala, int nroSalaNovo, int nroAssentoNovo, Boolean tipoTelaNovo){
         if (nroSalaNovo != 0) {
-            // checa se o numero novo eh igual ao numero de uma sala que ja existe
+            // Checa se o numero novo eh igual ao número de uma sala que ja existe
             if (buscarSala(nroSalaNovo) == null) { 
                 sala.setNroSala(nroSalaNovo);
             }
@@ -111,11 +195,24 @@ public class Gerente extends Pessoa{
         return true;    
     }
     
+    /**
+     * Remove sala da lista de salas do cinema.
+     * 
+     * @param sala Sala a ser removida.
+     * @see Cinema
+     */
     public void removerSala(Sala sala) {
         cinema.getListaSalas().remove(sala);
     }
-
-    // metodo de busca de sala pelo numero
+    
+    /**
+     * Busca sala na lista de salas pelo número. 
+     * 
+     * @param nroSala Número da sala procurada.
+     * @return <code>Sala</code> buscada ou <code>null</code>, caso não for encontrada.
+     * @see Sala
+     * @see Cinema
+     */
     public Sala buscarSala(int nroSala) {
         for (Sala s : cinema.getListaSalas()) {
             if (s.getNroSala() == nroSala) {
@@ -124,24 +221,39 @@ public class Gerente extends Pessoa{
         }
         return null;
     }
-
-    // metodo para adicionar sessao 
+    
+    /**
+     * Adiciona sessão à lista de sessões do cinema.
+     * <p>
+     * Para adicionar sessão, verifica se sessões com filme +18 são depois das 20h e
+     * verifica se há sessões na mesma sala e dia com intervalos de horário que coincidem. 
+     * Caso não cumpra essas condições, retorna <code>false</code> e não adiciona a sessão. 
+     * </p>
+     * 
+     * @param sessao Sessao a ser adicionada.
+     * @return <code>boolean</code> Indica se a sessão foi adicionada com sucesso. 
+     * @see java.time.LocalDateTime
+     * @see Sessao
+     * 
+     */
     public boolean adicionarSessao(Sessao sessao) {
         LocalDateTime inicioSessaoNova = sessao.getDiaHorarioSessao();
         LocalDateTime finalSessaoNova = inicioSessaoNova.plusMinutes(sessao.getFilmeSessao().getDuracaoFilme());
 
-        // verifica se filme +18 é depois das 20h
+        // Verifica se filme +18 é depois das 20h
         if (sessao.getFilmeSessao().getClassificacaoFilme() == 18 && sessao.getHorarioSessao().isBefore(LocalTime.of(20,00))) {
             return false;
         }
 
-        // varre o array de sessoes e compara sessoes que tem a mesma sala e mesmo dia
-        // depois verifica se possuem o mesmo intervalo de horario
+        // Varre o array de sessões e compara sessões que tem a mesma sala e dia
         for (Sessao s : getCinema().getListaSessoes()) {
-            if (!(s instanceof SessaoIndisponivel) && sessao.getSalaSessao().equals(s.getSalaSessao()) && sessao.getDiaSessao().equals(s.getDiaSessao())) {
+            Sala salaTemporaria = s.getSalaSessao();
+            
+            if (!(s instanceof SessaoIndisponivel) && sessao.getSalaSessao().equals(salaTemporaria) && sessao.getDiaSessao().equals(s.getDiaSessao())) {
                 LocalDateTime inicioSessao = s.getDiaHorarioSessao();
                 LocalDateTime finalSessao = inicioSessao.plusMinutes(s.getFilmeSessao().getDuracaoFilme());
 
+                // Verifica se possuem o mesmo intervalo de horário
                 if (checarIntervaloHorario(inicioSessaoNova, finalSessaoNova, inicioSessao, finalSessao)) {
                     return false;
                 }
@@ -151,25 +263,65 @@ public class Gerente extends Pessoa{
         cinema.getListaSessoes().add(sessao);
         return true; 
     }
+    
+    /**
+     * Edita sessão do cinema.
+     * <p>Realiza a edição dos atributos de uma sessão. Ele edita somente os parâmetros válidos ou não nulos fornecidos se atende as condições necessárias:</p>
+     * <ul>
+     * <li>Na edição de dia, horário ou sala, são verificados se a mudança do atributo coincide com intervalo de horário de outra sessão. Se coincidir, retorna <code>false</code>.</li>
+     * <li>Na edição de filme, verifica se o filme é +18 e depois das 20h. Se não for, retorna <code>false</code>.</li>
+     * </ul>
 
-    // método para editar sessao
+     * 
+     * @param sessao Sessão a ser editada. 
+     * @param diaSessaoNovo Novo dia da sessão. Se for null, o dia não é alterado.
+     * @param horarioSessaoNovo Novo horário da sessão. Se for null, o horário não é alterado.
+     * @param precoSessaoNovo Novo preço da sessão. Se for -1, o preço não é alterado.
+     * @param salaSessaoNovo Nova sala da sessão. Se for null, a sala não é alterada.
+     * @param filmeSessaoNovo Novo filme da sessão. Se for null, o filme não é alterado.
+     * @return <code>boolean</code> Indica se a sessão foi editada com sucesso.
+     * @see java.time.LocalDateTime
+     * @see Sessao
+     * @see Gerente#checarIntervaloHorario(java.time.LocalDateTime, java.time.LocalDateTime, java.time.LocalDateTime, java.time.LocalDateTime) 
+     */
     public boolean editarSessao(Sessao sessao, LocalDate diaSessaoNovo, LocalTime horarioSessaoNovo, double precoSessaoNovo, Sala salaSessaoNovo, Filme filmeSessaoNovo) {
         if (precoSessaoNovo != -1) {
             sessao.setPrecoSessao(precoSessaoNovo);
         }
-        else if (salaSessaoNovo != null) { 
+        else if (salaSessaoNovo != null) {
+            // Verifica se mudança de sala invade algum intervalo de horário de outra sessão
+            LocalDateTime inicioSessaoNovo = sessao.getDiaHorarioSessao();
+            LocalDateTime finalSessaoNovo = inicioSessaoNovo.plusMinutes(sessao.getFilmeSessao().getDuracaoFilme());
+            
+            for (Sessao s : getCinema().getListaSessoes()) {
+                Sala salaTemporaria = s.getSalaSessao();
+                
+                if (!(s instanceof SessaoIndisponivel) && salaSessaoNovo.equals(salaTemporaria) && sessao.getDiaSessao().equals(s.getDiaSessao())) {
+                    if (checarIntervaloHorario(inicioSessaoNovo, finalSessaoNovo, s.getDiaHorarioSessao(), s.getDiaHorarioSessao().plusMinutes(s.getFilmeSessao().getDuracaoFilme()))) {
+                        return false;
+                    }
+                }
+            }
+            
             sessao.setSalaSessao(salaSessaoNovo);
         }
         else if (filmeSessaoNovo != null) { 
+            // Verifica se filme +18 é depois das 20h
+            if (filmeSessaoNovo.getClassificacaoFilme() == 18 && sessao.getHorarioSessao().isBefore(LocalTime.of(20,00))) {
+                return false;
+            }
             sessao.setFilmeSessao(filmeSessaoNovo);
         }
-        else if (diaSessaoNovo != null) { // checa se mudança de dia possui o mesmo intervalo de horario que outra sessao
-            LocalDateTime inicioSessaNovo = diaSessaoNovo.atTime(sessao.getHorarioSessao());
-            LocalDateTime finalSessaoNovo = inicioSessaNovo.plusMinutes(sessao.getFilmeSessao().getDuracaoFilme());
+        else if (diaSessaoNovo != null) { 
+            // Verifica se mudança de dia possui o mesmo intervalo de horario que outra sessao
+            LocalDateTime inicioSessaoNovo = diaSessaoNovo.atTime(sessao.getHorarioSessao());
+            LocalDateTime finalSessaoNovo = inicioSessaoNovo.plusMinutes(sessao.getFilmeSessao().getDuracaoFilme());
 
             for (Sessao s : getCinema().getListaSessoes()) {
-                if (!(s instanceof SessaoIndisponivel) && sessao.getSalaSessao() == s.getSalaSessao() && diaSessaoNovo == s.getDiaSessao()) {
-                    if (checarIntervaloHorario(inicioSessaNovo, finalSessaoNovo, s.getDiaHorarioSessao(), s.getDiaHorarioSessao().plusMinutes(s.getFilmeSessao().getDuracaoFilme()))) {
+                Sala salaTemporaria = s.getSalaSessao();
+                
+                if (!(s instanceof SessaoIndisponivel) && sessao.getSalaSessao().equals(salaTemporaria) && diaSessaoNovo.equals(s.getDiaSessao())) {
+                    if (checarIntervaloHorario(inicioSessaoNovo, finalSessaoNovo, s.getDiaHorarioSessao(), s.getDiaHorarioSessao().plusMinutes(s.getFilmeSessao().getDuracaoFilme()))) {
                         return false;
                     }
                 }
@@ -177,13 +329,16 @@ public class Gerente extends Pessoa{
 
             sessao.setDiaSessao(diaSessaoNovo);
         }
-        else if (horarioSessaoNovo != null) { // checa se mudança de horario possui o mesmo intervalo de horario que outra sessao
-            LocalDateTime inicioSessaNovo = horarioSessaoNovo.atDate(sessao.getDiaSessao());
-            LocalDateTime finalSessaoNovo = inicioSessaNovo.plusMinutes(sessao.getFilmeSessao().getDuracaoFilme());
+        else if (horarioSessaoNovo != null) { 
+            // Verifica se mudança de horario possui o mesmo intervalo de horario que outra sessao
+            LocalDateTime inicioSessaoNovo = horarioSessaoNovo.atDate(sessao.getDiaSessao());
+            LocalDateTime finalSessaoNovo = inicioSessaoNovo.plusMinutes(sessao.getFilmeSessao().getDuracaoFilme());
 
             for (Sessao s : getCinema().getListaSessoes()) {
-                if (!(s instanceof SessaoIndisponivel) && sessao.getSalaSessao() == s.getSalaSessao() && diaSessaoNovo == s.getDiaSessao()) {
-                    if (checarIntervaloHorario(inicioSessaNovo, finalSessaoNovo, s.getDiaHorarioSessao(), s.getDiaHorarioSessao().plusMinutes(s.getFilmeSessao().getDuracaoFilme()))) {
+                Sala salaTemporaria = s.getSalaSessao();
+                
+                if (!(s instanceof SessaoIndisponivel) && sessao.getSalaSessao().equals(salaTemporaria) && sessao.getDiaSessao().equals(s.getDiaSessao())) {
+                    if (checarIntervaloHorario(inicioSessaoNovo, finalSessaoNovo, s.getDiaHorarioSessao(), s.getDiaHorarioSessao().plusMinutes(s.getFilmeSessao().getDuracaoFilme()))) {
                         return false;
                     }
                 }
@@ -194,16 +349,32 @@ public class Gerente extends Pessoa{
         
         return true;    
     }
-
-    // metodo para remover sessao
+    
+    /**
+     * Indisponibiliza sessão no catálogo.
+     * <p>
+     * Substitui a sessão por uma sessão indisponível no array, copiando suas informações.
+     * </p>
+     * @param sessao Sessão a ser removida.
+     * @param motivoExclusaoSessao Motivo de exclusão da sessão.
+     * @see SessaoIndisponivel
+     * @see Cinema
+     */
     public void removerSessao(Sessao sessao, String motivoExclusaoSessao) {
         // substitui a sessao por uma sessao indisponivel no array
         int index = cinema.getListaSessoes().indexOf(sessao);
-        SessaoIndisponivel sessaoIndisponivel = new SessaoIndisponivel(sessao.getDiaHorarioSessao(),sessao.getPrecoSessao(), sessao.getComPromocao(), sessao.getPorcentagemPromocional(), sessao.getSalaSessao(), sessao.getFilmeSessao(), motivoExclusaoSessao);
+        SessaoIndisponivel sessaoIndisponivel = new SessaoIndisponivel(sessao.getCodigoSessao(),sessao.getDiaHorarioSessao(),sessao.getPrecoSessao(), sessao.getComPromocao(), sessao.getPorcentagemPromocional(), sessao.getSalaSessao(), sessao.getFilmeSessao(), motivoExclusaoSessao);
         cinema.getListaSessoes().set(index, sessaoIndisponivel);
     }
-
-    // metodo para buscar sessao pelo codigo (mas nao busca entre indisponiveis)
+    
+    /**
+     * Busca sessão na lista de sessões disponíveis pelo código.
+     * 
+     * @param codigoSessao Código da sessão procurada.
+     * @return <code>Sessao</code> buscada ou <code>null</code>, caso não for encontrada.
+     * @see Sessao
+     * @see Cinema
+     */
     public Sessao buscarSessao(int codigoSessao) {
         for (Sessao s : cinema.getListaSessoes()) {
             if (s.getCodigoSessao() == codigoSessao && !(s instanceof SessaoIndisponivel)) {
@@ -212,8 +383,16 @@ public class Gerente extends Pessoa{
         }
         return null;
     }
-
-    // metodo para buscar sessao pelo filme (mas nao busca entre sessoes indisponiveis)
+    
+    /**
+     * Busca sessão na lista de sessões disponíveis pelo filme.
+     * 
+     * @param filme Filme da sessão procurada.
+     * @return <code>Sessao</code> buscada ou <code>null</code>, caso não for encontrada.
+     * @see Filme
+     * @see Sessao
+     * @see Cinema
+     */
     public boolean buscarSessaoComFilme(Filme filme) {
         for (Sessao s : cinema.getListaSessoes()) {
             if (s.getFilmeSessao().equals(filme) && !(s instanceof SessaoIndisponivel)) {
@@ -223,7 +402,15 @@ public class Gerente extends Pessoa{
         return false;
     }
 
-    // metodo para buscar sessao pela sala (mas nao busca entre sessoes indisponiveis)
+    /**
+     * Busca sessão na lista de sessões disponíveis pela sala.
+     * 
+     * @param sala Sala da sessão procurada.
+     * @return <code>Sessao</code> buscada ou <code>null</code>, caso não for encontrada.
+     * @see Sala
+     * @see Sessao
+     * @see Cinema
+     */
     public boolean buscarSessaoComSala(Sala sala) {
         for (Sessao s : cinema.getListaSessoes()) {
             if (s.getSalaSessao().equals(sala) && !(s instanceof SessaoIndisponivel)) {
@@ -232,28 +419,18 @@ public class Gerente extends Pessoa{
         }
         return false;
     }
-
-    // metodo para checar intervalos de horario coincidentes
-    private boolean checarIntervaloHorario(LocalDateTime inicioSessaoNova, LocalDateTime finalSessaoNova, LocalDateTime inicioSessao, LocalDateTime finalSessao) {
-        // checa se horarios de inicio são iguais
-        if (inicioSessaoNova.equals(inicioSessao)) { // correct!!
-            return true;
-        }
-        // checa se horarios de inicio e final da sessao nova estao entre o intervalo da sessao existente
-        else if ((inicioSessaoNova.isAfter(inicioSessao) && inicioSessaoNova.isBefore(finalSessao)) || (finalSessaoNova.isAfter(inicioSessao) && finalSessaoNova.isBefore(finalSessao))) {
-            return true;
-        }
-        // checa se horarios de inicio e final de sessao existente estao entre o intervalo da sessao nova
-        else if ((inicioSessao.isAfter(inicioSessaoNova) && inicioSessao.isBefore(finalSessaoNova)) || (finalSessao.isAfter(inicioSessaoNova)) && finalSessao.isBefore(finalSessaoNova)) {
-            return true;
-        }
-        // o horario esta livre
-        else { 
-            return false;
-        }
-    }
-
-    // metodo para cadastrar promocao 
+    
+    /**
+     * Adiciona promoção a uma sessão do cinema.
+     * <p>
+     * Adiciona promoção somente a sessões que ainda não possuem. Se elas tiverem, retorna <code>false</code>.
+     * </p>
+     * 
+     * @param sessao Sessão que irá receber uma promoção.
+     * @param porcentagemPromocional Porcentagem promocional entre 0 e 1.
+     * @return <code>boolean</code> Indica se promoção foi adicionada com sucesso.
+     * @see Sessao
+     */
     public boolean adicionarPromocao(Sessao sessao, double porcentagemPromocional) {
         // checa se sessao nao possui promocao
         if (!(sessao.getComPromocao())) {
@@ -263,148 +440,262 @@ public class Gerente extends Pessoa{
         } 
         return false;       
     }
-
-    // metodo para editar promocao 
+    
+    /**
+     * Edita promoção de uma sessão do cinema.
+     * <p>
+     * Edita promoção somente de sessões que já possuem. Se elas não tiverem promoção, retorna <code>false</code>.
+     * </p>
+     * 
+     * @param sessao Sessão com promoção a ser editada.
+     * @param porcentagemPromocionalNova Nova porcentagem promocional entre 0 e 1.
+     * @return <code>boolean</code> Indica se promoção foi editada com sucesso.
+     */
     public boolean editarPromocao(Sessao sessao, double porcentagemPromocionalNova) {
-        // checa se sessao possui promocao cadastrada
     	if(sessao.getComPromocao()) {
-    		sessao.setPorcentagemPromocional(porcentagemPromocionalNova);
-        	return true; 
+            sessao.setPorcentagemPromocional(porcentagemPromocionalNova);
+            return true; 
     	}	
         return false; 
     }
 
-     // metodo para excluir promocao 
+    /**
+     * Exclui promoção de uma sessão do cinema.
+     * <p>
+     * Exclui promoção somente de sessões que já possuem. Se elas não tiverem promoção, retorna <code>false</code>.
+     * </p>
+     * 
+     * @param sessao Sessão com promoção a ser excluída.
+     * @return <code>boolean</code> Indica se promoção foi excluída com sucesso.
+     */
     public boolean excluirPromocao(Sessao sessao) {
         // checa se sessao possui promocao cadastrada
     	if(sessao.getComPromocao()) {
             sessao.setComPromocao(false); 
-    		sessao.setPorcentagemPromocional(1);
-    		return true;
+            sessao.setPorcentagemPromocional(1);
+            return true;
     	}
         return false; 
-    }    
-
-    // metodos de relatorio 
-    public void gerarRelatorioFilmes(ArrayList <Filme> FilmesCadastrados) {
-    	int nroFilmesEmCartaz = 0;
-    	int nroFilmesIndisponiveis = 0; 
+    }   
+    
+    /**
+     * Imprime filmes disponíveis e indisponíveis e sua quantidade. 
+     * 
+     * @param listaFilmes Lista de filmes.
+     */
+    public void gerarRelatorioFilmes(ArrayList <Filme> listaFilmes) {
+        int nroFilmesEmCartaz = 0;
+        int nroFilmesIndisponiveis = 0; 
     	
-    	if(FilmesCadastrados.size() > 0) {
-	    	for(Filme filme : FilmesCadastrados) {
-	    		if(!(filme instanceof FilmeIndisponivel)) {
-	    			nroFilmesEmCartaz++; 
-	    		}
-	    		else {
-	    			nroFilmesIndisponiveis++; 
-	    		}
+        if(!listaFilmes.isEmpty()) {
+	    for(Filme filme : listaFilmes) {
+	    	if(!(filme instanceof FilmeIndisponivel)) {
+                    nroFilmesEmCartaz++; 
 	    	}
-    	}
-    	
-    	System.out.println("\nFilmes disponiveis: ");
-    	
-    	if (nroFilmesEmCartaz > 0) {
-        	for(Filme filme : FilmesCadastrados) {
-        		if(!(filme instanceof FilmeIndisponivel)) {
-        		System.out.println("\n" + filme);
-        		}
-        	}
-        	System.out.println("\n- Existe " + nroFilmesEmCartaz + " filme(s) em cartaz.");
+	    	else {
+                    nroFilmesIndisponiveis++; 
+	    	}
+	    }
         }
-    	else {
-    		System.out.println("\n- Nao existem filmes disponiveis.");
-    	}
+    	
+        System.out.println("\nFilmes disponiveis: ");
+    	
+        if (nroFilmesEmCartaz > 0) {
+            for(Filme filme : listaFilmes) {
+                if(!(filme instanceof FilmeIndisponivel)) {
+                    System.out.println("\n" + filme);
+        	}
+            }
+            System.out.println("\n- Existe " + nroFilmesEmCartaz + " filme(s) em cartaz.");
+        }
+        else {
+            System.out.println("\n- Nao existem filmes disponiveis.");
+        }
 
-    	System.out.println("\nFilmes indisponiveis: ");
+        System.out.println("\nFilmes indisponiveis: ");
     	
-    	if (nroFilmesIndisponiveis > 0) {
-    		for(Filme filme : FilmesCadastrados) {
-        		if(filme instanceof FilmeIndisponivel) {
-        		System.out.print("\n" + filme + "\n- Motivo de exclusao: " + FilmeIndisponivel.getMotivoExclusaoFilme()); 
-        		}
+        if (nroFilmesIndisponiveis > 0) {
+            for(Filme filme : listaFilmes) {
+        	if(filme instanceof FilmeIndisponivel) {
+                    System.out.print("\n" + filme + "\n- Motivo de exclusao: " + FilmeIndisponivel.getMotivoExclusaoFilme()); 
         	}
-    		System.out.println("\n\n- Existe " + nroFilmesIndisponiveis + " filme(s) indisponiveis.");
+            }
+            System.out.println("\n\n- Existe " + nroFilmesIndisponiveis + " filme(s) indisponiveis.");
         }
-    	else {
-    		System.out.println("\n- Nao existem filmes indisponiveis.");
-    	}
+        else {
+            System.out.println("\n- Nao existem filmes indisponiveis.");
+        }
     }
     
-    public void gerarRelatorioSessoes(ArrayList <Sessao> SessoesCadastradas) { 	
-    	int nroSessoesCadastradas = 0;
-    	int nroSessoesIndisponiveis = 0; 
+    /**
+     * Imprime sessões disponíveis e indisponíveis e sua quantidade.
+     * 
+     * @param listaSessoes Lista de sessões. 
+     */
+    public void gerarRelatorioSessoes(ArrayList <Sessao> listaSessoes) { 	
+        int nroSessoesCadastradas = 0;
+        int nroSessoesIndisponiveis = 0; 
     	
-    	if(SessoesCadastradas.size() > 0) {
-	    	for(Sessao sessao : SessoesCadastradas) {
-	    		if(!(sessao instanceof SessaoIndisponivel)) {
-	    			nroSessoesCadastradas++; 
-	    		}
-	    		else {
-	    			nroSessoesIndisponiveis++; 
-	    		}
-	    	}
+        if( !listaSessoes.isEmpty()) {
+            for(Sessao sessao : listaSessoes) {
+                if(!(sessao instanceof SessaoIndisponivel)) {
+                    nroSessoesCadastradas++; 
+                }
+                else {
+                    nroSessoesIndisponiveis++; 
+                }
+	    }
     	}
     	
     	System.out.println("Sessoes disponiveis: ");
     	
-    	if (nroSessoesCadastradas > 0) {
-        	for(Sessao sessao : SessoesCadastradas) {
-        		if(!(sessao instanceof SessaoIndisponivel)) {
-        		System.out.print("\n" + sessao);
-        		}
+        if (nroSessoesCadastradas > 0) {
+            for(Sessao sessao : listaSessoes) {
+        	if(!(sessao instanceof SessaoIndisponivel)) {
+                    System.out.print("\n" + sessao);
         	}
-        	System.out.println("\n\n- Existe " + nroSessoesCadastradas + " sessoes disponiveis.");
-        	
+            }
+            System.out.println("\n\n- Existe " + nroSessoesCadastradas + " sessoes disponiveis.");	
         }
     	else {
-    		System.out.println("\n- Nao existem sessoes disponiveis.");
+            System.out.println("\n- Nao existem sessoes disponiveis.");
     	}
-    	
+        
     	System.out.println("\nSessoes indisponiveis: ");
     	
     	if (nroSessoesIndisponiveis > 0) {
-    		for(Sessao sessao : SessoesCadastradas) {
-        		if(sessao instanceof SessaoIndisponivel) {
-        		System.out.print("\n" + sessao + "\n- Motivo de exclusao: " + SessaoIndisponivel.getMotivoExclusaoSessao()); 
-        		}
-        	}
-    		System.out.println("\n\n- Existe " + nroSessoesIndisponiveis + " sessoes indisponiveis.");
+            for(Sessao sessao : listaSessoes) {
+                if(sessao instanceof SessaoIndisponivel) {
+                    System.out.print("\n" + sessao + "\n- Motivo de exclusao: " + SessaoIndisponivel.getMotivoExclusaoSessao()); 
+                }
+            }
+            System.out.println("\n\n- Existe " + nroSessoesIndisponiveis + " sessoes indisponiveis.");
         }
     	else {
-    		System.out.println("\n- Nao existem sessoes indisponiveis.");
-    	}
-    }
-
-    public void gerarRelatorioSalas(ArrayList <Sala> SalasCadastradas) {    	
-    	int nroSalasCadastradas = 0; 
-
-    	if (SalasCadastradas.size() > 0) {
-    		for(Sala salas : SalasCadastradas) {
-	    		System.out.println(salas + "\n");
-	    		nroSalasCadastradas++;
-	    	}
-    		System.out.println("- Existe " + nroSalasCadastradas + " sala(s) cadastrada(s)."); 
-    	}    
-    	else {
-    		System.out.println("- Nao existem salas disponiveis.");
-    	}	
+            System.out.println("\n- Nao existem sessoes indisponiveis.");
+        }
     }
     
+    /**
+     * Imprime salas e sua quantidade.
+     * 
+     * @param listaSalas Lista de salas.
+     */
+    public void gerarRelatorioSalas(ArrayList <Sala> listaSalas) {    	
+        int nroSalasCadastradas = 0; 
+
+        if (!listaSalas.isEmpty()) {
+            for(Sala salas : listaSalas) {
+                System.out.println(salas + "\n");
+                nroSalasCadastradas++;
+            }
+            System.out.println("- Existe " + nroSalasCadastradas + " sala(s) cadastrada(s)."); 
+        }    
+        else {
+            System.out.println("- Nao existem salas disponiveis.");
+        }	
+    }
+    
+    /**
+     * Imprime a quantidade de usuários por tipo e o valor arrecadado do cinema. 
+     * 
+     */
     public void gerarRelatorioUsuarios() {
-    	int nroUsuariosAssinantes = 0; 
-		int nroUsuarios = 0; 
-			
-		for(Usuario user : listaUsuarios) {
-			if(user instanceof UsuarioAssinante) {
-				nroUsuariosAssinantes++;
-				nroUsuarios++;
-			}
-			else {
-				nroUsuarios++; 
-			}
-		}
+        int nroUsuariosAssinantes = 0; 
+	int nroUsuarios = 0; 
+	double totalArrecadado = 0;
+        
+	for(Usuario user : listaUsuarios) {
+            if(user instanceof UsuarioAssinante) {
+		nroUsuariosAssinantes++;
+		nroUsuarios++;
+            }
+            else {
+		nroUsuarios++; 
+            }
+            
+            if (user.getIngressosComprados() != null && !(user.getIngressosComprados().isEmpty())) {
+                for (Ingresso ingresso : user.getIngressosComprados()) {
+                    totalArrecadado += ingresso.getPrecoIngresso();
+                }
+            }
+	}
 		
-		System.out.print("Numero de usuarios cadastrados: " + nroUsuarios +
-	        	"\nNumero de usuarios assinantes: " + nroUsuariosAssinantes);
+	System.out.print("Numero de usuarios cadastrados: " + nroUsuarios + "\nNumero de usuarios assinantes: " + nroUsuariosAssinantes);
+        System.out.print("\nTotal arrecadado: " + totalArrecadado);
    }
+    
+    /**
+     * Verifica se intervalos de horário de sessões coincidem.
+     * <p>
+     * Checa as seguintes situações para verificar se o horário está livre:
+     * <ul>
+     * <li>Se horários de início são iguais.</li>
+     * <li>Se horários de início e final da sessão nova estão entre o intervalo da sessão existente.</li>
+     * <li>Se horários de início e final de sessão existente estão entre o intervalo da sessão nova.</li>
+     * </ul>
+     * </p>
+     * 
+     * @param inicioSessaoNova Início da sessão nova.
+     * @param finalSessaoNova Final da sessão nova.
+     * @param inicioSessao Início da sessão existente.
+     * @param finalSessao Final da sessão existente.
+     * @return <code>boolean</code> Indica se o horário está livre (<code>false</code>) ou se coincide (<code>true</code>).
+     * @see java.time.LocalDateTime
+     */
+    private boolean checarIntervaloHorario(LocalDateTime inicioSessaoNova, LocalDateTime finalSessaoNova, LocalDateTime inicioSessao, LocalDateTime finalSessao) {
+        // Checa se horarios de inicio são iguais
+        if (inicioSessaoNova.equals(inicioSessao)) {
+            return true;
+        }
+        // Checa se horarios de inicio e final da sessao nova estao entre o intervalo da sessao existente
+        else if ((inicioSessaoNova.isAfter(inicioSessao) && inicioSessaoNova.isBefore(finalSessao)) || (finalSessaoNova.isAfter(inicioSessao) && finalSessaoNova.isBefore(finalSessao))) {
+            return true;
+        }
+        // Checa se horarios de inicio e final de sessao existente estao entre o intervalo da sessao nova
+        else if ((inicioSessao.isAfter(inicioSessaoNova) && inicioSessao.isBefore(finalSessaoNova)) || (finalSessao.isAfter(inicioSessaoNova)) && finalSessao.isBefore(finalSessaoNova)) {
+            return true;
+        }
+        // O horario esta livre
+        else { 
+            return false;
+        }
+    }
+    
+    /**
+     * Muda o cinema que está sendo administrado pelo gerente.
+     * 
+     * @param cinema Cinema.
+     */
+    public final void setCinema(Cinema cinema) {
+        this.cinema = cinema;
+    }
+
+    /**
+     * Obtém o cinema que está sendo administrado pelo gerente.
+     * 
+     * @return <code>Cinema</code> Cinema. 
+     */
+    public Cinema getCinema() {
+        return this.cinema;
+    }
+
+    /**
+     * Muda a lista de usuários.
+     * 
+     * @param listaUsuarios Arraylist contendo os usuários.
+     */
+    public final void setListaUsuarios(ArrayList<Usuario> listaUsuarios) {
+        this.listaUsuarios = listaUsuarios;
+    }
+
+    /**
+     * Obtém a lista de usuários.
+     * 
+     * @return <code>ArrayList</code> contendo os usuários.
+     */
+    public ArrayList<Usuario> getListaUsuarios() {
+        return this.listaUsuarios;
+    }     
+    
 }
