@@ -2738,18 +2738,22 @@ public class Main {
     private static void imprimeMenuUsuarioPerfil(Usuario usuario) {
         String arquivoUsuario = "arquivos/Usuarios.csv";
         boolean isAssinante = false;
+        int numeroIngressos = 0;
+        int numeroIngressosAtual = 0;
 
+        
         try (BufferedReader br = new BufferedReader(new FileReader(arquivoUsuario))) {
             String linha;
             br.readLine();
 
             while ((linha = br.readLine()) != null) {
+            	numeroIngressos++;
                 String[] dados = linha.split(",");
                 if (dados.length >= 5) {
-                    String nome = dados[0];
+                    String login = dados[1];
                     boolean assinante = Boolean.parseBoolean(dados[4]);
 
-                    if (nome.equalsIgnoreCase(usuario.getNomePessoa())) {
+                    if (login.equalsIgnoreCase(usuario.getLoginPessoa())) {
                         isAssinante = assinante;
                         break;
                     }
@@ -2769,15 +2773,18 @@ public class Main {
         System.out.println("Assinatura: " + (isAssinante ? "Sim" : "Nao"));
 
         // Exibir ingressos comprados
-        System.out.println("Ingressos comprados: " + usuario.getIngressosComprados().size());
+        System.out.println("Ingressos comprados: " + numeroIngressos);
 
         if (!usuario.getIngressosComprados().isEmpty()) {
             for (Ingresso ingressoComprado : usuario.getIngressosComprados()) {
+            	if(numeroIngressosAtual < numeroIngressos) {
             		System.out.println(ingressoComprado.toString());
+            	}
+            	numeroIngressosAtual++;
             }
         }
+        
     }
-
     private static void limpaConsole() {
         try {
             String sistemaOperacional = System.getProperty("os.name").toLowerCase();
