@@ -7,10 +7,43 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
-// comando para compilar o codigo: no diretorio da pasta projetopoo, javac projetopoo/*.java
-// comando para rodar o codigo: java projetopoo.Main
+// Comando para compilar o codigo: no diretorio da pasta projetopoo, javac projetopoo/*.java
+// Comand para rodar o codigo: java projetopoo.Main
+
+/**
+ * A classe Main executa o sistema de gerenciamento de cinema. 
+ * 
+ * <p>
+ * O sistema de gereciamento para o cinema GIG é dividido em duas interfaces: 
+ * <ul>
+ * <li>Interface do gerente: o gerente tem acesso a funções de administração, como adicionar, editar, excluir filmes, salas, sessões e promoções.
+ * Além disso, ele pode olhar os relatórios do cinema.</li>
+ * <li>Interface do cliente: o cliente pode comprar ingressos para sessões, adquirir assinatura e visualizar seu perfil.</li>
+ * </ul>
+ * </p>
+ * 
+ * @author Guilherme Almendro
+ * @author Giovanna Noventa
+ * @author Isabela Aoki
+ * @since 1.0
+ * @see java.io.IOException
+ * @see import java.time.LocalDate
+ * @see java.time.LocalTime
+ * @see java.time.LocalDateTime
+ * @see java.time.format.DateTimeFormatter
+ * @see java.time.format.DateTimeParseException
+ * @see java.util.Scanner
+ */
 
 public class Main {
+    /**
+     * Método principal do sistema.
+     * <p>
+     * Esse método executa o sistema de gerenciamento de cinema e contém os diferentes menus da interface do usuário e do cliente. 
+     * </p>
+     * 
+     * @param args Argumentos da linha de comando (não utilizados pelo programa).
+     */
     public static void main(String[] args) {
         Cinema cinema = new Cinema("GIG CINEMAS");
         Gerente gerente = new Gerente("Nome do Admin", "admin", "123", cinema);
@@ -22,19 +55,19 @@ public class Main {
         
         limpaConsole();
         while(estaRodando) {
-            if(pessoa == null) { // menu nao logado
+            if(pessoa == null) { // Menu nao logado
                 opcao = imprimeMenuNaoLogado(cinema, sc);
 
                 switch(opcao) {
-                    case 1:
+                    case 1: // Cadastro
                         limpaConsole();
-                        imprimeMenuCadastro(gerente.getListaUsuarios(), gerente, sc);
+                        imprimeMenuCadastro(gerente.getListaUsuarios(), sc);
                         break;
-                    case 2:
+                    case 2: // Login
                         limpaConsole();
                         pessoa = imprimeMenuLogin(gerente.getListaUsuarios(), gerente, sc);
                         break;
-                    case 3:
+                    case 3: // Sair do programa
                         System.exit(0);
                     default:
                         System.out.println("- Erro: opcao invalida. Tente novamente!");
@@ -45,11 +78,11 @@ public class Main {
             }
             
             else {
-                if (pessoa instanceof Gerente) { // menu do gerente
+                if (pessoa instanceof Gerente) { // Menu do gerente
                     opcao = imprimeMenuGerente(sc);
 
                     switch(opcao) {
-                        case 1: // aba de filmes 
+                        case 1: // Aba de filmes 
                             limpaConsole();
                             opcaoMenuGerente = imprimeMenuGerenteFilme(sc);
 
@@ -80,7 +113,7 @@ public class Main {
                                     break;
                             }
                             break;
-                        case 2: // aba de sala
+                        case 2: // Aba de salas
                             limpaConsole();
                             opcaoMenuGerente = imprimeMenuGerenteSala(sc);
 
@@ -111,7 +144,7 @@ public class Main {
                                     break;
                             }
                             break;
-                        case 3: // aba de sessao
+                        case 3: // Aba de sessoes
                             limpaConsole();
                             opcaoMenuGerente = imprimeMenuGerenteSessao(sc);
 
@@ -142,7 +175,7 @@ public class Main {
                                     break;
                             }
                             break;
-                        case 4: // aba de promocao
+                        case 4: // Aba de promocao
                             limpaConsole();
                             opcaoMenuGerente = imprimeMenuGerentePromocao(sc);
 
@@ -168,7 +201,7 @@ public class Main {
                             }
 
                             break;
-                        case 5: // aba de relatorios
+                        case 5: // Aba de relatorios
                             limpaConsole();
                             opcaoMenuGerente = imprimeMenuGerenteRelatorio(sc); 
 
@@ -201,7 +234,7 @@ public class Main {
                                     break;                       			
                         	}        
                             break;
-                        case 6: // sair
+                        case 6: // Sair
                             pessoa = null;
                             break;
                         default:
@@ -211,25 +244,25 @@ public class Main {
                     } 
                     limpaConsole();
                 }
-                else if (pessoa instanceof Usuario) { // menu do usuario
+                else if (pessoa instanceof Usuario) { // Menu do usuario
                     limpaConsole();
                     opcao = imprimeMenuUsuario(sc);
 
                     switch(opcao) {
-                        case 1: // aba para comprar ingressos
+                        case 1: // Aba para comprar ingressos
                             limpaConsole(); 
                             imprimeMenuUsuarioComprarIngresso((Usuario)pessoa, gerente, sc);
                             break;
-                        case 2: // aba para comprar assinatura
+                        case 2: // Aba para comprar assinatura
                             limpaConsole();
                             pessoa = imprimeMenuUsuarioComprarAssinatura((Usuario)pessoa, gerente, sc);
                             break;
-                        case 3: // aba para ver perfil
+                        case 3: // Aba para ver perfil
                             limpaConsole();
                             imprimeMenuUsuarioPerfil((Usuario)pessoa);
                             sc.nextLine();
                             break;
-                        case 4: // sair 
+                        case 4: // Sair 
                             pessoa = null;
                             break;
                         default:
@@ -244,6 +277,13 @@ public class Main {
         sc.close();
     }
     
+    /**
+     * Imprime menu não logado e retorna a escolha do usuário. 
+     * 
+     * @param cinema Cinema.
+     * @param sc Scanner para a leitura de entrada do usuário.
+     * @return <code>integer</code> Opção escolhida pelo usuário. 
+     */
     private static int imprimeMenuNaoLogado(Cinema cinema, Scanner sc) {
         int opcao = 0;
         
@@ -263,11 +303,22 @@ public class Main {
         return opcao;
     }
     
-    private static void imprimeMenuCadastro(ArrayList<Usuario> listaUsuarios, Gerente gerente, Scanner sc) {
+    /**
+     * Imprime menu de cadastro do usuário.
+     * <p>
+     * Caso o cadastro seja realizado com nome, login, senha e idade válidos, o usuário cadastrado é adicionado à lista de usuários. 
+     * Também caso o novo usuário possuir o mesmo login de um usuário existente, o sistema não realiza a operação.
+     * </p>
+     * 
+     * @param listaUsuarios Lista de usuários.
+     * @param sc Scanner para a leitura de entradas do usuário.
+     * @see Usuario
+     */
+    private static void imprimeMenuCadastro(ArrayList<Usuario> listaUsuarios, Scanner sc) {
         String nomeUsuario;
         String loginUsuario;
         String senhaUsuario;
-        int idadeUsuario = 0;
+        int idadeUsuario;
         
         System.out.println("CADASTRO");
         System.out.printf("Digite seu nome: ");
@@ -309,7 +360,13 @@ public class Main {
         sc.nextLine();
     }    
 
-    // metodo que busca o login do usuario no arraylist de usuarios e o retorna
+    /**
+     * Busca um usurio na lista de usuários pelo login e o retorna, caso seja encontrado. 
+     * 
+     * @param loginUsuario Login do usuário.
+     * @param listaUsuarios Lista de usuários.
+     * @return <code>Usuario</code> encontrado ou null caso não seja encontrado.
+     */
     private static Usuario buscarUsuario(String loginUsuario, ArrayList<Usuario> listaUsuarios) {
         for (Usuario usuarioTemporario : listaUsuarios) {
             if (loginUsuario.equals(usuarioTemporario.getLoginPessoa())) {
@@ -319,6 +376,18 @@ public class Main {
         return null;
     }
     
+    /**
+     * Imprime menu de login do programa e retorna pessoa logada.
+     * <p>
+     * Caso o login seja realizado com sucesso, o método retorna a pessoa logada. 
+     * Caso o login não existir ou a senha não for correta, retorna null.
+     * </p>
+     * 
+     * @param listaUsuarios Lista de usuários.
+     * @param gerente Gerente do programa.
+     * @param sc Scanner para a leitura de entrada do usuário.
+     * @return <code>Pessoa</code> a qual realiza o login (<code>Gerente</code> ou <code>Usuario</code>), caso tenha sucesso ou null, caso login não obter sucesso.
+     */
     private static Pessoa imprimeMenuLogin(ArrayList<Usuario> listaUsuarios, Gerente gerente, Scanner sc) {
         String loginTemporario;
         String senhaTemporaria;
@@ -330,14 +399,14 @@ public class Main {
         senhaTemporaria = sc.nextLine();
         System.out.println();
 
-        // checa se administrador esta fazendo o login
+        // Checa se administrador esta fazendo o login
         if (loginTemporario.equals(gerente.getLoginPessoa()) && senhaTemporaria.equals(gerente.getSenhaPessoa())) {
             System.out.println("Sucesso no Login! Bem-vindo!");   
             sc.nextLine();         
             return gerente;
         }
 
-        // checa se usuario cadastrado esta fazendo o login
+        // Checa se usuario cadastrado esta fazendo o login
         for (Usuario usuarioTemporario : listaUsuarios) {
             if (loginTemporario.equals(usuarioTemporario.getLoginPessoa()) && senhaTemporaria.equals(usuarioTemporario.getSenhaPessoa())) {
                 System.out.println("Sucesso no Login! Bem-vindo!");
@@ -351,7 +420,12 @@ public class Main {
         return null;
     }
     
-    // menu do gerente
+    /**
+     * Imprime menu do gerente e retorna a escolha do gerente.
+     * 
+     * @param sc Scanner para a leitura de entrada do gerente.
+     * @return <code>integer</code> Opção escolhida pelo gerente.
+     */ 
     private static int imprimeMenuGerente(Scanner sc) {
         int opcao = 0;
 
@@ -365,8 +439,7 @@ public class Main {
 
         try {
             System.out.printf("Entre uma opcao: ");
-            opcao = Integer.parseInt(sc.nextLine());
-                 
+            opcao = Integer.parseInt(sc.nextLine());          
         } catch(NumberFormatException e) {
             System.err.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
         }
@@ -374,7 +447,12 @@ public class Main {
         return opcao;
     }
 
-    // menu do gerente - aba de filmes
+    /**
+     * Imprime aba de filmes com suas opções e retorna a escolha do gerente.
+     * 
+     * @param sc Scanner para a leitura de entrada do gerente.
+     * @return <code>integer</code> Opção escolhida pelo gerente.
+     */ 
     private static int imprimeMenuGerenteFilme(Scanner sc) {
         int opcao = 0;
         
@@ -395,13 +473,24 @@ public class Main {
         return opcao;
     }
     
+    /**
+     * Imprime menu de cadastro de filme.
+     * <p>
+     * Um filme deve ser cadastrado com nome, sinopse, classificação, gênero e duração apropriados. 
+     * Caso as condições de classificação e duração não forem atendidas, o método retorna a Main.
+     * </p>
+     * 
+     * @param gerente Gerente do cinema.
+     * @param sc Scanner para a leitura de entrada do gerente.
+     * @see Filme
+     */
     private static void imprimeMenuGerenteCadastroFilme(Gerente gerente, Scanner sc) {
         String nomeFilme;
         String sinopseFilme;
-        int classificacaoFilme = 0;
+        int classificacaoFilme;
         String classificacaoFilmeString;
         String generoFilme;
-        int duracaoFilme = 0;
+        int duracaoFilme;
         String confirmacao;
                 
         System.out.println("CADASTRAR FILME NO CATALOGO");
@@ -458,8 +547,19 @@ public class Main {
         sc.nextLine();
     }
     
+    /**
+     * Imprime menu de edição de filme.
+     * <p>
+     * Busca filme no catálogo e checa se há alguma sessão cadastrada com ele. Caso não o encontre ou possui uma sessão cadastrada, o sistema não permite a operação.
+     * Gerente escolhe o parâmetro a ser mudado e deve respeitar as condições de duração e classificação indicativa para mudar o filme.
+     * </p>
+     * 
+     * @param gerente Gerente do cinema.
+     * @param sc Scanner para a leitura de entrada do gerente.
+     * @see Filme
+     */
     private static void imprimeMenuGerenteEdicaoFilme(Gerente gerente, Scanner sc) {
-        int opcao = 0;
+        int opcao;
         String nomeFilme;
         String confirmacao;
 
@@ -469,7 +569,7 @@ public class Main {
         nomeFilme = sc.nextLine();
         System.out.println();
         
-        // busca filme disponivel no catalogo e checa se ha alguma sessao cadastrada com aquele filme 
+        // Busca filme disponivel no catalogo e checa se ha alguma sessao cadastrada com aquele filme 
         Filme filme = gerente.buscarFilme(nomeFilme);
         
         if (filme != null && !(gerente.buscarSessaoComFilme(filme))) {
@@ -536,10 +636,6 @@ public class Main {
                     int classificacaoNova;
                     String classificacaoFilmeString;
 
-                    System.out.println("Opcoes de classificacao indicativa: \'livre\', \'10\', \'12\', \'14\', \'16\', \'18\'");
-                    System.out.print("Digite a classificacao indicativa nova: ");
-                    classificacaoFilmeString = sc.nextLine();
-
                     try {
                         System.out.println("Opcoes de classificacao indicativa: \'livre\', \'10\', \'12\', \'14\', \'16\', \'18\'");
                         System.out.print("Digite a classificacao indicativa nova: ");
@@ -582,7 +678,7 @@ public class Main {
                     }
                     break;
                 case 5:
-                    int duracaoNova = 0;
+                    int duracaoNova;
                     
                     try {
                         System.out.printf("Digite a duracao nova: ");
@@ -600,7 +696,7 @@ public class Main {
                     System.out.println();
 
                     System.out.println("- Duracao Antiga: " + filme.getDuracaoFilme());
-                    System.out.println("- Genero Novo: " + duracaoNova);
+                    System.out.println("- Duracao Nova: " + duracaoNova);
                     
                     System.out.print("Confirmar edicao (Sim ou Nao): ");
                     confirmacao = sc.nextLine();
@@ -621,6 +717,17 @@ public class Main {
         sc.nextLine();
     }
     
+    /**
+     * Imprime menu de remoção do filme. 
+     * <p>
+     * Busca filme no catálogo e checa se há alguma sessão cadastrada com ele. Caso não o encontre ou possui uma sessão cadastrada, o sistema não permite a operação.
+     * Gerente pode excluir o filme do catálogo.
+     * </p>
+     * 
+     * @param gerente Gerente do cinema.
+     * @param sc Scanner para a leitura de entrada do gerente.
+     * @see Filme
+     */
     private static void imprimeMenuGerenteRemocaoFilme(Gerente gerente, Scanner sc) {
         String nomeFilme;
         String motivoExclusaoFilme;
@@ -652,15 +759,25 @@ public class Main {
         sc.nextLine();
     }
     
+    /**
+     * Imprime lista de filmes disponíveis do cinema.
+     * 
+     * @param cinema Cinema.
+     */
     private static void imprimeListaFilmes(Cinema cinema) {
         for (Filme f : cinema.getListaFilmes()) {
             if (!(f instanceof FilmeIndisponivel)) {
-                System.out.println(f.toString());
+                System.out.println(f);
             }
         }
     }
     
-    // menu do gerente - aba de salas
+    /**
+     * Imprime aba de salas com suas opções e retorna a escolha do gerente.
+     * 
+     * @param sc Scanner para a leitura de entrada do gerente.
+     * @return <code>integer</code> Opção escolhida pelo gerente.
+     */ 
     private static int imprimeMenuGerenteSala(Scanner sc) {
         int opcao = 0;
         
@@ -681,11 +798,22 @@ public class Main {
         return opcao;
     }
 
+    /**
+     * Imprime menu de cadastro de sala.
+     * <p>
+     * Uma sala deve ser cadastrada com número, quantidade de assentos e tipo de tela apropriados. 
+     * Caso as condições desses atributos não forem atendidas, o método retorna a Main.
+     * </p>
+     * 
+     * @param gerente Gerente do cinema.
+     * @param sc Scanner para a leitura de entrada do gerente.
+     * @see Sala
+     */
     private static void imprimeMenuGerenteCadastroSala(Gerente gerente, Scanner sc) {
-        int nroSala = 0;
-        int nroAssentos = 0;
+        int nroSala;
+        int nroAssentos;
         String tipoTelaString;
-        boolean tipoTela = false;
+        boolean tipoTela;
         String confirmacao;
 
         System.out.println("CADASTRAR SALA");
@@ -746,9 +874,20 @@ public class Main {
         sc.nextLine();
     }
 
+    /**
+     * Imprime menu de edição de sala.
+     * <p>
+     * Busca sala e checa se há alguma sessão cadastrada com ela. Caso não a encontre ou ela possui uma sessão cadastrada, o sistema não permite a operação.
+     * Gerente escolhe o parâmetro a ser mudado e deve respeitar as condições do atributo para mudar a sala.
+     * </p>
+     * 
+     * @param gerente Gerente do cinema.
+     * @param sc Scanner para a leitura de entrada do gerente.
+     * @see Sala
+     */
     private static void imprimeMenuGerenteEdicaoSala(Gerente gerente, Scanner sc) {
-        int opcao = 0;
-        int nroSala = 0;
+        int opcao;
+        int nroSala;
         String confirmacao;
 
         System.out.println("EDITAR SALA");
@@ -792,7 +931,7 @@ public class Main {
 
             switch(opcao) {
                 case 1:
-                    int nroSalaNovo = 0;
+                    int nroSalaNovo;
 
                     try {
                         System.out.print("Digite o numero da sala novo: ");
@@ -825,7 +964,7 @@ public class Main {
                     }
                     break;
                 case 2:
-                    int nroAssentosNovo = 0;
+                    int nroAssentosNovo;
 
                     try {
                         System.out.printf("Digite o numero de assentos novo: ");
@@ -854,7 +993,7 @@ public class Main {
                     }
                     break;
                 case 3:
-                    boolean tipoTelaNovo = false;
+                    boolean tipoTelaNovo;
                     String tipoTelaString;
 
                     try {
@@ -890,8 +1029,19 @@ public class Main {
         sc.nextLine();
     }
 
+    /**
+     * Imprime menu de remoção de sala.
+     * <p>
+     * Busca sala e checa se há alguma sessão cadastrada com ela. Caso não a encontre ou ela possui uma sessão cadastrada, o sistema não permite a operação.
+     * Gerente pode excluir sala do catálogo.
+     * </p>
+     * 
+     * @param gerente Gerente do cinema.
+     * @param sc Scanner para a leitura de entrada do gerente.
+     * @see Sala
+     */
     private static void imprimeMenuGerenteRemocaoSala(Gerente gerente, Scanner sc) {
-        int nroSala = 0;
+        int nroSala;
         String confirmacao;
 
         System.out.println("REMOCAO DE SALA");
@@ -930,13 +1080,23 @@ public class Main {
         sc.nextLine();
     }
     
+    /**
+     * Imprime listas de salas do cinema.
+     * 
+     * @param cinema Cinema.
+     */
     private static void imprimeListaSalas(Cinema cinema) {
         for (Sala s : cinema.getListaSalas()) {
             System.out.println(s.toString());
         }
     }
 
-    // menu do gerente - aba de sessoes
+    /**
+     * Imprime aba de sessões com suas opções e retorna a escolha do gerente.
+     * 
+     * @param sc Scanner para a leitura de entrada do gerente.
+     * @return <code>integer</code> Opção escolhida pelo gerente.
+     */ 
     private static int imprimeMenuGerenteSessao(Scanner sc) {
         int opcao = 0;
         
@@ -958,17 +1118,32 @@ public class Main {
         return opcao;
     }
 
+    /**
+     * Imprime menu de cadastro de sessão.
+     * <p>
+     * Uma sessão deve ser cadastrada com filme, sala, data, horário e preço apropriados.
+     * Caso as condições desses atributos não forem atendidas, o método retorna a Main. 
+     * </p>
+     * 
+     * @param gerente Gerente do cinema.
+     * @param sc Scanner para a leitura de entrada do gerente.
+     * @see Sessao
+     * @see java.time.LocalTime
+     * @see java.time.LocalDate
+     * @see java.time.LocalDateTime
+     * @see java.time.DateTimeException
+     */
     private static void imprimeMenuGerenteCadastroSessao(Gerente gerente, Scanner sc) {
         String nomeFilme;
         Filme filmeSessao; 
-        int nroSala = 0;
+        int nroSala;
         Sala salaSessao;
         String diaSessaoString; 
-        LocalDate diaSessao = null;
+        LocalDate diaSessao;
         String horarioSessaoString;
-        LocalTime horarioSessao = null;
+        LocalTime horarioSessao;
         DateTimeFormatter formatter;
-        double precoSessao = 0.0;
+        double precoSessao;
         String confirmacao;
 
         System.out.println("CADASTRAR SESSAO");
@@ -1065,9 +1240,24 @@ public class Main {
         sc.nextLine();
     }
 
+    /**
+     * Imprime menu de edição de sessão.
+     * <p>
+     * Busca sessão e checa se há algum assento comprado. Caso não a encontre ou alguém tenha comprado ingressos, o sistema não permite a operação.
+     * Gerente escolhe o parâmetro a ser mudado e deve respeitar as condições do atributo para mudar a sessão.
+     * </p>
+     * 
+     * @param gerente Gerente do cinema.
+     * @param sc Scanner para a leitura de entrada do gerente.
+     * @see Sessao
+     * @see java.time.LocalTime
+     * @see java.time.LocalDate
+     * @see java.time.LocalDateTime
+     * @see java.time.DateTimeException
+     */
     private static void imprimeMenuGerenteEdicaoSessao(Gerente gerente, Scanner sc) {
         int opcao = 0;
-        int codigoSessao = 0;
+        int codigoSessao;
         DateTimeFormatter formatter;
         String confirmacao;
 
@@ -1138,7 +1328,7 @@ public class Main {
                     }
                     break;
                 case 2: 
-                    int nroSalaNovo = 0;
+                    int nroSalaNovo;
                     imprimeListaSalas(gerente.getCinema());
 
                     try {
@@ -1175,7 +1365,7 @@ public class Main {
                     }
                     break;
                 case 3: // mudança do dia da sessão
-                    LocalDate diaSessao = null;
+                    LocalDate diaSessao;
 
                     try {
                         System.out.print("Digite o dia novo (DD/MM/YYYY): ");
@@ -1205,7 +1395,7 @@ public class Main {
                     }
                     break;
                 case 4: // mudança do horário da sessão
-                    LocalTime horarioSessao = null;
+                    LocalTime horarioSessao;
                     
                     try {
                         System.out.print("Digite o horario novo (MM:mm): ");
@@ -1235,7 +1425,7 @@ public class Main {
                     }
                     break;
                 case 5: // mudança do preço da sessão
-                    double precoSessaoNovo = 0.0;
+                    double precoSessaoNovo;
 
                     try {
                         System.out.print("Digite o preco novo: ");
@@ -1274,8 +1464,19 @@ public class Main {
         sc.nextLine();
     }
 
+    /**
+     * Imprime menu de remoção de sessão. 
+     * <p>
+     * Busca sessão e checa se há algum assento comprado. Caso não a encontre ou alguém tenha comprado ingressos, o sistema não permite a operação.
+     * Gerente pode excluir a sessão do catálogo.
+     * </p>
+     * 
+     * @param gerente Gerente do cinema.
+     * @param sc Scanner para a leitura de entrada do gerente.
+     * @see Sessao
+     */
     private static void imprimeMenuGerenteRemocaoSessao(Gerente gerente, Scanner sc) {
-        int codigoSessao = 0;
+        int codigoSessao;
         String motivoExclusaoSessao;
         String confirmacao;
 
@@ -1319,15 +1520,25 @@ public class Main {
         sc.nextLine();        
     }
 
+    /**
+     * Imprime listas de sessões disponíveis do cinema.
+     * 
+     * @param cinema Cinema.
+     */
     private static void imprimeListaSessoes(Cinema cinema) {
         for (Sessao s : cinema.getListaSessoes()) {
             if (!(s instanceof SessaoIndisponivel)) {
-                System.out.println(s.toString());
+                System.out.println(s);
             }
         }
     }
 
-    // menu do gerente - aba de promocoes
+    /**
+     * Imprime aba de promoções com suas opções e retorna a escolha do gerente.
+     * 
+     * @param sc Scanner para a leitura de entrada do gerente.
+     * @return <code>integer</code> Opção escolhida pelo gerente.
+     */ 
     private static int imprimeMenuGerentePromocao(Scanner sc) {
         int opcao = 0;
         
@@ -1347,9 +1558,20 @@ public class Main {
         return opcao;
     }
 
+    /**
+     * Imprime menu de cadastro de promoção.
+     * <p>
+     * Uma promoção deve ser cadastrada associada à uma sessão com uma porcentagem promocional válida.
+     * Caso as condições desses atributos não forem atendidas, o método retorna a Main. 
+     * </p>
+     * 
+     * @param gerente Gerente do cinema.
+     * @param sc Scanner para a leitura de entrada do gerente.
+     * @see Sessao
+     */
     private static void imprimeMenuGerenteCadastroPromocao(Gerente gerente, Scanner sc) {
-        int codigoSessao = 0;
-        double porcentagemPromocional = 0;
+        int codigoSessao;
+        double porcentagemPromocional;
         String confirmacao;
 
         System.out.println("CADASTRAR PROMOCAO");
@@ -1410,9 +1632,20 @@ public class Main {
         sc.nextLine();
     }
 
+    /**
+     * Imprime menu de edição de promoção.
+     * <p>
+     * Busca sessão. Caso não a encontre, o sistema não permite a operação.
+     * Gerente escolhe a porcentagem promocional nova e deve respeitar as condições do atributo para mudar a promoção.
+     * </p>
+     * 
+     * @param gerente Gerente do cinema.
+     * @param sc Scanner para a leitura de entrada do gerente.
+     * @see Sessao
+     */
     private static void imprimeMenuGerenteEdicaoPromocao(Gerente gerente, Scanner sc) {
-        int codigoSessao = 0;
-        double porcentagemPromocionalNova = 0;
+        int codigoSessao;
+        double porcentagemPromocionalNova;
         String confirmacao;
 
         System.out.println("EDITAR PROMOCAO");
@@ -1476,8 +1709,19 @@ public class Main {
         sc.nextLine();
     }
 
+    /**
+     * Imprime menu de remoção de promoção. 
+     * <p>
+     * Busca sessão. Caso não a encontre, o sistema não permite a operação.
+     * Gerente pode excluir a promoção associada à sessão.
+     * </p>
+     * 
+     * @param gerente Gerente do cinema.
+     * @param sc Scanner para a leitura de entrada do gerente.
+     * @see Sessao
+     */
     private static void imprimeMenuGerenteRemocaoPromocao(Gerente gerente, Scanner sc) {
-        int codigoSessao = 0;
+        int codigoSessao;
         String confirmacao;
 
         System.out.println("REMOCAO DE PROMOCAO");
@@ -1521,7 +1765,12 @@ public class Main {
         sc.nextLine();        
     }
 
-    // menu do gerente - aba de relatorios
+    /**
+     * Imprime aba de relatórios com suas opções e retorna a escolha do gerente.
+     * 
+     * @param sc Scanner para a leitura de entrada do gerente.
+     * @return <code>integer</code> Opção escolhida pelo gerente.
+     */ 
     private static int imprimeMenuGerenteRelatorio(Scanner sc) {
     	int opcao = 0;
     	
@@ -1542,31 +1791,60 @@ public class Main {
         return opcao; 
     }
     
+    /**
+     * Imprime relatório de filmes.
+     * 
+     * @param gerente Gerente do cinema.
+     * @param cinema Cinema.
+     */
     private static void imprimeMenuGerenteRelatorioFilmes(Gerente gerente, Cinema cinema) {
         System.out.println("FILMES CADASTRADOS: \n");
         gerente.gerarRelatorioFilmes(cinema.getListaFilmes());
         System.out.println();
     }
     
+    /**
+     * Imprime relatório de sessões.
+     * 
+     * @param gerente Gerente do cinema.
+     * @param cinema Cinema.
+     */
     private static void imprimeMenuGerenteRelatorioSessoes(Gerente gerente, Cinema cinema) {
         System.out.println("SESSOES CADASTRADAS: \n");
         gerente.gerarRelatorioSessoes(cinema.getListaSessoes());
         System.out.println();
     }
     
+    /**
+     * Imprime relatório de salas.
+     * 
+     * @param gerente Gerente do cinema.
+     * @param cinema Cinema.
+     */
     private static void imprimeMenuGerenteRelatorioSalas(Gerente gerente, Cinema cinema) {
         System.out.println("SALAS CADASTRADAS: \n");
         gerente.gerarRelatorioSalas(cinema.getListaSalas());
         System.out.println();	
     }
     
+    /**
+     * Imprime relatório de usuários.
+     * 
+     * @param gerente Gerente do cinema.
+     * @param cinema Cinema.
+     */
     private static void imprimeMenuGerenteRelatorioUsuario(Gerente gerente) {	
         System.out.println("USUARIOS CADASTRADOS: \n");
         gerente.gerarRelatorioUsuarios();
         System.out.println();	
     }
     
-    // menu do usuario
+    /**
+     * Imprime menu do usuário e retorna a escolha do usuário.
+     * 
+     * @param sc Scanner para a leitura de entrada do usuário.
+     * @return <code>integer</code> Opção escolhida pelo usuário.
+     */ 
     private static int imprimeMenuUsuario(Scanner sc) {
         int opcao = 0;
         
@@ -1586,10 +1864,21 @@ public class Main {
         return opcao;
     }
 
+    /**
+     * Imprime menu de compra de ingresso pelo usuário. 
+     * <p>
+     * Usuário escolhe filme e sessão desejada. Depois, escolhe assento para realizar compra.
+     * Caso o assento estiver indisponível ou o filme/sessão não existir, o programa retorna a Main.
+     * </p>
+     * 
+     * @param usuario Usuario do programa.
+     * @param gerente Gerente do cinema.
+     * @param sc Scanner para a leitura de entrada do usuário.
+     */
     private static void imprimeMenuUsuarioComprarIngresso(Usuario usuario, Gerente gerente, Scanner sc) {
         String nomeFilme;
-        int codigoSessao = 0;
-        int nroAssento = 0;
+        int codigoSessao;
+        int nroAssento;
         String confirmacao;
 
         System.out.println("CATALOGO DE FILMES");
@@ -1691,6 +1980,18 @@ public class Main {
         sc.nextLine();
     }
 
+    /**
+     * Imprime menu de compra de assinatura pelo usuário.
+     * <p>
+     * Caso usuário escolha comprar assinatura, o sistema atualiza o usuário atual com um usuário assinante.
+     * Caso já possua assinatura, o programa retorna a Main.
+     * </p>
+     * 
+     * @param usuario Usuario do programa.
+     * @param gerente Gerente do cinema.
+     * @param sc Scanner para a leitura de entrada do usuário.
+     * @return <code>Usuario</code> atual do programa.
+     */
     private static Usuario imprimeMenuUsuarioComprarAssinatura(Usuario usuario, Gerente gerente, Scanner sc) {
         System.out.println("ASSINATURA");
 
@@ -1719,6 +2020,11 @@ public class Main {
         return usuario;
     }
 
+    /**
+     * Imprime dados do usuário e histórico de ingressos comprados. 
+     * 
+     * @param usuario Usuario do programa.
+     */
     private static void imprimeMenuUsuarioPerfil(Usuario usuario) {
         System.out.println("PERFIL");
         System.out.println("Nome: " + usuario.getNomePessoa());
@@ -1729,7 +2035,7 @@ public class Main {
         
         System.out.println("Ingressos comprados: " + usuario.getIngressosComprados().size());
 
-        if (usuario.getIngressosComprados().size() > 0) {
+        if (!usuario.getIngressosComprados().isEmpty()) {
             for (Ingresso ingressoComprado : usuario.getIngressosComprados()) {
                 System.out.println(ingressoComprado.toString());
             }
@@ -1737,18 +2043,19 @@ public class Main {
     
     }
 
+    /**
+     * Limpa o terminal do programa de acordo com o sistema operacional. Caso o comando não funcione, imprime linhas em branco.
+     */
     private static void limpaConsole() {
         try {
             String sistemaOperacional = System.getProperty("os.name").toLowerCase();
 
-            // comando para windows
-            if (sistemaOperacional.contains("win")) { // comando para windows
+            if (sistemaOperacional.contains("win")) { 
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            } else { // comando para mac/linux
-                
+            } else { 
                 new ProcessBuilder("clear").inheritIO().start().waitFor();
             }
-        } catch (IOException | InterruptedException e) { // caso o comando nao funcione, imprime linhas em branco
+        } catch (IOException | InterruptedException e) { 
             for (int i = 0; i < 50; i++) {
                 System.out.println();
             }
@@ -1756,15 +2063,27 @@ public class Main {
 
     }
 
-    // metodos de excecao para simplificar o tratamento em outros metodos
-    // aceita apenas numeros positivos - opção, códigos, idade, duração, nroSala
+    // Métodos de exceção para simplificar o tratamento em outros metodos
+    /**
+     * Verifica se o número é negativo e lança uma exceção. Utilizado nas variáveis: opção, códigos, idade, duração, nroSala.
+     * 
+     * @param <T> Tipo genérico que extende <code>Number</code> e <code>Comparable</code>.
+     * @param numeroEntrada Número de entrada.
+     * @throws IllegalArgumentException Se o número for negativo. 
+     */
     private static <T extends Number & Comparable<T>> void excecaoNumerosNegativos(T numeroEntrada) throws IllegalArgumentException {
     	if(numeroEntrada.doubleValue() < 0) {  
     		throw new IllegalArgumentException(); 
     	}
     }
 
-    // metodo que retorna a classificacao indicativa como numero inteiro 
+    /**
+     * Verifica se a string classificação indicativa não é livre, 10, 12, 14, 16 ou 18 e lança uma exceção. Caso contrário, retorna-a como inteiro.
+     * 
+     * @param classificacaoFilmeString Classificação indicativa como string.
+     * @return <code>integer</code> Classificação indicativa como inteiro.
+     * @throws IllegalArgumentException Se a classificação não for livre, 10, 12, 14, 16 ou 18.
+     */
     private static int excecaoClassificacaoIndicativa(String classificacaoFilmeString) throws IllegalArgumentException {
         if (classificacaoFilmeString.equalsIgnoreCase("livre")) return 0;
         else if (classificacaoFilmeString.equals("10")) return 10;
@@ -1775,14 +2094,24 @@ public class Main {
         else throw new IllegalArgumentException();
     }
     
-    // numeros de assentos são obrigatoriamente definidos a partir de 30 - cadastro e edição de sala
+    /**
+     * Verifica se número de assentos é menor do que 30 e lança uma exceção. Utilizado em cadastro e edição de sala.
+     * 
+     * @param numeroEntrada Número de entrada.
+     * @throws IllegalArgumentException Se número for menor do que 30.
+     */
     private static void excecaoNroAssentos(int numeroEntrada) throws IllegalArgumentException {
     	if(numeroEntrada < 30) {
     		throw new IllegalArgumentException(); 
     	}
     }
 
-    // checa se o tipo de tela eh igual a 2d ou 3d
+    /**
+     * Verifica se tipo de tela é igual a 2D ou 3D e lança uma exceção.
+     * @param tipoTela Tipo de tela como string.
+     * @return <code>boolean</code> Tipo de tela como boolean: 2D (false) ou 3D (true). 
+     * @throws IllegalArgumentException Se tipo de tela não for igual a 2D ou 3D.
+     */
     private static boolean excecaoTipoTela(String tipoTela) throws IllegalArgumentException {
         if (tipoTela.equalsIgnoreCase("2D")) {
             return false;
@@ -1795,13 +2124,25 @@ public class Main {
         }
     }
 
-    // aceita apenas numeros entre 0 e 100, caso contrário lança excecao - métodos de promoção
+    /**
+     * Verifica se número está entre 0 e 100 e lança exceção. Usado em métodos de promoção.
+     * 
+     * @param numeroEntrada Número de entrada.
+     * @throws IllegalArgumentException Se número não estiver entre 0 e 100.
+     */
     private static void excecaoPorcentagemPromocional(double numeroEntrada) throws IllegalArgumentException {
     	if(numeroEntrada <= 0 || numeroEntrada >= 100) {
     		throw new IllegalArgumentException(); 
     	}
     }     
     
+    /**
+     * Verifica se assento escolhido é negativo ou maior do que o número total. Usado na compra de ingresso.
+     * 
+     * @param numeroEntrada Número de entrada.
+     * @param sessao Sessão.
+     * @throws ArrayIndexOutOfBoundsException Se número for menor do que 0 ou maior do que o tamanho do array de assentos.
+     */
     private static void excecaoCompraIngresso(int numeroEntrada, Sessao sessao) throws ArrayIndexOutOfBoundsException {
         if (numeroEntrada < 0 || numeroEntrada > sessao.getSalaSessao().getNroAssentos()) {
             throw new ArrayIndexOutOfBoundsException("Número de assento fora do intervalo válido.");
