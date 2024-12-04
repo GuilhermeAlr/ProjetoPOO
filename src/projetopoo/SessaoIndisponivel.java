@@ -5,8 +5,8 @@ public class SessaoIndisponivel extends Sessao{
 	
     private static String motivoExclusaoSessao;
     
-    public SessaoIndisponivel(LocalDateTime diaHorarioSessao, double precoSessao, boolean comPromocao, double porcentagemPromocional, Sala salaSessao, Filme filmeSessao, String motivoExclusaoSessao){
-        super(diaHorarioSessao, precoSessao, comPromocao, porcentagemPromocional, salaSessao, filmeSessao);
+    public SessaoIndisponivel(int codigoSessao, LocalDateTime diaHorarioSessao, double precoSessao, boolean comPromocao, double porcentagemPromocional, Sala salaSessao, Filme filmeSessao, String motivoExclusaoSessao){
+        super(codigoSessao, diaHorarioSessao, precoSessao, comPromocao, porcentagemPromocional, salaSessao, filmeSessao);
         setMotivoExclusaoSessao(motivoExclusaoSessao);
     }
     
