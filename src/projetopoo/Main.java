@@ -2301,18 +2301,18 @@ public class Main {
                     String login = dados[1];
                     String senha = dados[2];
                     int idade = Integer.parseInt(dados[3]);
+                    String assinatura = dados[4];
 
-                    gerente.getListaUsuarios().add(new Usuario(nome, login, senha, idade));
+                    if (assinatura.equals("true")) {
+                        gerente.getListaUsuarios().add(new UsuarioAssinante(nome, login, senha, idade));
+                    }
+                    else if (assinatura.equals("false")) {
+                        gerente.getListaUsuarios().add(new Usuario(nome, login, senha, idade));
+
+                    }
+
                 }
 
-                if (dados.length == 5) {
-                    String nome = dados[0];
-                    String login = dados[1];
-                    String senha = dados[2];
-                    int idade = Integer.parseInt(dados[3]);
-
-                    gerente.getListaUsuarios().add(new UsuarioAssinante(nome, login, senha, idade));
-                }
             }
         } catch (IOException e) {
             e.printStackTrace();
