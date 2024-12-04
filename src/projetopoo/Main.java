@@ -81,6 +81,7 @@ public class Main {
             }
             
             else {
+                
                 if (pessoa instanceof Gerente) { // Menu do gerente
                     opcao = imprimeMenuGerente(sc);
 
@@ -248,7 +249,6 @@ public class Main {
                     limpaConsole();
                 }
                 else if (pessoa instanceof Usuario) { // Menu do usuario
-                    carregarDados("arquivos", cinema, gerente, (Usuario) pessoa);                    
                     limpaConsole();
                     opcao = imprimeMenuUsuario(sc);
 
@@ -2256,7 +2256,7 @@ public class Main {
      * @param gerente Gerente do cinema.
      * @param usuario Usuário. 
      */
-    public static void carregarDados(String caminhoDiretorio, Cinema cinema, Gerente gerente, Usuario usuario) {
+    public static void carregarDados(String caminhoDiretorio, Cinema cinema, Gerente gerente) {
         File diretorio = new File(caminhoDiretorio);
 
         if (diretorio.exists() && diretorio.isDirectory()) {
@@ -2265,19 +2265,23 @@ public class Main {
             // Para cada arquivo CSV encontrado, carrega os dados
             for (File arquivo : arquivos) {
                 if (arquivo.isFile()) {
-                    if (arquivo.getName().startsWith("Usuarios") && usuario == null) {
+                    if (arquivo.getName().startsWith("Usuarios")) {
                         carregarUsuariosArquivo(arquivo, gerente);
-                    } else if (arquivo.getName().startsWith("Salas") && usuario == null) {
+                        
+                        File arquivoIngressos = new File("arquivos/Ingressos.csv");
+                        for (Usuario usuarioTemporario : gerente.getListaUsuarios()) {
+                            carregarIngressos(arquivoIngressos, cinema, usuarioTemporario);
+                        }
+                    } else if (arquivo.getName().startsWith("Salas")) {
                         carregarSalasArquivo(arquivo, cinema);
-                    } else if (arquivo.getName().startsWith("Sessoes") && usuario == null) {
+                    } else if (arquivo.getName().startsWith("Sessoes")) {
                         carregarSessoesArquivo(arquivo, cinema);
-                    } else if (arquivo.getName().startsWith("Filmes") && usuario == null) {
+                    } else if (arquivo.getName().startsWith("Filmes")) {
                         carregarFilmesArquivo(arquivo, cinema);
-                    } else if (arquivo.getName().startsWith("Ingressos") && usuario != null) {
-                        carregarIngressos(arquivo, cinema, usuario);
-                    }
+                    } 
                 }
             }
+
         } else {
             System.out.println("Diretorio nao encontrado: " + caminhoDiretorio);
         }
