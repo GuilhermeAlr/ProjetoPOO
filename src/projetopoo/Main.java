@@ -1358,6 +1358,7 @@ public class Main {
         String nomeFilme;
         Filme filmeSessao; 
         int nroSala = 0;
+        int codigoSessao = 0;
         Sala salaSessao;
         String diaSessaoString; 
         LocalDate diaSessao = null;
@@ -1398,6 +1399,20 @@ public class Main {
             // se encontra uma sala, o cadastro de sessao eh realizado
             if (salaSessao != null) {
                 try {
+                    System.out.print("- Codigo da sessao: ");
+                    codigoSessao = Integer.parseInt(sc.nextLine());
+                    excecaoNumerosNegativos(precoSessao); 
+                } catch(NumberFormatException e) {
+                    System.err.println("- Erro: o codigo da sessao deve ser um numero double. Tente novamente!");
+                    sc.nextLine();
+                    return;
+                } catch(IllegalArgumentException e) {
+                    System.err.println("- Erro: o codigo da sessao deve ser um numero positivo. Tente novamente!");
+                    sc.nextLine();
+                    return;
+                }
+            	
+                try {
                     System.out.print("- Dia da sessao (DD/MM/YYYY): ");
                     diaSessaoString = sc.nextLine();
                     formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -1430,7 +1445,7 @@ public class Main {
                     return;
                 }
 
-                Sessao sessaoTemporaria = new Sessao(diaHorarioSessao, precoSessao, false, 1, salaSessao, filmeSessao); // conferir promocao
+                Sessao sessaoTemporaria = new Sessao(codigoSessao ,diaHorarioSessao, precoSessao, false, 1, salaSessao, filmeSessao); // conferir promocao
 
                 System.out.println(sessaoTemporaria.toString());
                 System.out.print("Confirmar adicao da sessao (Sim ou Nao): ");
@@ -1445,11 +1460,7 @@ public class Main {
                     else {
                         System.out.println("- Erro no cadastro. Tente novamente!");
                         System.out.println("- Possiveis problemas: dia e horario coincidem com outra sessao ou sessao +18 antes das 20h.");
-                        Sessao.decrementaQuantidadeSessoes();
                     }
-                }
-                else {
-                    Sessao.decrementaQuantidadeSessoes();
                 }
             }
             else {
@@ -1498,7 +1509,7 @@ public class Main {
 
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(",");
-                if (dados.length == 8) {
+                if (dados.length == 8 || dados.length == 9) {
                     int codigoSessao = Integer.parseInt(dados[0]);
                     LocalDateTime diaHorario = LocalDateTime.parse(dados[1], formatter);
 
@@ -1511,56 +1522,12 @@ public class Main {
                     double porcentagemPromocional = Double.parseDouble(dados[5]);
                     int nroSala = Integer.parseInt(dados[6]);
                     String nomeFilme = dados[7];
-
-                    // Procurar a sala correspondente
-                    Sala sala = cinema.getListaSalas().stream()
-                            .filter(s -> s.getNroSala() == nroSala)
-                            .findFirst()
-                            .orElse(null);
-
-                    // Procurar o filme correspondente
-                    Filme filme = cinema.getListaFilmes().stream()
-                            .filter(f -> f.getNomeFilme().equalsIgnoreCase(nomeFilme))
-                            .findFirst()
-                            .orElse(null);
-
-                    // Se a sala e o filme foram encontrados, criar a sessão
-                    if (sala != null && filme != null) {
-                        Sessao sessao = new Sessao(diaHorario, precoSessao, comPromocao, porcentagemPromocional, sala, filme);
-                        sessao.setListaAssentos(nroAssentos); // Configurar os assentos usando o método existente
-                        sessao.setCodigoSessao(codigoSessao); // Atribuir o código da sessão
-
-                        // Atualizar a lista de assentos conforme o arquivo
-                        for (int i = 0; i < assentosStr.length; i++) {
-                            if (!"null".equalsIgnoreCase(assentosStr[i])) {
-                                sessao.getListaAssentos()[i] = Boolean.valueOf(assentosStr[i]);
-                            }
-                        }
-
-                        cinema.getListaSessoes().add(sessao);
-                    } 
+                    String motivoExclusao = null;
                     
-                    
-                    else {
-                        System.out.println("Erro: Sala ou Filme não encontrado para a sessão.");
+                    if(dados.length == 9) {
+                   	    motivoExclusao = dados[8];
                     }
-                }
-                
-                if (dados.length == 9) {
-                    int codigoSessao = Integer.parseInt(dados[0]);
-                    LocalDateTime diaHorario = LocalDateTime.parse(dados[1], formatter);
-
-                    // Número de assentos, baseado no tamanho do array no arquivo
-                    String[] assentosStr = dados[2].split(";");
-                    int nroAssentos = assentosStr.length;
-
-                    double precoSessao = Double.parseDouble(dados[3]);
-                    boolean comPromocao = Boolean.parseBoolean(dados[4]);
-                    double porcentagemPromocional = Double.parseDouble(dados[5]);
-                    int nroSala = Integer.parseInt(dados[6]);
-                    String nomeFilme = dados[7];
-                    String motivoExclusao = dados[8];
-
+                    
                     // Procurar a sala correspondente
                     Sala sala = cinema.getListaSalas().stream()
                             .filter(s -> s.getNroSala() == nroSala)
@@ -1575,18 +1542,33 @@ public class Main {
 
                     // Se a sala e o filme foram encontrados, criar a sessão
                     if (sala != null && filme != null) {
-                        Sessao sessao = new SessaoIndisponivel(diaHorario, precoSessao, comPromocao, porcentagemPromocional, sala, filme,motivoExclusao);
-                        sessao.setListaAssentos(nroAssentos); // Configurar os assentos usando o método existente
-                        sessao.setCodigoSessao(codigoSessao); // Atribuir o código da sessão
-
-                        // Atualizar a lista de assentos conforme o arquivo
-                        for (int i = 0; i < assentosStr.length; i++) {
-                            if (!"null".equalsIgnoreCase(assentosStr[i])) {
-                                sessao.getListaAssentos()[i] = Boolean.valueOf(assentosStr[i]);
-                            }
-                        }
-
-                        cinema.getListaSessoes().add(sessao);
+                    	if(motivoExclusao == null) {
+	                    	Sessao sessao = new Sessao(codigoSessao, diaHorario, precoSessao, comPromocao, porcentagemPromocional, sala, filme);
+	                        sessao.setListaAssentos(nroAssentos); // Configurar os assentos usando o método existente
+	
+	                        // Atualizar a lista de assentos conforme o arquivo
+	                        for (int i = 0; i < assentosStr.length; i++) {
+	                            if (!"null".equalsIgnoreCase(assentosStr[i])) {
+	                                sessao.getListaAssentos()[i] = Boolean.valueOf(assentosStr[i]);
+	                            }
+	                        }
+	
+	                        cinema.getListaSessoes().add(sessao);
+                    	}else {
+	                    	Sessao sessao = new SessaoIndisponivel(codigoSessao, diaHorario, precoSessao, comPromocao, porcentagemPromocional, sala, filme, motivoExclusao);
+	                        sessao.setListaAssentos(nroAssentos); // Configurar os assentos usando o método existente
+	
+	                        // Atualizar a lista de assentos conforme o arquivo
+	                        for (int i = 0; i < assentosStr.length; i++) {
+	                            if (!"null".equalsIgnoreCase(assentosStr[i])) {
+	                                sessao.getListaAssentos()[i] = Boolean.valueOf(assentosStr[i]);
+	                            }
+	                        }
+	
+	                        cinema.getListaSessoes().add(sessao);
+                    	                    		
+                    		
+                    	}
                     } 
                     
                     
