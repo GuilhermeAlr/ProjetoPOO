@@ -2481,9 +2481,9 @@ public class Main {
         if (filme != null) {
             // imprime sessoes com o filme escolhido
             for (Sessao sessao : gerente.getCinema().getListaSessoes()) {
-                if (sessao.getFilmeSessao() == filme) {
-                    System.out.println(sessao.toString());
-                }
+	                if (sessao.getFilmeSessao() == filme) {
+	                		System.out.println(sessao.toString());
+	                }
             }
 
             try {
