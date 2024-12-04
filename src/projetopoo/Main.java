@@ -2482,9 +2482,7 @@ public class Main {
                         } else {
                             System.out.println("Sessão nao encontrada para o código: " + sessaoCodigo);
                         }
-                    } else {
-                        System.out.println("Nome no arquivo nao corresponde ao usuario logado: " + usuario.getLoginPessoa());
-                    }
+                    } 
                 }
             }
         } catch (IOException e) {
