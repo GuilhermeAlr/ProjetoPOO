@@ -1,3 +1,4 @@
+
 package projetopoo;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -1411,56 +1412,60 @@ public class Main {
                     sc.nextLine();
                     return;
                 }
-            	
-                try {
-                    System.out.print("- Dia da sessao (DD/MM/YYYY): ");
-                    diaSessaoString = sc.nextLine();
-                    formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                    diaSessao = LocalDate.parse(diaSessaoString, formatter);
-
-                    System.out.print("- Horario da sessao (HH:mm): ");
-                    horarioSessaoString = sc.nextLine();
-                    formatter = DateTimeFormatter.ofPattern("HH:mm");
-                    horarioSessao = LocalTime.parse(horarioSessaoString, formatter);
-                } catch(DateTimeParseException e) {
-                    System.err.println("- Erro: data ou horario invalidos. Tente novamente!");
-                    sc.nextLine();
-                    return;
-                }
                 
-                // combina data e horario em diaHorarioSessao
-                LocalDateTime diaHorarioSessao = diaSessao.atTime(horarioSessao);
-
-                try {
-                    System.out.print("- Preco da sessao: ");
-                    precoSessao = Double.parseDouble(sc.nextLine());
-                    excecaoNumerosNegativos(precoSessao); 
-                } catch(NumberFormatException e) {
-                    System.err.println("- Erro: o preco da sessao deve ser um numero double. Tente novamente!");
-                    sc.nextLine();
-                    return;
-                } catch(IllegalArgumentException e) {
-                    System.err.println("- Erro: o preco da sessao deve ser um numero positivo. Tente novamente!");
-                    sc.nextLine();
-                    return;
-                }
-
-                Sessao sessaoTemporaria = new Sessao(codigoSessao ,diaHorarioSessao, precoSessao, false, 1, salaSessao, filmeSessao); // conferir promocao
-
-                System.out.println(sessaoTemporaria.toString());
-                System.out.print("Confirmar adicao da sessao (Sim ou Nao): ");
-                confirmacao = sc.nextLine();
-
-                // confirma a criacao de uma sessao, checando condicoes de horario e classificacao indicativa
-                if (confirmacao.equalsIgnoreCase("Sim")) {
-                    if (gerente.adicionarSessao(sessaoTemporaria)) {
-                        cadastrarSessaoArquivo(sessaoTemporaria);
-                        System.out.println("Sessao adicionada com sucesso!");
-                    }
-                    else {
-                        System.out.println("- Erro no cadastro. Tente novamente!");
-                        System.out.println("- Possiveis problemas: dia e horario coincidem com outra sessao ou sessao +18 antes das 20h.");
-                    }
+                if(gerente.buscarSessoes(codigoSessao)!= true) {
+	                try {
+	                    System.out.print("- Dia da sessao (DD/MM/YYYY): ");
+	                    diaSessaoString = sc.nextLine();
+	                    formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	                    diaSessao = LocalDate.parse(diaSessaoString, formatter);
+	
+	                    System.out.print("- Horario da sessao (HH:mm): ");
+	                    horarioSessaoString = sc.nextLine();
+	                    formatter = DateTimeFormatter.ofPattern("HH:mm");
+	                    horarioSessao = LocalTime.parse(horarioSessaoString, formatter);
+	                } catch(DateTimeParseException e) {
+	                    System.err.println("- Erro: data ou horario invalidos. Tente novamente!");
+	                    sc.nextLine();
+	                    return;
+	                }
+	                
+	                // combina data e horario em diaHorarioSessao
+	                LocalDateTime diaHorarioSessao = diaSessao.atTime(horarioSessao);
+	
+	                try {
+	                    System.out.print("- Preco da sessao: ");
+	                    precoSessao = Double.parseDouble(sc.nextLine());
+	                    excecaoNumerosNegativos(precoSessao); 
+	                } catch(NumberFormatException e) {
+	                    System.err.println("- Erro: o preco da sessao deve ser um numero double. Tente novamente!");
+	                    sc.nextLine();
+	                    return;
+	                } catch(IllegalArgumentException e) {
+	                    System.err.println("- Erro: o preco da sessao deve ser um numero positivo. Tente novamente!");
+	                    sc.nextLine();
+	                    return;
+	                }
+	
+	                Sessao sessaoTemporaria = new Sessao(codigoSessao ,diaHorarioSessao, precoSessao, false, 1, salaSessao, filmeSessao); // conferir promocao
+	
+	                System.out.println(sessaoTemporaria.toString());
+	                System.out.print("Confirmar adicao da sessao (Sim ou Nao): ");
+	                confirmacao = sc.nextLine();
+	
+	                // confirma a criacao de uma sessao, checando condicoes de horario e classificacao indicativa
+	                if (confirmacao.equalsIgnoreCase("Sim")) {
+	                    if (gerente.adicionarSessao(sessaoTemporaria)) {
+	                        cadastrarSessaoArquivo(sessaoTemporaria);
+	                        System.out.println("Sessao adicionada com sucesso!");
+	                    }
+	                    else {
+	                        System.out.println("- Erro no cadastro. Tente novamente!");
+	                        System.out.println("- Possiveis problemas: dia e horario coincidem com outra sessao ou sessao +18 antes das 20h.");
+	                    }
+	                }
+                } else {
+                    System.out.println("- Erro no cadastro: ja existe uma sessao com esse codigo. Tente novamente!");
                 }
             }
             else {
