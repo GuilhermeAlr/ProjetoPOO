@@ -14,20 +14,20 @@ import java.util.*;
  * A classe Main executa o sistema de gerenciamento de cinema. 
  * 
  * <p>
- * O sistema de gereciamento para o cinema GIG é dividido em duas interfaces: 
+ * O sistema de gereciamento para o cinema GIG é dividido em duas interfaces:
+ * </p> 
  * <ul>
  * <li>Interface do gerente: o gerente tem acesso a funções de administração, como adicionar, editar, excluir filmes, salas, sessões e promoções.
  * Além disso, ele pode olhar os relatórios do cinema.</li>
  * <li>Interface do cliente: o cliente pode comprar ingressos para sessões, adquirir assinatura e visualizar seu perfil.</li>
  * </ul>
- * </p>
  * 
  * @author Guilherme Almendro
  * @author Giovanna Noventa
  * @author Isabela Aoki
  * @since 1.0
  * @see java.io.IOException
- * @see import java.time.LocalDate
+ * @see java.time.LocalDate
  * @see java.time.LocalTime
  * @see java.time.LocalDateTime
  * @see java.time.format.DateTimeFormatter

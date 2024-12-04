@@ -266,13 +266,12 @@ public class Gerente extends Pessoa{
     
     /**
      * Edita sessão do cinema.
-     * <p>
-     * Realiza a edição dos atributos de uma sessão. Ele edita somente os parâmetros válidos ou não nulos fornecidos se atende as condições necessárias:
+     * <p>Realiza a edição dos atributos de uma sessão. Ele edita somente os parâmetros válidos ou não nulos fornecidos se atende as condições necessárias:</p>
      * <ul>
      * <li>Na edição de dia, horário ou sala, são verificados se a mudança do atributo coincide com intervalo de horário de outra sessão. Se coincidir, retorna <code>false</code>.</li>
      * <li>Na edição de filme, verifica se o filme é +18 e depois das 20h. Se não for, retorna <code>false</code>.</li>
      * </ul>
-     * </p>
+
      * 
      * @param sessao Sessão a ser editada. 
      * @param diaSessaoNovo Novo dia da sessão. Se for null, o dia não é alterado.
