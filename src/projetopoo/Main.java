@@ -1358,7 +1358,6 @@ public class Main {
         String nomeFilme;
         Filme filmeSessao; 
         int nroSala = 0;
-        int codigoSessao = 0;
         Sala salaSessao;
         String diaSessaoString; 
         LocalDate diaSessao = null;
@@ -1367,6 +1366,7 @@ public class Main {
         DateTimeFormatter formatter;
         double precoSessao = 0.0;
         String confirmacao;
+        int codigoSessao = Sessao.getQuantidadeSessao();
 
         System.out.println("CADASTRAR SESSAO");
         System.out.println("Entre com as informacoes da sessao: ");
@@ -1399,20 +1399,6 @@ public class Main {
             // se encontra uma sala, o cadastro de sessao eh realizado
             if (salaSessao != null) {
                 try {
-                    System.out.print("- Codigo da sessao: ");
-                    codigoSessao = Integer.parseInt(sc.nextLine());
-                    excecaoNumerosNegativos(precoSessao); 
-                } catch(NumberFormatException e) {
-                    System.err.println("- Erro: o codigo da sessao deve ser um numero double. Tente novamente!");
-                    sc.nextLine();
-                    return;
-                } catch(IllegalArgumentException e) {
-                    System.err.println("- Erro: o codigo da sessao deve ser um numero positivo. Tente novamente!");
-                    sc.nextLine();
-                    return;
-                }
-            	
-                try {
                     System.out.print("- Dia da sessao (DD/MM/YYYY): ");
                     diaSessaoString = sc.nextLine();
                     formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -1444,7 +1430,8 @@ public class Main {
                     sc.nextLine();
                     return;
                 }
-
+                
+                Sessao.setQuantidadeSessao(codigoSessao + 1);
                 Sessao sessaoTemporaria = new Sessao(codigoSessao ,diaHorarioSessao, precoSessao, false, 1, salaSessao, filmeSessao); // conferir promocao
 
                 System.out.println(sessaoTemporaria.toString());
