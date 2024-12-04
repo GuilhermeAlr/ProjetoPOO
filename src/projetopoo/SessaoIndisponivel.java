@@ -20,6 +20,7 @@ public class SessaoIndisponivel extends Sessao{
      * 
      * Inicializa uma sessão indisponível com suas características de {@link Sessao} e um motivo de sua exclusão.
      * 
+     * @param codigoSessao Código da sessão.
      * @param diaHorarioSessao Data e horário da sessão.
      * @param precoSessao Preço da sessão.
      * @param comPromocao Variável que indica se sessão possui (<code>true</code>) ou não promoção (<code>false</code>). 
@@ -29,8 +30,8 @@ public class SessaoIndisponivel extends Sessao{
      * @param motivoExclusaoSessao Motivo da exclusão da sessão.
      * @see Sessao#Sessao(java.time.LocalDateTime, double, java.lang.Boolean, double, projetopoo.Sala, projetopoo.Filme) 
      */
-    public SessaoIndisponivel(LocalDateTime diaHorarioSessao, double precoSessao, boolean comPromocao, double porcentagemPromocional, Sala salaSessao, Filme filmeSessao, String motivoExclusaoSessao){
-        super(diaHorarioSessao, precoSessao, comPromocao, porcentagemPromocional, salaSessao, filmeSessao);
+    public SessaoIndisponivel(int codigoSessao, LocalDateTime diaHorarioSessao, double precoSessao, boolean comPromocao, double porcentagemPromocional, Sala salaSessao, Filme filmeSessao, String motivoExclusaoSessao){
+        super(codigoSessao, diaHorarioSessao, precoSessao, comPromocao, porcentagemPromocional, salaSessao, filmeSessao);
         setMotivoExclusaoSessao(motivoExclusaoSessao);
     }
     

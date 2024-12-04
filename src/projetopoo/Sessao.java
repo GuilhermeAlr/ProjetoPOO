@@ -26,7 +26,6 @@ import java.time.LocalDateTime;
  */
 
 public class Sessao{
-    private static int quantidadeSessoes = 0; // Variável estática que define o código da sessão, conforme a quantidade de sessões criadas.
     private int codigoSessao;
     private LocalDateTime diaHorarioSessao;
     private Boolean[] listaAssentos; // Lista de assentos disponíveis (true) e indisponíveis (false).
@@ -40,6 +39,7 @@ public class Sessao{
      * 
      * Inicializa uma sessão com suas características.
      * 
+     * @param codigoSessao Código da sessão.
      * @param diaHorarioSessao Data e horário da sessão.
      * @param precoSessao Preço da sessão.
      * @param comPromocao Variável que indica se sessão possui (<code>true</code>) ou não promoção (<code>false</code>). 
@@ -47,8 +47,8 @@ public class Sessao{
      * @param salaSessao Sala onde será a sessão.
      * @param filmeSessao Filme exibido na sessão.
      */
-    public Sessao(LocalDateTime diaHorarioSessao, double precoSessao, Boolean comPromocao, double porcentagemPromocional, Sala salaSessao, Filme filmeSessao){
-        setCodigoSessao(quantidadeSessoes);
+    public Sessao(int codigoSessao, LocalDateTime diaHorarioSessao, double precoSessao, Boolean comPromocao, double porcentagemPromocional, Sala salaSessao, Filme filmeSessao){
+        setCodigoSessao(codigoSessao);
         setDiaHorarioSessao(diaHorarioSessao);
         setListaAssentos(salaSessao.getNroAssentos() + 1); // Lista de assentos começa em 1 e vai até o número de assentos definidos na sala.
         setPrecoSessao(precoSessao);
@@ -56,18 +56,8 @@ public class Sessao{
         setPorcentagemPromocional(porcentagemPromocional);
         setSalaSessao(salaSessao);
         setFilmeSessao(filmeSessao);
-        
-        // Aumenta a quantidade de sessões instanciadas.
-        quantidadeSessoes++;
     }
 
-    /**
-     * Decrementa a quantidade total de sessões.
-     */
-    public static void decrementaQuantidadeSessoes() {
-        quantidadeSessoes--;
-    }
-    
     /** 
      * Reserva o assento de uma sessão, tornando o ocupado (<code>true</code>).
      * 
@@ -143,7 +133,7 @@ public class Sessao{
      * @return <code>integer</code> Código da sessão. 
      */
     public int getCodigoSessao(){
-        return codigoSessao;
+        return this.codigoSessao;
     }
     
     /** 

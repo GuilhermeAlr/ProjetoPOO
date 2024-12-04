@@ -848,7 +848,7 @@ public class Main {
         }
 
         try {
-            System.out.printf("Digite o tipo de tela novo (2D ou 3D): ");
+            System.out.printf("- Tipo de tela (2D ou 3D): ");
             tipoTelaString = sc.nextLine();
             tipoTela = excecaoTipoTela(tipoTelaString);
         } catch (IllegalArgumentException e) {
@@ -894,7 +894,7 @@ public class Main {
         imprimeListaSalas(gerente.getCinema());
 
         try {
-            System.out.printf("Digite o numero da sala a ser removida: ");
+            System.out.printf("Digite o numero da sala a ser editada: ");
             nroSala = Integer.parseInt(sc.nextLine());
             excecaoNumerosNegativos(nroSala);
         } catch(NumberFormatException e) {
@@ -1138,17 +1138,19 @@ public class Main {
         Filme filmeSessao; 
         int nroSala;
         Sala salaSessao;
+        int codigoSessao;
         String diaSessaoString; 
         LocalDate diaSessao;
         String horarioSessaoString;
         LocalTime horarioSessao;
         DateTimeFormatter formatter;
-        double precoSessao;
+        double precoSessao = 0;
         String confirmacao;
 
         System.out.println("CADASTRAR SESSAO");
         System.out.println("Entre com as informacoes da sessao: ");
-        System.out.print("- Nome do Filme: ");
+        imprimeListaFilmes(gerente.getCinema());
+        System.out.print("\n- Nome do Filme: ");
         nomeFilme = sc.nextLine();
         
         // busca filme disponivel no catalogo
@@ -1169,66 +1171,81 @@ public class Main {
                 sc.nextLine();
                 return;
             }
-            System.out.println();
-
             // busca sala do cinema
             salaSessao = gerente.buscarSala(nroSala);
             
             // se encontra uma sala, o cadastro de sessao eh realizado
             if (salaSessao != null) {
                 try {
-                    System.out.print("- Dia da sessao (DD/MM/YYYY): ");
-                    diaSessaoString = sc.nextLine();
-                    formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                    diaSessao = LocalDate.parse(diaSessaoString, formatter);
-
-                    System.out.print("- Horario da sessao (HH:mm): ");
-                    horarioSessaoString = sc.nextLine();
-                    formatter = DateTimeFormatter.ofPattern("HH:mm");
-                    horarioSessao = LocalTime.parse(horarioSessaoString, formatter);
-                } catch(DateTimeParseException e) {
-                    System.err.println("- Erro: data ou horario invalidos. Tente novamente!");
-                    sc.nextLine();
-                    return;
-                }
-                
-                // combina data e horario em diaHorarioSessao
-                LocalDateTime diaHorarioSessao = diaSessao.atTime(horarioSessao);
-
-                try {
-                    System.out.print("- Preco da sessao: ");
-                    precoSessao = Double.parseDouble(sc.nextLine());
-                    excecaoNumerosNegativos(precoSessao); 
+                    System.out.print("- Codigo da sessao: ");
+                    codigoSessao = Integer.parseInt(sc.nextLine());
+                    excecaoNumerosNegativos(codigoSessao); 
                 } catch(NumberFormatException e) {
-                    System.err.println("- Erro: o preco da sessao deve ser um numero double. Tente novamente!");
+                    System.err.println("- Erro: o codigo da sessao deve ser um numero double. Tente novamente!");
                     sc.nextLine();
                     return;
                 } catch(IllegalArgumentException e) {
-                    System.err.println("- Erro: o preco da sessao deve ser um numero positivo. Tente novamente!");
+                    System.err.println("- Erro: o codigo da sessao deve ser um numero positivo. Tente novamente!");
                     sc.nextLine();
                     return;
                 }
 
-                Sessao sessaoTemporaria = new Sessao(diaHorarioSessao, precoSessao, false, 1, salaSessao, filmeSessao); // conferir promocao
-
-                System.out.println(sessaoTemporaria.toString());
-                System.out.print("Confirmar adicao da sessao (Sim ou Nao): ");
-                confirmacao = sc.nextLine();
-
-                // confirma a criacao de uma sessao, checando condicoes de horario e classificacao indicativa
-                if (confirmacao.equalsIgnoreCase("Sim")) {
-                    if (gerente.adicionarSessao(sessaoTemporaria)) {
-                        System.out.println("Sessao adicionada com sucesso!");
+                if (gerente.buscarSessaoTodas(codigoSessao) == null) {
+                    try {
+                        System.out.print("- Dia da sessao (DD/MM/YYYY): ");
+                        diaSessaoString = sc.nextLine();
+                        formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                        diaSessao = LocalDate.parse(diaSessaoString, formatter);
+    
+                        System.out.print("- Horario da sessao (HH:mm): ");
+                        horarioSessaoString = sc.nextLine();
+                        formatter = DateTimeFormatter.ofPattern("HH:mm");
+                        horarioSessao = LocalTime.parse(horarioSessaoString, formatter);
+                    } catch(DateTimeParseException e) {
+                        System.err.println("- Erro: data ou horario invalidos. Tente novamente!");
+                        sc.nextLine();
+                        return;
                     }
-                    else {
-                        System.out.println("- Erro no cadastro. Tente novamente!");
-                        System.out.println("- Possiveis problemas: dia e horario coincidem com outra sessao ou sessao +18 antes das 20h.");
-                        Sessao.decrementaQuantidadeSessoes();
+                    
+                    // combina data e horario em diaHorarioSessao
+                    LocalDateTime diaHorarioSessao = diaSessao.atTime(horarioSessao);
+    
+                    try {
+                        System.out.print("- Preco da sessao: ");
+                        precoSessao = Double.parseDouble(sc.nextLine());
+                        excecaoNumerosNegativos(precoSessao); 
+                    } catch(NumberFormatException e) {
+                        System.err.println("- Erro: o preco da sessao deve ser um numero double. Tente novamente!");
+                        sc.nextLine();
+                        return;
+                    } catch(IllegalArgumentException e) {
+                        System.err.println("- Erro: o preco da sessao deve ser um numero positivo. Tente novamente!");
+                        sc.nextLine();
+                        return;
+                    }
+    
+                    Sessao sessaoTemporaria = new Sessao(codigoSessao, diaHorarioSessao, precoSessao, false, 1, salaSessao, filmeSessao); // conferir promocao
+    
+                    System.out.println();
+                    System.out.println(sessaoTemporaria.toString());
+                    System.out.print("Confirmar adicao da sessao (Sim ou Nao): ");
+                    confirmacao = sc.nextLine();
+    
+                    // confirma a criacao de uma sessao, checando condicoes de horario e classificacao indicativa
+                    if (confirmacao.equalsIgnoreCase("Sim")) {
+                        if (gerente.adicionarSessao(sessaoTemporaria)) {
+                            System.out.println("Sessao adicionada com sucesso!");
+                        }
+                        else {
+                            System.out.println("- Erro no cadastro. Tente novamente!");
+                            System.out.println("- Possiveis problemas: dia e horario coincidem com outra sessao ou sessao +18 antes das 20h.");
+                        }
                     }
                 }
                 else {
-                    Sessao.decrementaQuantidadeSessoes();
+                    System.out.println("- Erro no cadastro: codigo da sessao ja cadastrado. Tente novamente!");
                 }
+
             }
             else {
                 System.out.println("- Erro no cadastro: sala nao encontrada. Tente novamente!");
@@ -1496,7 +1513,6 @@ public class Main {
             sc.nextLine();
             return;
         }
-        System.out.println();
 
         // busca sessão disponivel no cinema
         Sessao sessao = gerente.buscarSessao(codigoSessao);
@@ -1578,7 +1594,7 @@ public class Main {
         imprimeListaSessoes(gerente.getCinema());
 
         try {
-            System.out.print("Digite o codigo da sessao a qual a promocao ira ser adicionada : ");
+            System.out.print("Digite o codigo da sessao a qual a promocao ira ser adicionada: ");
             codigoSessao = Integer.parseInt(sc.nextLine());
             excecaoNumerosNegativos(codigoSessao);
         } catch(NumberFormatException e) {
@@ -2072,7 +2088,7 @@ public class Main {
      * @throws IllegalArgumentException Se o número for negativo. 
      */
     private static <T extends Number & Comparable<T>> void excecaoNumerosNegativos(T numeroEntrada) throws IllegalArgumentException {
-    	if(numeroEntrada.doubleValue() < 0) {  
+    	if(numeroEntrada.doubleValue() <= 0) {  
     		throw new IllegalArgumentException(); 
     	}
     }

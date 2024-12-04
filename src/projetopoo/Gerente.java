@@ -363,7 +363,7 @@ public class Gerente extends Pessoa{
     public void removerSessao(Sessao sessao, String motivoExclusaoSessao) {
         // substitui a sessao por uma sessao indisponivel no array
         int index = cinema.getListaSessoes().indexOf(sessao);
-        SessaoIndisponivel sessaoIndisponivel = new SessaoIndisponivel(sessao.getDiaHorarioSessao(),sessao.getPrecoSessao(), sessao.getComPromocao(), sessao.getPorcentagemPromocional(), sessao.getSalaSessao(), sessao.getFilmeSessao(), motivoExclusaoSessao);
+        SessaoIndisponivel sessaoIndisponivel = new SessaoIndisponivel(sessao.getCodigoSessao(), sessao.getDiaHorarioSessao(),sessao.getPrecoSessao(), sessao.getComPromocao(), sessao.getPorcentagemPromocional(), sessao.getSalaSessao(), sessao.getFilmeSessao(), motivoExclusaoSessao);
         cinema.getListaSessoes().set(index, sessaoIndisponivel);
     }
     
@@ -378,6 +378,23 @@ public class Gerente extends Pessoa{
     public Sessao buscarSessao(int codigoSessao) {
         for (Sessao s : cinema.getListaSessoes()) {
             if (s.getCodigoSessao() == codigoSessao && !(s instanceof SessaoIndisponivel)) {
+                return s;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Busca sessão na lista de sessões pelo código.
+     * 
+     * @param codigoSessao Código da sessão procurada.
+     * @return <code>Sessao</code> buscada ou <code>null</code>, caso não for encontrada.
+     * @see Sessao
+     * @see Cinema
+     */
+    public Sessao buscarSessaoTodas(int codigoSessao) {
+        for (Sessao s : cinema.getListaSessoes()) {
+            if (s.getCodigoSessao() == codigoSessao) {
                 return s;
             }
         }
