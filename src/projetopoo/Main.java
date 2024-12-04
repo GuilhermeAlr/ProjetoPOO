@@ -1,14 +1,14 @@
 package projetopoo;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
+import java.io.*;
 
 // Comando para compilar o codigo: no diretorio da pasta projetopoo, javac projetopoo/*.java
-// Comand para rodar o codigo: java projetopoo.Main
+// Comando para rodar o codigo: java projetopoo.Main
 
 /**
  * A classe Main executa o sistema de gerenciamento de cinema. 
@@ -53,6 +53,8 @@ public class Main {
         Pessoa pessoa = null;
         int opcao, opcaoMenuGerente;
         
+        carregarDados("arquivos", cinema, gerente, null);
+
         limpaConsole();
         while(estaRodando) {
             if(pessoa == null) { // Menu nao logado
@@ -69,6 +71,7 @@ public class Main {
                         break;
                     case 3: // Sair do programa
                         System.exit(0);
+                        sc.close();
                     default:
                         System.out.println("- Erro: opcao invalida. Tente novamente!");
                         sc.nextLine();
@@ -245,6 +248,7 @@ public class Main {
                     limpaConsole();
                 }
                 else if (pessoa instanceof Usuario) { // Menu do usuario
+                    carregarDados("arquivos", cinema, gerente, (Usuario) pessoa);                    
                     limpaConsole();
                     opcao = imprimeMenuUsuario(sc);
 
@@ -274,7 +278,6 @@ public class Main {
                 }
             }
         }
-        sc.close();
     }
     
     /**
@@ -320,13 +323,22 @@ public class Main {
         String senhaUsuario;
         int idadeUsuario;
         
-        System.out.println("CADASTRO");
-        System.out.printf("Digite seu nome: ");
-        nomeUsuario = sc.nextLine();
-        System.out.printf("Digite um usuario: ");
-        loginUsuario = sc.nextLine();
-        System.out.printf("Digite uma senha: ");
-        senhaUsuario = sc.nextLine();
+        try {
+            System.out.printf("Digite seu nome: ");
+            nomeUsuario = sc.nextLine();
+            excecaoStringVazia(nomeUsuario);
+            System.out.printf("Digite um usuario: ");
+            loginUsuario = sc.nextLine();
+            excecaoStringVazia(loginUsuario);
+            System.out.printf("Digite uma senha: ");
+            senhaUsuario = sc.nextLine();
+            excecaoStringVazia(senhaUsuario);
+
+        } catch (IllegalArgumentException i) {
+            System.err.println("- Erro: o dado inserido deve conter numeros ou algarismos. Tente novamente!");
+            sc.nextLine();
+            return;
+        }
 
         try {
             System.out.printf("Digite sua idade: ");
@@ -347,6 +359,7 @@ public class Main {
         if (buscarUsuario(loginUsuario, listaUsuarios) == null) {
             Usuario usuario = new Usuario(nomeUsuario, loginUsuario, senhaUsuario, idadeUsuario);
             listaUsuarios.add(usuario);
+            cadastrarUsuarioArquivo(usuario);
 
             System.out.println("Usuario cadastrado com sucesso!");
             System.out.println("- Nome: " + nomeUsuario);
@@ -495,10 +508,25 @@ public class Main {
                 
         System.out.println("CADASTRAR FILME NO CATALOGO");
         System.out.println("Entre com as informacoes do filme desejado: ");
-        System.out.print("- Nome: ");
-        nomeFilme = sc.nextLine();
-        System.out.print("- Sinopse: ");
-        sinopseFilme = sc.nextLine();
+        try {
+            System.out.print("- Nome: ");
+            nomeFilme = sc.nextLine();
+            excecaoStringVazia(nomeFilme);
+        } catch(IllegalArgumentException e) {
+            System.err.println("- Erro no cadastro: o nome do filme deve conter letras ou algarismos. Tente novamente!");
+            sc.nextLine();
+            return;
+        }
+
+        try {
+            System.out.print("- Sinopse: ");
+            sinopseFilme = sc.nextLine();
+            excecaoStringVazia(sinopseFilme);
+        } catch (IllegalArgumentException e) {
+            System.err.println("- Erro no cadastro: a sinopse do filme deve conter letras ou algarismos. Tente novamente!");
+            sc.nextLine();
+            return;
+        }
 
         try {
             System.out.println("Opcoes de classificacao indicativa: \'livre\', \'10\', \'12\', \'14\', \'16\', \'18\'");
@@ -511,8 +539,15 @@ public class Main {
             return;
         }
 
-        System.out.print("- Genero: ");
-        generoFilme = sc.nextLine();
+        try {
+        	System.out.print("- Genero: ");
+            generoFilme = sc.nextLine();
+            excecaoStringVazia(generoFilme);
+        } catch (IllegalArgumentException e) {
+            System.err.println("- Erro no cadastro: o genero do filme deve conter letras ou algarismos. Tente novamente!");
+            sc.nextLine();
+            return;
+        }
 
         try {
             System.out.print("- Duracao (em minutos): ");
@@ -537,6 +572,7 @@ public class Main {
         
         if (confirmacao.equalsIgnoreCase("Sim")) {
             if(gerente.adicionarFilme(filmeTemporario)) { 
+                cadastrarFilmeArquivo(filmeTemporario);
                 System.out.println("Filme adicionado com sucesso!");
             }
             else {
@@ -606,7 +642,10 @@ public class Main {
                     confirmacao = sc.nextLine();
 
                     if (confirmacao.equalsIgnoreCase("Sim")) {
+                        String nomeAntigo = filme.getNomeFilme();
+
                         if (gerente.editarFilme(filme, nomeNovo, "", -1, "", -1)) {
+                            editarFilmeArquivo(filme, nomeAntigo);
                             System.out.println("Filme editado com sucesso!");
                         }
                         else {
@@ -628,7 +667,9 @@ public class Main {
                     confirmacao = sc.nextLine();
 
                     if (confirmacao.equalsIgnoreCase("Sim")) {
+                        String nomeAntigo = filme.getNomeFilme();
                         gerente.editarFilme(filme, "", sinopseNova, -1, "", -1);
+                        editarFilmeArquivo(filme, nomeAntigo);
                         System.out.println("Filme editado com sucesso!");
                     }
                     break;
@@ -655,7 +696,9 @@ public class Main {
                     confirmacao = sc.nextLine();
 
                     if (confirmacao.equalsIgnoreCase("Sim")) {
+                        String nomeAntigo = filme.getNomeFilme();
                         gerente.editarFilme(filme, "", "", classificacaoNova, "", -1);
+                        editarFilmeArquivo(filme, nomeAntigo);
                         System.out.println("Filme editado com sucesso!");
                     }
                     break;
@@ -673,7 +716,9 @@ public class Main {
                     confirmacao = sc.nextLine();
 
                     if (confirmacao.equalsIgnoreCase("Sim")) {
+                        String nomeAntigo = filme.getNomeFilme();
                         gerente.editarFilme(filme, "", "", -1, generoNovo, -1);
+                        editarFilmeArquivo(filme, nomeAntigo);
                         System.out.println("Filme editado com sucesso!");
                     }
                     break;
@@ -702,7 +747,9 @@ public class Main {
                     confirmacao = sc.nextLine();
 
                     if (confirmacao.equalsIgnoreCase("Sim")) {
+                        String nomeAntigo = filme.getNomeFilme();
                         gerente.editarFilme(filme, "", "", -1, "", duracaoNova);
+                        editarFilmeArquivo(filme, nomeAntigo);
                         System.out.println("Filme editado com sucesso!");
                     }
                     break;
@@ -750,6 +797,7 @@ public class Main {
 
             if (confirmacao.equalsIgnoreCase("Sim")) {
                 gerente.removerFilme(filme, motivoExclusaoFilme);
+                removerFilmeArquivo(filme, motivoExclusaoFilme);
                 System.out.println("Filme removido com sucesso!");
             }
         }
@@ -857,6 +905,7 @@ public class Main {
             return;
         }
 
+        System.out.println();
         Sala salaTemporaria = new Sala(nroSala, nroAssentos, tipoTela);
 
         System.out.println(salaTemporaria.toString());
@@ -865,6 +914,7 @@ public class Main {
         
         if (confirmacao.equalsIgnoreCase("Sim")) {
             if(gerente.adicionarSala(salaTemporaria)) {
+                cadastrarSalaArquivo(salaTemporaria);
                 System.out.println("Sala adicionada com sucesso!");
             }
             else {
@@ -920,8 +970,7 @@ public class Main {
 
             try {
                 System.out.printf("Entre uma opcao: ");
-                opcao = Integer.parseInt(sc.nextLine());
-                     
+                opcao = Integer.parseInt(sc.nextLine());             
             } catch(NumberFormatException e) {
                 System.out.println("- Erro: a opcao deve ser um numero inteiro. Tente novamente!");
                 sc.nextLine();
@@ -955,7 +1004,9 @@ public class Main {
                     confirmacao = sc.nextLine();
 
                     if (confirmacao.equalsIgnoreCase("Sim")) {
+                        int numeroAntigoSala = sala.getNroSala();
                         if (gerente.editarSala(sala,nroSalaNovo, -1, null)) {
+                            editarSalaArquivo(sala, numeroAntigoSala);
                             System.out.println("Sala editada com sucesso!");
                         }
                         else {
@@ -988,7 +1039,9 @@ public class Main {
                     confirmacao = sc.nextLine();
 
                     if (confirmacao.equalsIgnoreCase("Sim")) {
+                        int numeroAntigoSala = sala.getNroSala();
                         gerente.editarSala(sala, 0, nroAssentosNovo, null);
+                        editarSalaArquivo(sala, numeroAntigoSala);
                         System.out.println("Sala editada com sucesso!");
                     }
                     break;
@@ -1014,7 +1067,9 @@ public class Main {
                     confirmacao = sc.nextLine();
 
                     if (confirmacao.equalsIgnoreCase("Sim")) {
+                        int numeroAntigoSala = sala.getNroSala();
                         gerente.editarSala(sala, 0, -1, tipoTelaNovo);
+                        editarSalaArquivo(sala, numeroAntigoSala);
                         System.out.println("Sala editada com sucesso!");
                     }
                     break;
@@ -1071,6 +1126,7 @@ public class Main {
 
             if (confirmacao.equalsIgnoreCase("Sim")) {
                 gerente.removerSala(sala);
+                removerSalaArquivo(sala);
                 System.out.println("Sala removida com sucesso!");
             }
         }
@@ -1234,6 +1290,7 @@ public class Main {
                     // confirma a criacao de uma sessao, checando condicoes de horario e classificacao indicativa
                     if (confirmacao.equalsIgnoreCase("Sim")) {
                         if (gerente.adicionarSessao(sessaoTemporaria)) {
+                            cadastrarSessaoArquivo(sessaoTemporaria);
                             System.out.println("Sessao adicionada com sucesso!");
                         }
                         else {
@@ -1337,6 +1394,7 @@ public class Main {
                         
                         if (confirmacao.equalsIgnoreCase("Sim")) {
                             gerente.editarSessao(sessao, null, null, -1, null, filmeSessao);
+                            editarSessaoArquivo(sessao);
                             System.out.println("Sessao editada com sucesso!");
                         }
                     }
@@ -1374,6 +1432,7 @@ public class Main {
                         
                         if (confirmacao.equalsIgnoreCase("Sim")) {
                             gerente.editarSessao(sessao, null, null, -1, salaSessao, null);
+                            editarSessaoArquivo(sessao);
                             System.out.println("Sessao editada com sucesso!");
                         }
                     }
@@ -1407,6 +1466,7 @@ public class Main {
                             System.out.println("- Erro na edicao: intervalo de horario coincide com o de outra sessao. Tente novamente!");
                         }
                         else {
+                            editarSessaoArquivo(sessao);
                             System.out.println("Sessao editada com sucesso!");
                         }
                     }
@@ -1437,6 +1497,7 @@ public class Main {
                             System.out.println("- Erro na edicao: intervalo de horario coincide com o de outra sessao. Tente novamente!");
                         }
                         else {
+                            editarSessaoArquivo(sessao);
                             System.out.println("Sessao editada com sucesso!");
                         }
                     }
@@ -1467,6 +1528,7 @@ public class Main {
                         
                     if (confirmacao.equalsIgnoreCase("Sim")) {
                         gerente.editarSessao(sessao, null, null, precoSessaoNovo, null, null);
+                        editarSessaoArquivo(sessao);
                         System.out.println("Sessao editada com sucesso!");
                     }
                     break;
@@ -1527,6 +1589,7 @@ public class Main {
 
             if (confirmacao.equalsIgnoreCase("Sim")) {
                 gerente.removerSessao(sessao, motivoExclusaoSessao);
+                removerSessaoArquivo(sessao, motivoExclusaoSessao);
                 System.out.println("Sessao removida com sucesso!");
             }
         }
@@ -1635,6 +1698,7 @@ public class Main {
 
             if (confirmacao.equalsIgnoreCase("Sim")) {
                 if (gerente.adicionarPromocao(sessao, porcentagemPromocional)) {
+                    cadastrarPromocaoArquivo(codigoSessao, porcentagemPromocional);
                     System.out.println("Promocao adicionada com sucesso!");
                 }
                 else {
@@ -1712,6 +1776,8 @@ public class Main {
 
             if (confirmacao.equalsIgnoreCase("Sim")) {
                 if (gerente.editarPromocao(sessao, porcentagemPromocionalNova)) {
+                    File arquivoSessoes = new File("arquivos/Sessoes.csv");
+                    editarPromocaoArquivo(arquivoSessoes, sessao);
                     System.out.println("Promocao editada com sucesso!");
                 }
                 else {
@@ -1768,6 +1834,8 @@ public class Main {
 
             if (confirmacao.equalsIgnoreCase("Sim")) {
                 if (gerente.excluirPromocao(sessao)) {
+                    File arquivoSessoes = new File("arquivos/Sessoes.csv");
+                    removerPromocaoArquivo(arquivoSessoes, sessao);
                     System.out.println("Promocao removida com sucesso!");
                 }
                 else {
@@ -1903,10 +1971,10 @@ public class Main {
         nomeFilme = sc.nextLine();
         System.out.println();
         
-        // busca filme solicitado e imprime sessoes com esse filme
+        // busca filme solicitado com sessao e imprime sessoes com esse filme
         Filme filme = gerente.buscarFilme(nomeFilme);
 
-        if (filme != null) {
+        if (filme != null && gerente.buscarSessaoComFilme(filme)) {
             // imprime sessoes com o filme escolhido
             for (Sessao sessao : gerente.getCinema().getListaSessoes()) {
                 if (sessao.getFilmeSessao() == filme) {
@@ -1979,6 +2047,8 @@ public class Main {
 
                 if (confirmacao.equalsIgnoreCase("Sim")) {
                     if (usuario.comprarIngresso(sessao, nroAssento)) {
+                        File arquivoIngressos = new File("Ingressos.csv");
+                        cadastrarIngressoArquivo(arquivoIngressos, usuario, ingresso);
                         System.out.println("Ingresso comprado com sucesso!");
                     }
                     else {
@@ -1991,7 +2061,7 @@ public class Main {
             }
         }
         else {
-            System.out.println("- Erro na compra: filme nao encontrado. Tente novamente!");
+            System.out.println("- Erro na compra: filme nao encontrado ou nao possui sessao. Tente novamente!");
         }
         sc.nextLine();
     }
@@ -2027,7 +2097,7 @@ public class Main {
                 int index = gerente.getListaUsuarios().indexOf(usuario); 
                 usuario = usuario.comprarAssinatura();
                 gerente.getListaUsuarios().set(index, usuario); 
-
+                cadastrarUsuarioAssinanteArquivo((UsuarioAssinante) usuario);
                 System.out.println("Assinatura comprada com sucesso!");
             }
             
@@ -2059,26 +2129,6 @@ public class Main {
     
     }
 
-    /**
-     * Limpa o terminal do programa de acordo com o sistema operacional. Caso o comando não funcione, imprime linhas em branco.
-     */
-    private static void limpaConsole() {
-        try {
-            String sistemaOperacional = System.getProperty("os.name").toLowerCase();
-
-            if (sistemaOperacional.contains("win")) { 
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            } else { 
-                new ProcessBuilder("clear").inheritIO().start().waitFor();
-            }
-        } catch (IOException | InterruptedException e) { 
-            for (int i = 0; i < 50; i++) {
-                System.out.println();
-            }
-        }
-
-    }
-
     // Métodos de exceção para simplificar o tratamento em outros metodos
     /**
      * Verifica se o número é negativo e lança uma exceção. Utilizado nas variáveis: opção, códigos, idade, duração, nroSala.
@@ -2091,6 +2141,18 @@ public class Main {
     	if(numeroEntrada.doubleValue() <= 0) {  
     		throw new IllegalArgumentException(); 
     	}
+    }
+
+    /**
+     * Verifica se a entrada de uma sequencia de caracteres não está vazia. 
+     * 
+     * @param string String a ser analisada.
+     * @throws IllegalArgumentException Se a string for vazia.
+     */
+    private static void excecaoStringVazia(String string) throws IllegalArgumentException {
+        if (string.equals("")){
+        	throw new IllegalArgumentException(); 
+        }
     }
 
     /**
@@ -2165,4 +2227,987 @@ public class Main {
         }
     } 
     
+    /**
+     * Limpa o terminal do programa de acordo com o sistema operacional. Caso o comando não funcione, imprime linhas em branco.
+     */
+    private static void limpaConsole() {
+        try {
+            String sistemaOperacional = System.getProperty("os.name").toLowerCase();
+
+            if (sistemaOperacional.contains("win")) { 
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else { 
+                new ProcessBuilder("clear").inheritIO().start().waitFor();
+            }
+        } catch (IOException | InterruptedException e) { 
+            for (int i = 0; i < 50; i++) {
+                System.out.println();
+            }
+        }
+
+    }
+
+    // Métodos de carregar dados ao programa.
+    /**
+     * Carrega dados dos arquivos Usuarios, Salas, Sessoes, Filmes, Ingressos para o programa.
+     * 
+     * @param caminhoDiretorio Caminho do diretório.
+     * @param cinema Cinema.
+     * @param gerente Gerente do cinema.
+     * @param usuario Usuário. 
+     */
+    public static void carregarDados(String caminhoDiretorio, Cinema cinema, Gerente gerente, Usuario usuario) {
+        File diretorio = new File(caminhoDiretorio);
+
+        if (diretorio.exists() && diretorio.isDirectory()) {
+            File[] arquivos = diretorio.listFiles((dir, nome) -> nome.endsWith(".csv"));
+
+            // Para cada arquivo CSV encontrado, carrega os dados
+            for (File arquivo : arquivos) {
+                if (arquivo.isFile()) {
+                    if (arquivo.getName().startsWith("Usuarios") && usuario == null) {
+                        carregarUsuariosArquivo(arquivo, gerente);
+                    } else if (arquivo.getName().startsWith("Salas") && usuario == null) {
+                        carregarSalasArquivo(arquivo, cinema);
+                    } else if (arquivo.getName().startsWith("Sessoes") && usuario == null) {
+                        carregarSessoesArquivo(arquivo, cinema);
+                    } else if (arquivo.getName().startsWith("Filmes") && usuario == null) {
+                        carregarFilmesArquivo(arquivo, cinema);
+                    } else if (arquivo.getName().startsWith("Ingressos") && usuario != null) {
+                        carregarIngressos(arquivo, cinema, usuario);
+                    }
+                }
+            }
+        } else {
+            System.out.println("Diretorio nao encontrado: " + caminhoDiretorio);
+        }
+    }
+
+    public static void carregarUsuariosArquivo(File arquivoUsuario, Gerente gerente) {
+        try (BufferedReader br = new BufferedReader(new FileReader(arquivoUsuario))) {
+            String linha;
+            br.readLine(); //ignora o cabeçalho
+
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(",");
+                if (dados.length == 5) {
+                    String nome = dados[0];
+                    String login = dados[1];
+                    String senha = dados[2];
+                    int idade = Integer.parseInt(dados[3]);
+
+                    gerente.getListaUsuarios().add(new Usuario(nome, login, senha, idade));
+                }
+
+                if (dados.length == 5) {
+                    String nome = dados[0];
+                    String login = dados[1];
+                    String senha = dados[2];
+                    int idade = Integer.parseInt(dados[3]);
+
+                    gerente.getListaUsuarios().add(new UsuarioAssinante(nome, login, senha, idade));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void carregarFilmesArquivo(File arquivo, Cinema cinema) {
+        try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
+            String linha;
+            br.readLine();
+
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(",");
+                if (dados.length == 5) {
+                    String nome = dados[0];
+                    String sinopse = dados[1];
+                    int classificao = Integer.parseInt(dados[2]);
+                    String genero = dados[3];
+                    int duracao = Integer.parseInt(dados[4]);
+
+                    cinema.getListaFilmes().add(new Filme(nome, sinopse, classificao, genero, duracao));
+                }
+
+                if (dados.length == 6) {
+                    String nome = dados[0];
+                    String sinopse = dados[1];
+                    int classificao = Integer.parseInt(dados[2]);
+                    String genero = dados[3];
+                    int duracao = Integer.parseInt(dados[4]);
+                    String motivoExclusao = dados[5];
+
+                    cinema.getListaFilmes().add(new FilmeIndisponivel(nome, sinopse, classificao, genero, duracao, motivoExclusao));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void carregarSalasArquivo(File arquivo, Cinema cinema) {
+        try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
+            String linha;
+            br.readLine();
+
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(",");
+                if (dados.length == 3) {
+                    int numero = Integer.parseInt(dados[0]);
+                    int assentos = Integer.parseInt(dados[1]);
+                    boolean tela = Boolean.parseBoolean(dados[2]);
+
+                    cinema.getListaSalas().add(new Sala(numero, assentos, tela));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void carregarSessoesArquivo(File arquivo, Cinema cinema) {
+        try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
+            String linha;
+            br.readLine();
+
+            // Definir o formato da data de acordo com o padrão utilizado no arquivo
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(",");
+                if (dados.length == 8 || dados.length == 9) {
+                    int codigoSessao = Integer.parseInt(dados[0]);
+                    LocalDateTime diaHorario = LocalDateTime.parse(dados[1], formatter);
+
+                    // Número de assentos, baseado no tamanho do array no arquivo
+                    String[] assentosStr = dados[2].split(";");
+                    int nroAssentos = assentosStr.length;
+
+                    double precoSessao = Double.parseDouble(dados[3]);
+                    boolean comPromocao = Boolean.parseBoolean(dados[4]);
+                    double porcentagemPromocional = Double.parseDouble(dados[5]);
+                    int nroSala = Integer.parseInt(dados[6]);
+                    String nomeFilme = dados[7];
+                    String motivoExclusao = null;
+                    
+                    if(dados.length == 9) {
+                   	    motivoExclusao = dados[8];
+                    }
+                    
+                    // Procurar a sala correspondente
+                    Sala sala = cinema.getListaSalas().stream()
+                            .filter(s -> s.getNroSala() == nroSala)
+                            .findFirst()
+                            .orElse(null);
+
+                    // Procurar o filme correspondente
+                    Filme filme = cinema.getListaFilmes().stream()
+                            .filter(f -> f.getNomeFilme().equalsIgnoreCase(nomeFilme))
+                            .findFirst()
+                            .orElse(null);
+
+                    // Se a sala e o filme foram encontrados, criar a sessão
+                    if (sala != null && filme != null) {
+                    	if(motivoExclusao == null) {
+	                    	Sessao sessao = new Sessao(codigoSessao, diaHorario, precoSessao, comPromocao, porcentagemPromocional, sala, filme);
+	                        sessao.setListaAssentos(nroAssentos); // Configurar os assentos usando o método existente
+	
+	                        // Atualizar a lista de assentos conforme o arquivo
+	                        for (int i = 0; i < assentosStr.length; i++) {
+	                            if (!"null".equalsIgnoreCase(assentosStr[i])) {
+	                                sessao.getListaAssentos()[i] = Boolean.valueOf(assentosStr[i]);
+	                            }
+	                        }
+	
+	                        cinema.getListaSessoes().add(sessao);
+                    	}else {
+	                    	Sessao sessao = new SessaoIndisponivel(codigoSessao, diaHorario, precoSessao, comPromocao, porcentagemPromocional, sala, filme, motivoExclusao);
+	                        sessao.setListaAssentos(nroAssentos); // Configurar os assentos usando o método existente
+	
+	                        // Atualizar a lista de assentos conforme o arquivo
+	                        for (int i = 0; i < assentosStr.length; i++) {
+	                            if (!"null".equalsIgnoreCase(assentosStr[i])) {
+	                                sessao.getListaAssentos()[i] = Boolean.valueOf(assentosStr[i]);
+	                            }
+	                        }
+	
+	                        cinema.getListaSessoes().add(sessao);
+                    	                    		
+                    		
+                    	}
+                    } 
+                    
+                    
+                    else {
+                        System.out.println("Erro: Sala ou Filme não encontrado para a sessão.");
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erro ao carregar as sessões.");
+        }
+    }
+
+    public static void carregarIngressos(File arquivo, Cinema cinema, Usuario usuario) {
+        try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
+            String linha;
+            br.readLine();
+
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(",");
+                if (dados.length == 4) {
+                    String nomeUsuario = dados[0];
+                    int sessaoCodigo = Integer.parseInt(dados[1]);
+                    int nroAssento = Integer.parseInt(dados[2]);
+                    double precoIngresso = Double.parseDouble(dados[3]);
+
+                    //verifica se o nome no arquivo corresponde ao nome do usuario atual
+                    if (usuario.getLoginPessoa().equalsIgnoreCase(nomeUsuario)) {
+                        Sessao sessao = cinema.getListaSessoes().stream()
+                                .filter(s -> s.getCodigoSessao() == sessaoCodigo)
+                                .findFirst()
+                                .orElse(null);
+
+                        if (sessao != null) {
+                            usuario.getIngressosComprados().add(new Ingresso(sessao, nroAssento, precoIngresso));
+                        } else {
+                            System.out.println("Sessão nao encontrada para o código: " + sessaoCodigo);
+                        }
+                    } else {
+                        System.out.println("Nome no arquivo nao corresponde ao usuario logado: " + usuario.getLoginPessoa());
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erro ao carregar os ingressos.");
+        }
+    }
+
+    private static void cadastrarUsuarioArquivo(Usuario usuario) {
+        // caminho do arquivo de usuários
+        String arquivoUsuario = "arquivos/Usuarios.csv";
+
+        // cria/abre o arquivo
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(arquivoUsuario, true))) {
+            //cria o cabeçalho do arquivo se ele estiver vazio
+            if (new java.io.File(arquivoUsuario).length() == 0) {
+                bw.write("Nome,Login,Senha,Idade,Assinante\n");
+            }
+
+            // insere os dados do usuario
+            bw.write(usuario.getNomePessoa() + ","
+                    + usuario.getLoginPessoa() + ","
+                    + usuario.getSenhaPessoa() + ","
+                    + usuario.getIdadeUsuario() + ","
+                    + "false" + "\n");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void cadastrarFilmeArquivo(Filme filme) {
+        String arquivoFilme = "arquivos/Filmes.csv";
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(arquivoFilme, true))) {
+            if (new java.io.File(arquivoFilme).length() == 0) {
+                bw.write("Titulo,Sinopse,Classificacao,Genero,Duracao\n");
+            }
+
+            bw.write(filme.getNomeFilme() + ","
+                    + filme.getSinopseFilme() + ","
+                    + filme.getClassificacaoFilme() + ","
+                    + filme.getGeneroFilme() + ","
+                    + filme.getDuracaoFilme() + "\n");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void editarFilmeArquivo(Filme filmeNovo, String nomeAntigo) {
+        String arquivoFilme = "arquivos/Filmes.csv";
+
+        try {
+            File arquivoOriginal = new File(arquivoFilme);
+            File arquivoTemporario = new File("arquivos/FilmesTemporarios.csv");
+
+            try (
+                    BufferedReader br = new BufferedReader(new FileReader(arquivoOriginal)); BufferedWriter bw = new BufferedWriter(new FileWriter(arquivoTemporario))) {
+                String linha;
+                boolean cabecalho = true;
+
+                while ((linha = br.readLine()) != null) {
+                    //copiar cabeçalho
+                    if (cabecalho) {
+                        bw.write(linha);
+                        bw.newLine();
+                        cabecalho = false;
+                        continue;
+                    }
+
+                    String[] dados = linha.split(",");
+                    if (dados.length == 5) {
+                        String nome = dados[0];
+
+                        //faz a substituicao linha -> filme novo
+                        if (nome.equalsIgnoreCase(nomeAntigo)) {
+                            bw.write(filmeNovo.getNomeFilme() + ","
+                                    + filmeNovo.getSinopseFilme() + ","
+                                    + filmeNovo.getClassificacaoFilme() + ","
+                                    + filmeNovo.getGeneroFilme() + ","
+                                    + filmeNovo.getDuracaoFilme());
+                            bw.newLine();
+                        } else {
+                            bw.write(linha);
+                            bw.newLine();
+                        }
+                    } else {
+                        System.out.println("Linha nao encontrada no arquivo: " + linha);
+                    }
+                }
+            }
+
+            //substitui origial -> temporario
+            if (arquivoOriginal.delete()) {
+                arquivoTemporario.renameTo(arquivoOriginal);
+            } else {
+                System.out.println("Erro ao substituir o arquivo original");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void removerFilmeArquivo(Filme filme, String motivoExclusao) {
+        String caminhoArquivo = "arquivos/Filmes.csv";
+
+        try {
+            File arquivoOriginal = new File(caminhoArquivo);
+            File arquivoTemporario = new File("arquivos/FilmesTemporarios.csv");
+
+            try (
+                    BufferedReader br = new BufferedReader(new FileReader(arquivoOriginal)); BufferedWriter bwTemporario = new BufferedWriter(new FileWriter(arquivoTemporario));) {
+                String linha;
+                boolean cabecalho = true;
+
+                while ((linha = br.readLine()) != null) {
+                    if (cabecalho) {
+                        bwTemporario.write(linha);
+                        bwTemporario.newLine();
+                        cabecalho = false;
+                        continue;
+                    }
+
+                    String[] dados = linha.split(",");
+                    if (dados.length == 5) {
+                        String nome = dados[0];
+
+                        if (nome.equalsIgnoreCase(filme.getNomeFilme())) {
+                            bwTemporario.write(filme.getNomeFilme() + ","
+                                    + filme.getSinopseFilme() + ","
+                                    + filme.getClassificacaoFilme() + ","
+                                    + filme.getGeneroFilme() + ","
+                                    + filme.getDuracaoFilme() + ","
+                                    + motivoExclusao);
+                            bwTemporario.newLine();
+                        } else {
+                            bwTemporario.write(linha);
+                            bwTemporario.newLine();
+                        }
+                    }
+                }
+            }
+
+            if (arquivoOriginal.delete()) {
+                arquivoTemporario.renameTo(arquivoOriginal);
+            } else {
+                System.out.println("Erro ao substituir o arquivo original.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void cadastrarSalaArquivo(Sala sala) {
+        String caminhoArquivo = "arquivos/Salas.csv";
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(caminhoArquivo, true))) {
+            if (new java.io.File(caminhoArquivo).length() == 0) {
+                bw.write("Numero,Assentos,Tela\n");
+            }
+
+            bw.write(sala.getNroSala() + ","
+                    + sala.getNroAssentos() + ","
+                    + sala.getTipoTela() + "\n");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void editarSalaArquivo(Sala salaNova, int numeroAntigoSala) {
+        String arquivoSalas = "arquivos/Salas.csv";
+
+        try {
+            File arquivoOriginal = new File(arquivoSalas);
+            File arquivoTemporario = new File("arquivos/SalasTemporarias.csv");
+
+            try (    
+                BufferedReader br = new BufferedReader(new FileReader(arquivoOriginal)); BufferedWriter bw = new BufferedWriter(new FileWriter(arquivoTemporario))) {
+                String linha;
+                boolean cabecalho = true;
+
+                while ((linha = br.readLine()) != null) {
+                    if (cabecalho) {
+                        bw.write(linha);
+                        bw.newLine();
+                        cabecalho = false;
+                        continue;
+                    }
+
+                    String[] dados = linha.split(",");
+                    if (dados.length == 3) {
+                        int nroSala = Integer.parseInt(dados[0]);
+
+                        if (nroSala == numeroAntigoSala) {
+                            bw.write(salaNova.getNroSala() + ","
+                                    + salaNova.getNroAssentos() + ","
+                                    + (salaNova.getTipoTela() ? "3D" : "2D"));
+                            bw.newLine();
+                        } else {
+                            bw.write(linha);
+                            bw.newLine();
+                        }
+                    } else {
+                        System.out.println("Linha inválida encontrada no arquivo: " + linha);
+                    }
+                }
+            }
+
+            if (arquivoOriginal.delete()) {
+                arquivoTemporario.renameTo(arquivoOriginal);
+            } else {
+                System.out.println("Erro ao substituir o arquivo original.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private static boolean removerSalaArquivo(Sala salaRemovida) {
+        String caminhoArquivo = "arquivos/Salas.csv"; // O arquivo onde as salas estão armazenadas
+        boolean sucesso = false;
+
+        try {
+            File arquivoOriginal = new File(caminhoArquivo);
+            File arquivoTemporario = new File("arquivos/SalasTemporarias.csv");
+
+            try (
+                    BufferedReader br = new BufferedReader(new FileReader(arquivoOriginal)); BufferedWriter bw = new BufferedWriter(new FileWriter(arquivoTemporario))) {
+                String linha;
+                boolean cabecalho = true;
+
+                while ((linha = br.readLine()) != null) {
+                    if (cabecalho) {
+                        bw.write(linha);
+                        bw.newLine();
+                        cabecalho = false;
+                        continue;
+                    }
+
+                    String[] dados = linha.split(",");
+                    if (dados.length == 3) {
+                        int nroSala = Integer.parseInt(dados[0]);
+
+                        if (nroSala != salaRemovida.getNroSala()) {
+                            bw.write(linha);
+                            bw.newLine();
+                        } else {
+                            sucesso = true;
+                        }
+                    }
+                }
+            }
+
+            if (arquivoOriginal.delete()) {
+                arquivoTemporario.renameTo(arquivoOriginal);
+            } else {
+                System.out.println("Erro ao substituir o arquivo original.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return sucesso;
+    }
+
+    private static void cadastrarSessaoArquivo(Sessao sessao) {
+        String caminhoArquivo = "arquivos/Sessoes.csv";
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(caminhoArquivo, true))) {
+            if (new java.io.File(caminhoArquivo).length() == 0) {
+                bw.write("Codigo,DiaHorario,ListaAssentos,Preco,Promocao,Porcentagem,Sala,Filme\n");
+            }
+
+            String listaAssentos = String.join(";", Arrays.stream(sessao.getListaAssentos())
+                                    .map(String::valueOf)
+                                    .toArray(String[]::new));
+
+            bw.write(sessao.getCodigoSessao() + ","
+                    + sessao.getDiaHorarioSessao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + ","
+                    + listaAssentos + ","
+                    + sessao.getPrecoSessao() + ","
+                    + sessao.getComPromocao() + ","
+                    + sessao.getPorcentagemPromocional() + ","
+                    + sessao.getSalaSessao().getNroSala() + ","
+                    + sessao.getFilmeSessao().getNomeFilme() + "\n");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void editarSessaoArquivo(Sessao sessaoNova) {
+        String arquivoSessao = "arquivos/Sessoes.csv";
+
+        try {
+            File arquivoOriginal = new File(arquivoSessao);
+            File arquivoTemporario = new File("arquivos/SessoesTemporarias.csv");
+
+            try (
+                    BufferedReader br = new BufferedReader(new FileReader(arquivoOriginal)); BufferedWriter bw = new BufferedWriter(new FileWriter(arquivoTemporario))) {
+                String linha;
+                boolean cabecalho = true;
+
+                while ((linha = br.readLine()) != null) {
+                    if (cabecalho) {
+                        bw.write(linha);
+                        bw.newLine();
+                        cabecalho = false;
+                        continue;
+                    }
+
+                    String[] dados = linha.split(",", 8);
+                    if (dados.length == 8) {
+                        int codigo = Integer.parseInt(dados[0]);
+
+                        if (codigo == sessaoNova.getCodigoSessao()) {
+                            String listaAssentos = String.join(";", Arrays.stream(sessaoNova.getListaAssentos())
+                                    .map(String::valueOf)
+                                    .toArray(String[]::new));
+
+                            bw.write(sessaoNova.getCodigoSessao() + ","
+                                    + sessaoNova.getDiaHorarioSessao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + ","
+                                    + listaAssentos + ","
+                                    + sessaoNova.getPrecoSessao() + ","
+                                    + sessaoNova.getComPromocao() + ","
+                                    + sessaoNova.getPorcentagemPromocional() + ","
+                                    + sessaoNova.getSalaSessao().getNroSala() + ","
+                                    + sessaoNova.getFilmeSessao().getNomeFilme());
+                            bw.newLine();
+                        } else {
+                            bw.write(linha);
+                            bw.newLine();
+                        }
+                    } else {
+                        System.out.println("Linha inválida no arquivo: " + linha);
+                    }
+                }
+            }
+
+            if (arquivoOriginal.delete()) {
+                if (!arquivoTemporario.renameTo(arquivoOriginal)) {
+                    System.out.println("Erro ao renomear o arquivo temporário para o original.");
+                }
+            } else {
+                System.out.println("Erro ao deletar o arquivo original.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void removerSessaoArquivo(Sessao sessao, String motivoExclusao) {
+        String caminhoArquivo = "arquivos/Sessoes.csv";
+
+        try {
+            File arquivoOriginal = new File(caminhoArquivo);
+            File arquivoTemporario = new File("arquivos/SessoesTemporarias.csv");
+
+            try (
+                    BufferedReader br = new BufferedReader(new FileReader(arquivoOriginal)); BufferedWriter bw = new BufferedWriter(new FileWriter(arquivoTemporario))) {
+                String linha;
+                boolean cabecalho = true;
+
+                while ((linha = br.readLine()) != null) {
+                    if (cabecalho) {
+                        bw.write(linha);
+                        bw.newLine();
+                        cabecalho = false;
+                        continue;
+                    }
+
+                    String[] dados = linha.split(",");
+                    if (dados.length == 8) {
+                        int codigoSessao = Integer.parseInt(dados[0]);
+
+                        if (codigoSessao == sessao.getCodigoSessao()) {
+                            bw.write(sessao.getCodigoSessao() + ","
+                                    + sessao.getDiaHorarioSessao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + ","
+                                    + String.join(";", Arrays.stream(sessao.getListaAssentos())
+                                            .map(String::valueOf).toArray(String[]::new)) + ","
+                                    + sessao.getPrecoSessao() + ","
+                                    + sessao.getComPromocao() + ","
+                                    + sessao.getPorcentagemPromocional() + ","
+                                    + sessao.getSalaSessao().getNroSala() + ","
+                                    + sessao.getFilmeSessao().getNomeFilme() + ","
+                                    + motivoExclusao);
+                            bw.newLine();
+                        } else {
+                            bw.write(linha);
+                            bw.newLine();
+                        }
+                    }
+                }
+            }
+
+            if (arquivoOriginal.delete()) {
+                if (!arquivoTemporario.renameTo(arquivoOriginal)) {
+                    System.out.println("Erro ao renomear o arquivo temporário.");
+                }
+            } else {
+                System.out.println("Erro ao excluir o arquivo original.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void cadastrarPromocaoArquivo(int codigoSessao, double porcentagemPromocional) {
+        String arquivoSessao = "arquivos/Sessoes.csv";
+        String arquivoTemporario = "arquivos/SessoesTemporarias.csv";
+
+        try (
+                BufferedReader br = new BufferedReader(new FileReader(arquivoSessao)); BufferedWriter bw = new BufferedWriter(new FileWriter(arquivoTemporario))) {
+            String linha;
+            boolean cabecalho = true;
+
+            while ((linha = br.readLine()) != null) {
+                if (cabecalho) {
+                    bw.write(linha);
+                    bw.newLine();
+                    cabecalho = false;
+                    continue;
+                }
+
+                String[] dados = linha.split(",", 8);
+
+                if (dados.length == 8) {
+                    int codigoAtual = Integer.parseInt(dados[0]);
+
+                    if (codigoAtual == codigoSessao) {
+                        dados[4] = "true";
+                        dados[5] = String.valueOf(porcentagemPromocional);
+
+                        bw.write(String.join(",", dados));
+                    } else {
+                        bw.write(linha);
+                    }
+                    bw.newLine();
+                } else {
+                    System.out.println("Linha invalida no arquivo: " + linha);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erro ao atualizar promoção no arquivo.");
+            return;
+        }
+
+        File original = new File(arquivoSessao);
+        File temporario = new File(arquivoTemporario);
+
+        if (original.delete()) {
+            if (!temporario.renameTo(original)) {
+                System.out.println("Erro ao renomear o arquivo temporario.");
+            }
+        } else {
+            System.out.println("Erro ao deletar o arquivo original.");
+        }
+        System.out.println("Promocao atualizada no arquivo com sucesso.");
+    }
+
+    public static void editarPromocaoArquivo(File arquivo, Sessao sessaoEditada) {
+        String arquivoTemporario = "arquivos/SessoesTemporarias.csv";
+
+        try (
+                BufferedReader br = new BufferedReader(new FileReader(arquivo)); BufferedWriter bw = new BufferedWriter(new FileWriter(arquivoTemporario))) {
+            String linha;
+            boolean cabecalho = true;
+
+            while ((linha = br.readLine()) != null) {
+                if (cabecalho) {
+                    bw.write(linha);
+                    bw.newLine();
+                    cabecalho = false;
+                    continue;
+                }
+
+                String[] dados = linha.split(",", 8);
+
+                if (dados.length == 8) {
+                    int codigoSessao = Integer.parseInt(dados[0]);
+
+                    if (codigoSessao == sessaoEditada.getCodigoSessao()) {
+                        String listaAssentos = String.join(";", Arrays.stream(sessaoEditada.getListaAssentos())
+                                .map(String::valueOf)
+                                .toArray(String[]::new));
+
+                        String linhaEditada = sessaoEditada.getCodigoSessao() + ","
+                                + sessaoEditada.getDiaHorarioSessao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + ","
+                                + listaAssentos + ","
+                                + sessaoEditada.getPrecoSessao() + ","
+                                + sessaoEditada.getComPromocao() + ","
+                                + sessaoEditada.getPorcentagemPromocional() + ","
+                                + sessaoEditada.getSalaSessao().getNroSala() + ","
+                                + sessaoEditada.getFilmeSessao().getNomeFilme();
+
+                        bw.write(linhaEditada);
+                    } else {
+                        bw.write(linha);
+                    }
+                    bw.newLine();
+                } else {
+                    System.out.println("Linha invalida no arquivo: " + linha);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erro ao editar a promocao no arquivo.");
+            return;
+        }
+
+        // Substituir o arquivo original pelo temporário
+        File arquivoOriginal = new File(arquivo.getPath());
+        File arquivoTemp = new File(arquivoTemporario);
+
+        if (arquivoOriginal.delete()) {
+            if (!arquivoTemp.renameTo(arquivoOriginal)) {
+                System.out.println("Erro ao renomear o arquivo temporario para o original.");
+            }
+        } else {
+            System.out.println("Erro ao deletar o arquivo original.");
+        }
+    }
+
+    public static void removerPromocaoArquivo(File arquivo, Sessao sessaoEditada) {
+        String arquivoTemporario = "arquivos/SessoesTemporarias.csv";
+
+        try (
+                BufferedReader br = new BufferedReader(new FileReader(arquivo)); BufferedWriter bw = new BufferedWriter(new FileWriter(arquivoTemporario))) {
+            String linha;
+            boolean cabecalho = true;
+
+            while ((linha = br.readLine()) != null) {
+                if (cabecalho) {
+                    bw.write(linha);
+                    bw.newLine();
+                    cabecalho = false;
+                    continue;
+                }
+
+                String[] dados = linha.split(",", 8);
+
+                if (dados.length == 8) {
+                    int codigoSessao = Integer.parseInt(dados[0]);
+
+                    if (codigoSessao == sessaoEditada.getCodigoSessao()) {
+                        String listaAssentos = String.join(";", Arrays.stream(sessaoEditada.getListaAssentos())
+                                .map(String::valueOf)
+                                .toArray(String[]::new));
+
+                        String linhaAtualizada = sessaoEditada.getCodigoSessao() + ","
+                                + sessaoEditada.getDiaHorarioSessao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + ","
+                                + listaAssentos + ","
+                                + sessaoEditada.getPrecoSessao() + ","
+                                + "false" + ","
+                                + // Remove a promoção
+                                "0.0" + ","
+                                + // Remove a porcentagem da promoção
+                                sessaoEditada.getSalaSessao().getNroSala() + ","
+                                + sessaoEditada.getFilmeSessao().getNomeFilme();
+
+                        bw.write(linhaAtualizada);
+                    } else {
+                        bw.write(linha);
+                    }
+                    bw.newLine();
+                } else {
+                    System.out.println("Linha invalida no arquivo: " + linha);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erro ao remover a promocao no arquivo.");
+            return;
+        }
+
+        File arquivoOriginal = new File(arquivo.getPath());
+        File arquivoTemp = new File(arquivoTemporario);
+
+        if (arquivoOriginal.delete()) {
+            if (!arquivoTemp.renameTo(arquivoOriginal)) {
+                System.out.println("Erro ao renomear o arquivo temporario para o original.");
+            }
+        } else {
+            System.out.println("Erro ao deletar o arquivo original.");
+        }
+    }
+
+    public static void cadastrarIngressoArquivo(File arquivo, Usuario usuario, Ingresso ingresso) {
+        String arquivoUsuarios = "arquivos/Usuarios.csv"; 
+        String arquivoIngressos = "arquivos/Ingressos.csv";
+        String arquivoSessoes = "arquivos/Sessoes.csv";
+
+        // Passo 1: Verificar se o usuário é assinante
+        boolean isAssinante = false;
+        try (BufferedReader br = new BufferedReader(new FileReader(arquivoUsuarios))) {
+            String linha;
+            br.readLine(); // Ignorar o cabeçalho
+
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(",");
+                // compara com o nome do usuario e analisa se é assinante
+                if (dados[0].equals(usuario.getLoginPessoa())) { 
+                    isAssinante = "true".equalsIgnoreCase(dados[4]);
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erro ao ler o arquivo de usuarios.");
+            return;
+        }
+
+        // ajusta o preço do ingresso se o usuario for assinante
+        double precoFinal = ingresso.getPrecoIngresso();
+        if (isAssinante) {
+            precoFinal *= 0.7;
+        }
+
+        //cadastra o ingresso no arquivo de ingressos
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(arquivoIngressos, true))) {
+            if (new java.io.File(arquivoIngressos).length() == 0) {
+                bw.write("Nome,CodigoSessao,NumeroAssento,Preco\n");
+            }
+
+            bw.write(usuario.getLoginPessoa() + ","
+                    + ingresso.getSessao().getCodigoSessao() + ","
+                    + ingresso.getNroAssento() + ","
+                    + precoFinal + "\n");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erro ao salvar o ingresso no arquivo.");
+            return;
+        }
+
+        //atualizar o arquivo de sessoes para ocupar assentos
+        try (BufferedReader br = new BufferedReader(new FileReader(arquivoSessoes))) {
+            StringBuilder sb = new StringBuilder();
+            String linha;
+            boolean atualizado = false;
+
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(",");
+
+                if (dados[0].equals(String.valueOf(ingresso.getSessao().getCodigoSessao()))) {
+                    String[] assentos = dados[2].split(";");
+                    int assentoSelecionado = ingresso.getNroAssento() - 1;
+
+                    if ("false".equals(assentos[assentoSelecionado])) {
+                        assentos[assentoSelecionado] = "true";
+                        atualizado = true;
+                    } else {
+                        System.out.println("Assento ja ocupado.");
+                    }
+
+                    dados[2] = String.join(";", assentos);
+                    linha = String.join(",", dados);
+                }
+
+                sb.append(linha).append("\n");
+            }
+
+            if (!atualizado) {
+                System.out.println(" - Sessão nao encontrada ou assento ja ocupado.");
+                return;
+            }
+
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(arquivoSessoes))) {
+                bw.write(sb.toString());
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void cadastrarUsuarioAssinanteArquivo(UsuarioAssinante usuario) {
+        String arquivoFilme = "arquivos/Usuarios.csv";
+
+        try {
+            File arquivoOriginal = new File(arquivoFilme);
+            File arquivoTemporario = new File("arquivos/UsuariosTemporarios.csv");
+
+            try (
+                    BufferedReader br = new BufferedReader(new FileReader(arquivoOriginal)); BufferedWriter bw = new BufferedWriter(new FileWriter(arquivoTemporario))) {
+                String linha;
+                boolean cabecalho = true;
+
+                while ((linha = br.readLine()) != null) {
+                    if (cabecalho) {
+                        bw.write(linha);
+                        bw.newLine();
+                        cabecalho = false;
+                        continue;
+                    }
+
+                    String[] dados = linha.split(",");
+                    if (dados.length == 5) {
+                        String nome = dados[0];
+
+                        if (nome.equalsIgnoreCase(usuario.getLoginPessoa())) {
+                            bw.write(usuario.getNomePessoa() + ","
+                                    + usuario.getLoginPessoa() + ","
+                                    + usuario.getSenhaPessoa() + ","
+                                    + usuario.getIdadeUsuario() + ","
+                                    + "true");
+                            bw.newLine();
+                        } else {
+                            bw.write(linha);
+                            bw.newLine();
+                        }
+                    } else {
+                        System.out.println("Linha nao encontrada no arquivo: " + linha);
+                    }
+                }
+            }
+
+            if (arquivoOriginal.delete()) {
+                arquivoTemporario.renameTo(arquivoOriginal);
+            } else {
+                System.out.println("Erro ao substituir o arquivo original");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }
