@@ -1248,7 +1248,7 @@ public class Main {
                     return;
                 }
 
-                if (gerente.buscarSessaoTodas(codigoSessao) == null) {
+                if (!gerente.buscarSessaoTodas(codigoSessao)) {
                     try {
                         System.out.print("- Dia da sessao (DD/MM/YYYY): ");
                         diaSessaoString = sc.nextLine();
@@ -2224,7 +2224,7 @@ public class Main {
      * @throws ArrayIndexOutOfBoundsException Se número for menor do que 0 ou maior do que o tamanho do array de assentos.
      */
     private static void excecaoCompraIngresso(int numeroEntrada, Sessao sessao) throws ArrayIndexOutOfBoundsException {
-        if (numeroEntrada < 0 || numeroEntrada > sessao.getSalaSessao().getNroAssentos()) {
+        if (numeroEntrada <= 0 || numeroEntrada > sessao.getSalaSessao().getNroAssentos()) {
             throw new ArrayIndexOutOfBoundsException("Número de assento fora do intervalo válido.");
         }
     } 
