@@ -392,13 +392,13 @@ public class Gerente extends Pessoa{
      * @see Sessao
      * @see Cinema
      */
-    public Sessao buscarSessaoTodas(int codigoSessao) {
+    public boolean buscarSessaoTodas(int codigoSessao) {
         for (Sessao s : cinema.getListaSessoes()) {
             if (s.getCodigoSessao() == codigoSessao) {
-                return s;
+                return true;
             }
         }
-        return null;
+        return false;
     }
     
     /**
