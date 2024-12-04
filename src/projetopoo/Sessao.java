@@ -27,6 +27,7 @@ import java.time.LocalDateTime;
 
 public class Sessao{
     private int codigoSessao;
+    private static int quantidadeSessao;
     private LocalDateTime diaHorarioSessao;
     private Boolean[] listaAssentos; // Lista de assentos disponíveis (true) e indisponíveis (false).
     private double precoSessao; 
@@ -135,6 +136,29 @@ public class Sessao{
      */
     public int getCodigoSessao(){
         return codigoSessao;
+    }
+    
+    /**
+     * Muda o número de sessões criada.
+     * 
+     * @param quantidadeSessao Número total de sessões criadas. 
+     */
+    
+    public static void setQuantidadeSessao(int quantiSessao) {
+    	quantidadeSessao = quantiSessao;
+    }
+    
+    /**
+     * Obtém o código da sessão. 
+     * 
+     * @return <code>integer</code> Quantidade de sessões. 
+     */
+     public static int getQuantidadeSessao() {
+    	if(quantidadeSessao <= 0) {
+    		return 1;
+    	}else {
+    		return quantidadeSessao;
+    	}
     }
     
     /** 
