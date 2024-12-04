@@ -138,29 +138,6 @@ public class Sessao{
         return codigoSessao;
     }
     
-    /**
-     * Muda o número de sessões criada.
-     * 
-     * @param quantidadeSessao Número total de sessões criadas. 
-     */
-    
-    public static void setQuantidadeSessao(int quantiSessao) {
-    	quantidadeSessao = quantiSessao;
-    }
-    
-    /**
-     * Obtém o código da sessão. 
-     * 
-     * @return <code>integer</code> Quantidade de sessões. 
-     */
-     public static int getQuantidadeSessao() {
-    	if(quantidadeSessao <= 0) {
-    		return 1;
-    	}else {
-    		return quantidadeSessao;
-    	}
-    }
-    
     /** 
      * Muda a data e o horário da sessão.
      * 
