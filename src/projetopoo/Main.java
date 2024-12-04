@@ -2257,7 +2257,7 @@ public class Main {
      * @param cinema Cinema.
      * @param gerente Gerente do cinema.
      */
-    public static void carregarDados(String caminhoDiretorio, Cinema cinema, Gerente gerente) {
+    private static void carregarDados(String caminhoDiretorio, Cinema cinema, Gerente gerente) {
         File diretorio = new File(caminhoDiretorio);
 
         if (diretorio.exists() && diretorio.isDirectory()) {
@@ -2294,7 +2294,7 @@ public class Main {
      * @param arquivoUsuario Arquivo do usuário.
      * @param gerente Gerente do cinema.
      */
-    public static void carregarUsuariosArquivo(File arquivoUsuario, Gerente gerente) {
+    private static void carregarUsuariosArquivo(File arquivoUsuario, Gerente gerente) {
         try (BufferedReader br = new BufferedReader(new FileReader(arquivoUsuario))) {
             String linha;
             br.readLine(); //ignora o cabeçalho
@@ -2328,7 +2328,7 @@ public class Main {
      * @param arquivo Arquivo de filmes.
      * @param cinema Cinema.
      */
-    public static void carregarFilmesArquivo(File arquivo, Cinema cinema) {
+    private static void carregarFilmesArquivo(File arquivo, Cinema cinema) {
         try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
             String linha;
             br.readLine();
@@ -2367,7 +2367,7 @@ public class Main {
      * @param arquivo Arquivo de salas.
      * @param cinema Cinema.
      */
-    public static void carregarSalasArquivo(File arquivo, Cinema cinema) {
+    private static void carregarSalasArquivo(File arquivo, Cinema cinema) {
         try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
             String linha;
             br.readLine();
@@ -2393,7 +2393,7 @@ public class Main {
      * @param arquivo Arquivo de sessão.
      * @param cinema Cinema.
      */
-    public static void carregarSessoesArquivo(File arquivo, Cinema cinema) {
+    private static void carregarSessoesArquivo(File arquivo, Cinema cinema) {
         try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
             String linha;
             br.readLine();
@@ -2477,7 +2477,7 @@ public class Main {
      * @param cinema Cinema.
      * @param usuario Usuário ao qual possui os ingressos.
      */
-    public static void carregarIngressos(File arquivo, Cinema cinema, Usuario usuario) {
+    private static void carregarIngressos(File arquivo, Cinema cinema, Usuario usuario) {
         try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
             String linha;
             br.readLine();
@@ -2969,7 +2969,7 @@ public class Main {
      * @param codigoSessao Código da sessão a cadastrar a promoção.
      * @param porcentagemPromocional Porcentagem promocional.
      */
-    public static void cadastrarPromocaoArquivo(int codigoSessao, double porcentagemPromocional) {
+    private static void cadastrarPromocaoArquivo(int codigoSessao, double porcentagemPromocional) {
         String arquivoSessao = "arquivos/Sessoes.csv";
         String arquivoTemporario = "arquivos/SessoesTemporarias.csv";
 
@@ -3029,7 +3029,7 @@ public class Main {
      * @param arquivo Arquivo de sessão.
      * @param sessaoEditada Sessão com promoção editada.
      */
-    public static void editarPromocaoArquivo(File arquivo, Sessao sessaoEditada) {
+    private static void editarPromocaoArquivo(File arquivo, Sessao sessaoEditada) {
         String arquivoTemporario = "arquivos/SessoesTemporarias.csv";
 
         try (
@@ -3098,7 +3098,7 @@ public class Main {
      * @param arquivo Arquivo de sessão.
      * @param sessaoEditada Sessão com promoção removida.
      */ 
-    public static void removerPromocaoArquivo(File arquivo, Sessao sessaoEditada) {
+    private static void removerPromocaoArquivo(File arquivo, Sessao sessaoEditada) {
         String arquivoTemporario = "arquivos/SessoesTemporarias.csv";
 
         try (
@@ -3169,7 +3169,7 @@ public class Main {
      * @param usuario Usuário ao qual comprou o ingresso.
      * @param ingresso Ingresso comprado.
      */
-    public static void cadastrarIngressoArquivo(File arquivo, Usuario usuario, Ingresso ingresso) {
+    private static void cadastrarIngressoArquivo(File arquivo, Usuario usuario, Ingresso ingresso) {
         String arquivoUsuarios = "arquivos/Usuarios.csv"; 
         String arquivoIngressos = "arquivos/Ingressos.csv";
         String arquivoSessoes = "arquivos/Sessoes.csv";

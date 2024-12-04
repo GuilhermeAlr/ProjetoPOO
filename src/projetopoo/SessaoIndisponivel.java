@@ -28,7 +28,6 @@ public class SessaoIndisponivel extends Sessao{
      * @param salaSessao Sala onde será a sessão.
      * @param filmeSessao Filme exibido na sessão.
      * @param motivoExclusaoSessao Motivo da exclusão da sessão.
-     * @see Sessao#Sessao(java.time.LocalDateTime, double, java.lang.Boolean, double, projetopoo.Sala, projetopoo.Filme) 
      */
     public SessaoIndisponivel(int codigoSessao, LocalDateTime diaHorarioSessao, double precoSessao, boolean comPromocao, double porcentagemPromocional, Sala salaSessao, Filme filmeSessao, String motivoExclusaoSessao){
         super(codigoSessao, diaHorarioSessao, precoSessao, comPromocao, porcentagemPromocional, salaSessao, filmeSessao);
